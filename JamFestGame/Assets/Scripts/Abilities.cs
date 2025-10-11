@@ -12,6 +12,9 @@ public class Abilities : MonoBehaviour
     public bool isGrappling = false;
     public bool isTeleporting = false;
     public bool isGliding = false;
+    public bool isSuperSpeed = false;
+
+    private float defaultSpeed;
     private Vector2 grappleTarget;
 
     public List<AbilityType> abilities = new List<AbilityType>();
@@ -24,6 +27,7 @@ public class Abilities : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         collision = GetComponent<Collision>();
         betterJumping = GetComponent<BetterJumping>();
+        defaultSpeed = movement.speed;
     }
     
     void Update()
@@ -44,6 +48,16 @@ public class Abilities : MonoBehaviour
         {
             Teleport();
             isTeleporting = true;
+        }
+
+        if (Input.GetKey(KeyCode.J))
+        {
+            SuperSpeed();
+        }
+        else
+        {
+            movement.speed = defaultSpeed;
+            isSuperSpeed = false;
         }
 
         // Gliding Update Logic
@@ -146,8 +160,17 @@ public class Abilities : MonoBehaviour
         Vector2 teleportDirection = dir * teleportForce;
 
         transform.position = Vector2.Lerp(transform.position, transform.position + (Vector3)teleportDirection, 1f);
-        
+
     }
+
+    public void SuperSpeed()
+    {
+        // Implementation for Super Speed ability
+        Debug.Log("Super Speed ability activated.");
+        isSuperSpeed = true;
+        movement.speed = defaultSpeed * 4;
+    }
+    
     public void AddAbility(AbilityType ability)
     {
         abilities.Add(ability);
