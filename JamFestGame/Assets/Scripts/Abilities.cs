@@ -1,5 +1,8 @@
 using UnityEngine;
 using System.Collections.Generic;
+
+
+public enum AbilityType { Dash, DoubleJump, WallJump, WallGrab, Grapple, Glide, Teleport, Shrink, Hover, None }
 public class Abilities : MonoBehaviour
 {
     private Movement movement;
@@ -9,6 +12,8 @@ public class Abilities : MonoBehaviour
     public bool isGrappling = false;
     public bool isGliding = false;
     private Vector2 grappleTarget;
+
+    public List<AbilityType> abilities = new List<AbilityType>();
 
     void Start()
     {
@@ -120,4 +125,14 @@ public class Abilities : MonoBehaviour
             
         }
     }
+
+    public void AddAbility(AbilityType ability)
+    {
+        abilities.Add(ability);
+    }
+    public bool HasAbility(AbilityType ability)
+    {
+        return abilities.Contains(ability);
+    }
+
 }
