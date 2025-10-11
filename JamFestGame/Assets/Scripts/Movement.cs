@@ -12,6 +12,7 @@ public class Movement : MonoBehaviour
     public Rigidbody2D rb;
     private AnimationScript anim;
     private Abilities abilities;
+    private BetterJumping betterJumping;
 
     [Space]
     [Header("Stats")]
@@ -50,6 +51,7 @@ public class Movement : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<AnimationScript>();
         abilities = GetComponent<Abilities>();
+        betterJumping = GetComponent<BetterJumping>();
     }
 
 
@@ -81,7 +83,7 @@ public class Movement : MonoBehaviour
         if (coll.onGround && !isDashing)
         {
             wallJumped = false;
-            GetComponent<BetterJumping>().enabled = true;
+            betterJumping.enabled = true;
         }
         
         if (wallGrab && !isDashing)
@@ -97,7 +99,7 @@ public class Movement : MonoBehaviour
         else if (abilities.isGliding && !coll.onGround)
         {
             rb.gravityScale = 0.5f;
-            GetComponent<BetterJumping>().enabled = false;
+            betterJumping.enabled = false;
         }
         else if (!wallGrab && !abilities.isGliding && !isDashing)
         {
