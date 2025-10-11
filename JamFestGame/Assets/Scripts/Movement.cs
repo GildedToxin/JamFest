@@ -27,6 +27,7 @@ public class Movement : MonoBehaviour
     public bool wallJumped;
     public bool wallSlide;
     public bool isDashing;
+    public bool pushedWall;
 
     [Space]
 
@@ -63,7 +64,7 @@ public class Movement : MonoBehaviour
 
         if (coll.onWall && Input.GetButton("Fire3") && canMove)
         {
-            if(side != coll.wallSide)
+            //if (side != coll.wallSide)
                 //anim.Flip(side*-1);
             wallGrab = true;
             wallSlide = false;
@@ -229,7 +230,7 @@ public class Movement : MonoBehaviour
 
     private void WallSlide()
     {
-        if(coll.wallSide != side)
+        //if (coll.wallSide != side)
             //anim.Flip(side * -1);
 
         if (!canMove)

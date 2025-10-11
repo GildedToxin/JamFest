@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8401557638131752301}
   - component: {fileID: 3042557195617016947}
-  - component: {fileID: 216375086199859590}
+  - component: {fileID: 5875714957552865313}
   - component: {fileID: 8636508395928452140}
   - component: {fileID: 4091400736020901389}
   - component: {fileID: 9218218276666977379}
@@ -96,8 +96,8 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!70 &216375086199859590
-CapsuleCollider2D:
+--- !u!58 &5875714957552865313
+CircleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -131,8 +131,7 @@ CapsuleCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
-  m_Size: {x: 1, y: 2}
-  m_Direction: 0
+  m_Radius: 0.52
 --- !u!50 &8636508395928452140
 Rigidbody2D:
   serializedVersion: 5
@@ -195,6 +194,7 @@ MonoBehaviour:
   wallJumped: 0
   wallSlide: 0
   isDashing: 0
+  pushedWall: 0
   side: 1
 --- !u!114 &3955889716983449642
 MonoBehaviour:
@@ -217,7 +217,7 @@ MonoBehaviour:
   onLeftWall: 0
   wallSide: 0
   collisionRadius: 0.1
-  bottomOffset: {x: 0, y: -0.75}
+  bottomOffset: {x: 0, y: -0.4}
   rightOffset: {x: 0.4, y: 0}
   leftOffset: {x: -0.4, y: 0}
 --- !u!114 &1554270366531230412
