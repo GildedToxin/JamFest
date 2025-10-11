@@ -517,7 +517,7 @@ GameObject:
   - component: {fileID: 776221844}
   - component: {fileID: 776221843}
   - component: {fileID: 776221842}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Static Sprite (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -861,8 +861,8 @@ MonoBehaviour:
   onRightWall: 0
   onLeftWall: 0
   wallSide: 0
-  collisionRadius: 0.25
-  bottomOffset: {x: 0, y: -0.69}
+  collisionRadius: 0.1
+  bottomOffset: {x: 0, y: -0.75}
   rightOffset: {x: 0.4, y: 0}
   leftOffset: {x: -0.4, y: 0}
 --- !u!114 &1052076353
@@ -879,9 +879,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Movement
   rb: {fileID: 0}
   speed: 5
-  jumpForce: 10
-  slideSpeed: 5
-  wallJumpLerp: 10
+  jumpForce: 20
+  slideSpeed: 2
+  wallJumpLerp: 40
   dashSpeed: 20
   canMove: 1
   wallGrab: 0
@@ -901,7 +901,7 @@ GameObject:
   - component: {fileID: 1352456872}
   - component: {fileID: 1352456871}
   - component: {fileID: 1352456870}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Static Sprite (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1066,7 +1066,7 @@ GameObject:
   - component: {fileID: 1923869764}
   - component: {fileID: 1923869763}
   - component: {fileID: 1923869762}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Static Sprite (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
