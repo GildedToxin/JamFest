@@ -10,10 +10,13 @@ public class Abilities : MonoBehaviour
     private Rigidbody2D rb;
     private BetterJumping betterJumping;
     public bool isGrappling = false;
+    public bool isTeleporting = false;
     public bool isGliding = false;
     private Vector2 grappleTarget;
 
     public List<AbilityType> abilities = new List<AbilityType>();
+
+    public float teleportForce = 5f;
 
     void Start()
     {
@@ -35,6 +38,11 @@ public class Abilities : MonoBehaviour
         {
             GrappleHook();
             isGrappling = true;
+        }
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            Teleport();
+            isTeleporting = true;
         }
 
         // Gliding Update Logic
@@ -124,7 +132,21 @@ public class Abilities : MonoBehaviour
             
         }
     }
+    public void Teleport()
+    {
+        Debug.Log("Teleport ability activated.");
 
+        float x = Input.GetAxis("Horizontal");
+        float y = Input.GetAxis("Vertical");
+        float xRaw = Input.GetAxisRaw("Horizontal");
+        float yRaw = Input.GetAxisRaw("Vertical");
+        Vector2 dir = new Vector2(x, y);
+
+        Vector2 teleportDirection = dir * teleportForce;
+
+        transform.position = Vector2.Lerp(transform.position, transform.position + (Vector3)teleportDirection, 1f);
+        
+    }
     public void AddAbility(AbilityType ability)
     {
         abilities.Add(ability);
