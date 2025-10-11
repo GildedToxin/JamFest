@@ -12,6 +12,9 @@ public class Abilities : MonoBehaviour
     public bool isGrappling = false;
     public bool isTeleporting = false;
     public bool isGliding = false;
+    public bool isSuperSpeed = false;
+
+    private float defaultSpeed;
     private Vector2 grappleTarget;
 
     public List<AbilityType> abilities = new List<AbilityType>();
@@ -24,6 +27,7 @@ public class Abilities : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         collision = GetComponent<Collision>();
         betterJumping = GetComponent<BetterJumping>();
+        defaultSpeed = movement.speed;
     }
     
     void Update()
@@ -44,6 +48,16 @@ public class Abilities : MonoBehaviour
         {
             Teleport();
             isTeleporting = true;
+        }
+
+        if (Input.GetKey(KeyCode.J))
+        {
+            SuperSpeed();
+        }
+        else
+        {
+            movement.speed = defaultSpeed;
+            isSuperSpeed = false;
         }
 
         // Gliding Update Logic
@@ -69,7 +83,8 @@ public class Abilities : MonoBehaviour
         // Grappling update logic
         if (isGrappling)
         {
-            transform.position = Vector2.Lerp(transform.position, grappleTarget, .03f);
+            if (grappleTarget != null)
+                transform.position = Vector2.Lerp(transform.position, grappleTarget, .03f);
         }
         if (isGrappling && Vector2.Distance(transform.position, grappleTarget) < 0.5f)
         {
@@ -118,12 +133,10 @@ public class Abilities : MonoBehaviour
                 closest = targPoint;
             }
         }
-
-
+    
         Vector2 grappleDirection = closest.transform.position;
         if (rb != null)
         {
-            //rb.linearVelocity = Vector2.Lerp(rb.linearVelocity, grappleDirection * grappleSpeed, .5f);
             if (transform.position.x != grappleDirection.x && transform.position.y != grappleDirection.y)
             {
                 movement.canMove = false;
@@ -146,8 +159,17 @@ public class Abilities : MonoBehaviour
         Vector2 teleportDirection = dir * teleportForce;
 
         transform.position = Vector2.Lerp(transform.position, transform.position + (Vector3)teleportDirection, 1f);
-        
+
     }
+
+    public void SuperSpeed()
+    {
+        // Implementation for Super Speed ability
+        Debug.Log("Super Speed ability activated.");
+        isSuperSpeed = true;
+        movement.speed = defaultSpeed * 3;
+    }
+    
     public void AddAbility(AbilityType ability)
     {
         abilities.Add(ability);
