@@ -64,8 +64,8 @@ public class Movement : MonoBehaviour
 
         if (coll.onWall && Input.GetButton("Fire3") && canMove)
         {
-            //if (side != coll.wallSide)
-                //anim.Flip(side*-1);
+            if (side != coll.wallSide)
+                anim.Flip(side*-1);
             wallGrab = true;
             wallSlide = false;
         }
@@ -144,12 +144,12 @@ public class Movement : MonoBehaviour
         if(x > 0)
         {
             side = 1;
-            //anim.Flip(side);
+            anim.Flip(side);
         }
         if (x < 0)
         {
             side = -1;
-            //anim.Flip(side);
+            anim.Flip(side);
         }
 
 
@@ -160,7 +160,7 @@ public class Movement : MonoBehaviour
         hasDashed = false;
         isDashing = false;
 
-        //side = anim.sr.flipX ? -1 : 1;
+        side = anim.sr.flipX ? -1 : 1;
 
         //jumpParticle.Play();
     }
@@ -215,7 +215,7 @@ public class Movement : MonoBehaviour
         if ((side == 1 && coll.onRightWall) || side == -1 && !coll.onRightWall)
         {
             side *= -1;
-            //anim.Flip(side);
+            anim.Flip(side);
         }
 
         StopCoroutine(DisableMovement(0));
@@ -230,8 +230,8 @@ public class Movement : MonoBehaviour
 
     private void WallSlide()
     {
-        //if (coll.wallSide != side)
-            //anim.Flip(side * -1);
+        if (coll.wallSide != side)
+            anim.Flip(side * -1);
 
         if (!canMove)
             return;
