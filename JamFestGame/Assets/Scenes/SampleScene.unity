@@ -645,8 +645,16 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 602410263059794118, guid: 0ff1572ec9d8f654c9ee208fcd6be0ea, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1718481875}
   m_SourcePrefab: {fileID: 100100000, guid: 0ff1572ec9d8f654c9ee208fcd6be0ea, type: 3}
+--- !u!1 &953423981 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 602410263059794118, guid: 0ff1572ec9d8f654c9ee208fcd6be0ea, type: 3}
+  m_PrefabInstance: {fileID: 953423980}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1251122211
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -717,7 +725,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8957729223612089447, guid: 7d7b29ecd88bec24ea550707508d73ca, type: 3}
       propertyPath: m_NormalizedViewPortRect.y
-      value: 0.029508196
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8957729223612089447, guid: 7d7b29ecd88bec24ea550707508d73ca, type: 3}
       propertyPath: m_NormalizedViewPortRect.width
@@ -725,7 +733,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8957729223612089447, guid: 7d7b29ecd88bec24ea550707508d73ca, type: 3}
       propertyPath: m_NormalizedViewPortRect.height
-      value: 0.9393443
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8967457541132782583, guid: 7d7b29ecd88bec24ea550707508d73ca, type: 3}
       propertyPath: m_AssetsPPU
@@ -914,6 +922,111 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2407688030155094753, guid: 0ff1572ec9d8f654c9ee208fcd6be0ea, type: 3}
   m_PrefabInstance: {fileID: 953423980}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1718481875
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 953423981}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.InputSystem::UnityEngine.InputSystem.PlayerInput
+  m_Actions: {fileID: -944628639613478452, guid: 1fa5a90ca7e40cc41b34cc9d11ae3b46, type: 3}
+  m_NotificationBehavior: 2
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents:
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1718481876}
+        m_TargetAssemblyTypeName: Movement, Assembly-CSharp
+        m_MethodName: OnMove
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: c5896d8f-594b-482b-97d3-85d5ee7c7c9d
+    m_ActionName: 'Player/Move[/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2703635534725265265, guid: 0ff1572ec9d8f654c9ee208fcd6be0ea, type: 3}
+        m_TargetAssemblyTypeName: Movement, Assembly-CSharp
+        m_MethodName: OnJump
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 99d330b6-6b49-452d-9dd1-15b60acf67d8
+    m_ActionName: 'Player/Jump[/Keyboard/space]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2703635534725265265, guid: 0ff1572ec9d8f654c9ee208fcd6be0ea, type: 3}
+        m_TargetAssemblyTypeName: Movement, Assembly-CSharp
+        m_MethodName: OnControl
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 0a8781f0-5e17-485d-99f8-8ff5424f9df5
+    m_ActionName: 'Player/Control[/Keyboard/ctrl]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2703635534725265265, guid: 0ff1572ec9d8f654c9ee208fcd6be0ea, type: 3}
+        m_TargetAssemblyTypeName: Movement, Assembly-CSharp
+        m_MethodName: OnShift
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 9d8d2a45-3522-4d38-aa90-305868dbb70b
+    m_ActionName: 'Player/Shift[/Keyboard/leftShift]'
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: 
+  m_DefaultActionMap: Player
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
+--- !u!114 &1718481876 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2703635534725265265, guid: 0ff1572ec9d8f654c9ee208fcd6be0ea, type: 3}
+  m_PrefabInstance: {fileID: 953423980}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 953423981}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca3d00ea78eb683409eb256df7b3f5ae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Movement
 --- !u!1 &1923869761
 GameObject:
   m_ObjectHideFlags: 0

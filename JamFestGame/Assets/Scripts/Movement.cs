@@ -1,9 +1,11 @@
-﻿using System;
+﻿using DG.Tweening;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Interactions;
-using DG.Tweening;
 
 public class Movement : MonoBehaviour
 {
@@ -34,7 +36,7 @@ public class Movement : MonoBehaviour
     [Space]
 
     private bool groundTouch;
-    private bool hasDashed;
+    public bool hasDashed;
 
     public int side = 1;
 
@@ -54,17 +56,17 @@ public class Movement : MonoBehaviour
         betterJumping = GetComponent<BetterJumping>();
     }
 
-
+    public Vector2 movementDirection;
     void Update()
     {
         float x = Input.GetAxis("Horizontal");
         float y = Input.GetAxis("Vertical");
         float xRaw = Input.GetAxisRaw("Horizontal");
         float yRaw = Input.GetAxisRaw("Vertical");
-        Vector2 dir = new Vector2(x, y);
+        // Vector2 dir = new Vector2(x, y);
 
-        Walk(dir);
-        //anim.SetHorizontalMovement(x, y, rb.linearVelocity.y);
+        Walk(movementDirection);
+        anim.SetHorizontalMovement(movementDirection.x, movementDirection.y, rb.linearVelocity.y);
 
         if (coll.onWall && Input.GetButton("Fire3") && canMove)
         {
@@ -130,7 +132,7 @@ public class Movement : MonoBehaviour
 
         if (Input.GetButtonDown("Fire1") && !hasDashed)
         {
-            if(xRaw != 0 || yRaw != 0)
+            if (xRaw != 0 || yRaw != 0)
                 Dash(xRaw, yRaw);
         }
 
@@ -315,5 +317,39 @@ public class Movement : MonoBehaviour
     {
         int particleSide = coll.onRightWall ? 1 : -1;
         return particleSide;
+    }
+
+    public void OnMove(InputAction.CallbackContext context)
+    {
+
+        if(context.canceled) print("canceled");
+        if(context.performed) print("performed");  
+
+        movementDirection = context.ReadValue<Vector2>();
+    }
+    public void OnControl(InputAction.CallbackContext context)
+    {
+        //DOESNT DO ANYTHING YET
+
+    }
+    public bool test;
+    public void OnShift(InputAction.CallbackContext context)
+    {
+
+        //if (!hasDashed)
+        //{
+            //if (xRaw != 0 || yRaw != 0)
+
+            Dash(movementDirection.x, movementDirection.y);
+            
+            //test = false;
+        
+     
+
+
+    }
+    public void OnJump(InputAction.CallbackContext context)
+    {
+       // dir = context.ReadValue<Vector2>();
     }
 }
