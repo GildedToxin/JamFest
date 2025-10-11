@@ -78,7 +78,7 @@ public class Movement : MonoBehaviour
         if (coll.onGround && !isDashing)
         {
             wallJumped = false;
-            //GetComponent<BetterJumping>().enabled = true;
+            GetComponent<BetterJumping>().enabled = true;
         }
         
         if (wallGrab && !isDashing)
@@ -189,7 +189,7 @@ public class Movement : MonoBehaviour
 
         //dashParticle.Play();
         rb.gravityScale = 0;
-        //GetComponent<BetterJumping>().enabled = false;
+        GetComponent<BetterJumping>().enabled = false;
         wallJumped = true;
         isDashing = true;
 
@@ -197,7 +197,7 @@ public class Movement : MonoBehaviour
 
         //dashParticle.Stop();
         rb.gravityScale = 3;
-        //GetComponent<BetterJumping>().enabled = true;
+        GetComponent<BetterJumping>().enabled = true;
         wallJumped = false;
         isDashing = false;
     }

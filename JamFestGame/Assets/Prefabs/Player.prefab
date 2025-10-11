@@ -232,5 +232,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b902c3b5af6a7384d8135af61af1259f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BetterJumping
-  fallMultiplier: 7
+  fallMultiplier: 4
   lowJumpMultiplier: 2
