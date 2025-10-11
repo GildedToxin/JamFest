@@ -14,7 +14,6 @@ public class Abilities : MonoBehaviour
     public bool isGliding = false;
     public bool isSuperSpeed = false;
 
-    private bool canGrapple = false;
     private float defaultSpeed;
     private Vector2 grappleTarget;
 
@@ -121,6 +120,7 @@ public class Abilities : MonoBehaviour
             }
         }
 
+        Vector2 referencePosition = transform.position;
         Collider2D closest = null;
         float minDistance = Mathf.Infinity;
 
@@ -133,10 +133,9 @@ public class Abilities : MonoBehaviour
                 closest = targPoint;
             }
         }
-
-        
+    
         Vector2 grappleDirection = closest.transform.position;
-        if (rb != null && canGrapple)
+        if (rb != null)
         {
             if (transform.position.x != grappleDirection.x && transform.position.y != grappleDirection.y)
             {
