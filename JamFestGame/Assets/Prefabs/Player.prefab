@@ -185,11 +185,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Movement
   rb: {fileID: 0}
-  speed: 5
-  jumpForce: 15
-  slideSpeed: 2
-  wallJumpLerp: 40
-  dashSpeed: 20
+  speed: 7
+  jumpForce: 12
+  slideSpeed: 1
+  wallJumpLerp: 5
+  dashSpeed: 40
   canMove: 1
   wallGrab: 0
   wallJumped: 0
@@ -232,5 +232,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b902c3b5af6a7384d8135af61af1259f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BetterJumping
-  fallMultiplier: 7
+  fallMultiplier: 4
   lowJumpMultiplier: 2
