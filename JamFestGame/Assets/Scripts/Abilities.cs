@@ -14,6 +14,7 @@ public class Abilities : MonoBehaviour
     public bool isGliding = false;
     public bool isSuperSpeed = false;
 
+    private bool canGrapple = false;
     private float defaultSpeed;
     private Vector2 grappleTarget;
 
@@ -83,7 +84,8 @@ public class Abilities : MonoBehaviour
         // Grappling update logic
         if (isGrappling)
         {
-            transform.position = Vector2.Lerp(transform.position, grappleTarget, .03f);
+            if (grappleTarget != null)
+                transform.position = Vector2.Lerp(transform.position, grappleTarget, .03f);
         }
         if (isGrappling && Vector2.Distance(transform.position, grappleTarget) < 0.5f)
         {
@@ -119,7 +121,6 @@ public class Abilities : MonoBehaviour
             }
         }
 
-        Vector2 referencePosition = transform.position;
         Collider2D closest = null;
         float minDistance = Mathf.Infinity;
 
@@ -133,11 +134,10 @@ public class Abilities : MonoBehaviour
             }
         }
 
-
+        
         Vector2 grappleDirection = closest.transform.position;
-        if (rb != null)
+        if (rb != null && canGrapple)
         {
-            //rb.linearVelocity = Vector2.Lerp(rb.linearVelocity, grappleDirection * grappleSpeed, .5f);
             if (transform.position.x != grappleDirection.x && transform.position.y != grappleDirection.y)
             {
                 movement.canMove = false;
@@ -168,7 +168,7 @@ public class Abilities : MonoBehaviour
         // Implementation for Super Speed ability
         Debug.Log("Super Speed ability activated.");
         isSuperSpeed = true;
-        movement.speed = defaultSpeed * 4;
+        movement.speed = defaultSpeed * 3;
     }
     
     public void AddAbility(AbilityType ability)
