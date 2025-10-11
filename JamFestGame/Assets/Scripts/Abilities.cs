@@ -38,6 +38,7 @@ public class Abilities : MonoBehaviour
         {
             GrappleHook();
             isGrappling = true;
+            FindObjectOfType<GhostTrail>().ShowGhost();
         }
         if (Input.GetKeyDown(KeyCode.T))
         {
@@ -70,7 +71,7 @@ public class Abilities : MonoBehaviour
         {
             transform.position = Vector2.Lerp(transform.position, grappleTarget, .03f);
         }
-        if (isGrappling && Vector2.Distance(transform.position, grappleTarget) < 0.3f)
+        if (isGrappling && Vector2.Distance(transform.position, grappleTarget) < 0.5f)
         {
             isGrappling = false;
             movement.canMove = true;
