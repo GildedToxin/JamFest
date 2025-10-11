@@ -268,7 +268,7 @@ GameObject:
   - component: {fileID: 572570584}
   - component: {fileID: 572570583}
   - component: {fileID: 572570582}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Static Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -683,6 +683,8 @@ GameObject:
   - component: {fileID: 1052076349}
   - component: {fileID: 1052076348}
   - component: {fileID: 1052076347}
+  - component: {fileID: 1052076353}
+  - component: {fileID: 1052076352}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -697,7 +699,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1052076346}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5216802d974ac8746b8c7c0239d32ba5, type: 3}
   m_Name: 
@@ -839,6 +841,54 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1052076352
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1052076346}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b17e1582ccbd5943acfb305d56bd9e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Collision
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  onGround: 0
+  onWall: 0
+  onRightWall: 0
+  onLeftWall: 0
+  wallSide: 0
+  collisionRadius: 0.25
+  bottomOffset: {x: 0, y: -0.69}
+  rightOffset: {x: 0.4, y: 0}
+  leftOffset: {x: -0.4, y: 0}
+--- !u!114 &1052076353
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1052076346}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca3d00ea78eb683409eb256df7b3f5ae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Movement
+  rb: {fileID: 0}
+  speed: 5
+  jumpForce: 10
+  slideSpeed: 5
+  wallJumpLerp: 10
+  dashSpeed: 20
+  canMove: 1
+  wallGrab: 0
+  wallJumped: 0
+  wallSlide: 0
+  isDashing: 0
+  side: 1
 --- !u!1 &1352456869
 GameObject:
   m_ObjectHideFlags: 0
