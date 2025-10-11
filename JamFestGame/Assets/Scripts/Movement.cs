@@ -3,14 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem.Interactions;
-//using DG.Tweening;
+using DG.Tweening;
 
 public class Movement : MonoBehaviour
 {
     private Collision coll;
     [HideInInspector]
     public Rigidbody2D rb;
-    //private AnimationScript anim;
+    private AnimationScript anim;
 
     [Space]
     [Header("Stats")]
@@ -27,6 +27,7 @@ public class Movement : MonoBehaviour
     public bool wallJumped;
     public bool wallSlide;
     public bool isDashing;
+    public bool pushedWall;
 
     [Space]
 
@@ -46,7 +47,7 @@ public class Movement : MonoBehaviour
     {
         coll = GetComponent<Collision>();
         rb = GetComponent<Rigidbody2D>();
-        //anim = GetComponentInChildren<AnimationScript>();
+        anim = GetComponentInChildren<AnimationScript>();
     }
 
 
@@ -59,11 +60,11 @@ public class Movement : MonoBehaviour
         Vector2 dir = new Vector2(x, y);
 
         Walk(dir);
-        //anim.SetHorizontalMovement(x, y, rb.velocity.y);
+        anim.SetHorizontalMovement(x, y, rb.linearVelocity.y);
 
         if (coll.onWall && Input.GetButton("Fire3") && canMove)
         {
-            if(side != coll.wallSide)
+            //if (side != coll.wallSide)
                 //anim.Flip(side*-1);
             wallGrab = true;
             wallSlide = false;
@@ -78,7 +79,7 @@ public class Movement : MonoBehaviour
         if (coll.onGround && !isDashing)
         {
             wallJumped = false;
-            //GetComponent<BetterJumping>().enabled = true;
+            GetComponent<BetterJumping>().enabled = true;
         }
         
         if (wallGrab && !isDashing)
@@ -110,7 +111,7 @@ public class Movement : MonoBehaviour
 
         if (Input.GetButtonDown("Jump"))
         {
-            //anim.SetTrigger("jump");
+            anim.SetTrigger("jump");
 
             if (coll.onGround)
                 Jump(Vector2.up, false);
@@ -166,13 +167,13 @@ public class Movement : MonoBehaviour
 
     private void Dash(float x, float y)
     {
-        //Camera.main.transform.DOComplete();
-        //Camera.main.transform.DOShakePosition(.2f, .5f, 14, 90, false, true);
+        Camera.main.transform.DOComplete();
+        Camera.main.transform.DOShakePosition(.2f, .5f, 14, 90, false, true);
         //FindObjectOfType<RippleEffect>().Emit(Camera.main.WorldToViewportPoint(transform.position));
 
         hasDashed = true;
 
-        //anim.SetTrigger("dash");
+        anim.SetTrigger("dash");
 
         rb.linearVelocity = Vector2.zero;
         Vector2 dir = new Vector2(x, y);
@@ -185,11 +186,11 @@ public class Movement : MonoBehaviour
     {
         //FindObjectOfType<GhostTrail>().ShowGhost();
         StartCoroutine(GroundDash());
-        //DOVirtual.Float(14, 0, .8f, RigidbodyDrag);
+        DOVirtual.Float(14, 0, .8f, RigidbodyDrag);
 
         //dashParticle.Play();
         rb.gravityScale = 0;
-        //GetComponent<BetterJumping>().enabled = false;
+        GetComponent<BetterJumping>().enabled = false;
         wallJumped = true;
         isDashing = true;
 
@@ -197,7 +198,7 @@ public class Movement : MonoBehaviour
 
         //dashParticle.Stop();
         rb.gravityScale = 3;
-        //GetComponent<BetterJumping>().enabled = true;
+        GetComponent<BetterJumping>().enabled = true;
         wallJumped = false;
         isDashing = false;
     }
@@ -229,7 +230,7 @@ public class Movement : MonoBehaviour
 
     private void WallSlide()
     {
-        if(coll.wallSide != side)
+        //if (coll.wallSide != side)
             //anim.Flip(side * -1);
 
         if (!canMove)
