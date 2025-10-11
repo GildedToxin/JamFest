@@ -5,17 +5,14 @@ using UnityEngine.UI;
 
 public class RainController : MonoBehaviour
 {
-    [Range(0, 1f)]
-    public float masterIntensity = 1f;
-    [Range(0, 1f)]
-    public float rainIntensity = 1f;
-    [Range(0, 1f)]
-    public float windIntensity = 1f;
-    [Range(0, 1f)]
-    public float fogIntensity = 1f;
-    [Range(0, 1f)]
-    public float lightningIntensity = 1f;
-    public bool autoUpdate;
+    [Range(0, 1f)] public float masterIntensity = 1f;
+    [Range(0, 1f)] public float rainIntensity = 0f;
+    [Range(0, 1f)] public float windIntensity = 0f;
+    [Range(0, 1f)] public float fogIntensity = 0f;
+    [Range(0, 1f)] public float lightningIntensity = 0f;
+
+    public bool autoUpdate = true;
+    public bool dynamicWeather = true;
 
     public ParticleSystem rainPart;
     public ParticleSystem windPart;
@@ -30,6 +27,9 @@ public class RainController : MonoBehaviour
     private ParticleSystem.MainModule lightningMain;
     private ParticleSystem.EmissionModule fogEmission;
 
+   
+    private float rainSeed, windSeed, fogSeed, lightningSeed;
+
     void Awake()
     {
         rainEmission = rainPart.emission;
@@ -39,51 +39,77 @@ public class RainController : MonoBehaviour
         lightningEmission = lightningPart.emission;
         lightningMain = lightningPart.main;
         fogEmission = fogPart.emission;
+
+        rainSeed = Random.Range(0f, 100f);
+        windSeed = Random.Range(0f, 100f);
+        fogSeed = Random.Range(0f, 100f);
+        lightningSeed = Random.Range(0f, 100f);
+
         UpdateAll();
     }
 
     void Update()
     {
+        if (dynamicWeather)
+            RandomizeWeather();
+
         if (autoUpdate)
             UpdateAll();
     }
 
-    void UpdateAll(){
-        rainEmission.rate = 200f * masterIntensity * rainIntensity;
-        rainForce.x = new ParticleSystem.MinMaxCurve(-25f * windIntensity * masterIntensity, (-3-30f * windIntensity) * masterIntensity);
-        windEmission.rate = 5f * masterIntensity * (windIntensity + fogIntensity);
-        windMain.startLifetime = 2f + 5f * (1f - windIntensity);
-        windMain.startSpeed = new ParticleSystem.MinMaxCurve(15f * windIntensity, 25 * windIntensity);
-        fogEmission.rate = (1f + (rainIntensity + windIntensity)*0.5f) * fogIntensity * masterIntensity;
-        if (rainIntensity * masterIntensity < 0.7f)
-            lightningEmission.rate = 0;
-        else
-            lightningEmission.rate = lightningIntensity * masterIntensity * 0.4f;
+    void RandomizeWeather()
+    {
+        float time = Time.time * 0.05f; 
+
+
+        rainIntensity = SkewedPerlinWithZero(rainSeed, time, 4f, 0.1f);
+
+
+        windIntensity = SkewedPerlin(windSeed, time, 0.3f);
+        fogIntensity = SkewedPerlin(fogSeed, time, 0.3f);
+        lightningIntensity = SkewedPerlin(lightningSeed, time, 0.15f);
     }
 
-    public void OnMasterChanged(float value)
+
+    float SkewedPerlinWithZero(float seed, float time, float power, float zeroThreshold)
     {
-        masterIntensity = value;
-        UpdateAll();
+        float n = Mathf.PerlinNoise(seed, time); 
+        n = Mathf.Pow(n, power); 
+        if (n < zeroThreshold) n = 0f;
+        return Mathf.Clamp01(n);
     }
-    public void OnRainChanged(float value)
+
+
+    float SkewedPerlin(float seed, float time, float bias)
     {
-        rainIntensity = value;
-        UpdateAll();
+        float n = Mathf.PerlinNoise(seed, time);
+        float power = Mathf.Lerp(1f, 3f, bias);
+        n = Mathf.Pow(n, power);
+        return Mathf.Clamp01(n);
     }
-    public void OnWindChanged(float value)
+
+    void UpdateAll()
     {
-        windIntensity = value;
-        UpdateAll();
+
+        rainEmission.rateOverTime = 200f * masterIntensity * rainIntensity;
+        rainForce.x = new ParticleSystem.MinMaxCurve(-25f * windIntensity * masterIntensity, (-3 - 30f * windIntensity) * masterIntensity);
+
+
+        windEmission.rateOverTime = 5f * masterIntensity * (windIntensity + fogIntensity);
+        windMain.startLifetime = 2f + 5f * (1f - windIntensity);
+        windMain.startSpeed = new ParticleSystem.MinMaxCurve(15f * windIntensity, 25f * windIntensity);
+
+
+        fogEmission.rateOverTime = (1f + (rainIntensity + windIntensity) * 0.5f) * fogIntensity * masterIntensity;
+
+
+        lightningEmission.rateOverTime = (rainIntensity * masterIntensity < 0.7f) ? 0 : lightningIntensity * masterIntensity * 0.4f;
     }
-    public void OnLightningChanged(float value)
-    {
-        lightningIntensity = value;
-        UpdateAll();
-    }
-    public void OnFogChanged(float value)
-    {
-        fogIntensity = value;
-        UpdateAll();
-    }
+
+
+    public void OnMasterChanged(float value) { masterIntensity = value; UpdateAll(); }
+    public void OnRainChanged(float value) { rainIntensity = value; UpdateAll(); }
+    public void OnWindChanged(float value) { windIntensity = value; UpdateAll(); }
+    public void OnLightningChanged(float value) { lightningIntensity = value; UpdateAll(); }
+    public void OnFogChanged(float value) { fogIntensity = value; UpdateAll(); }
 }
