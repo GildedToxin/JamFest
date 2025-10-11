@@ -26,7 +26,6 @@ public class PauseMenuController : MonoBehaviour
 
     public void ResumeGame()
     {
-        print(1);
         Time.timeScale = 1f;
         transform.GetChild(0).gameObject.SetActive(false);
     }
@@ -38,6 +37,7 @@ public class PauseMenuController : MonoBehaviour
 
     public void MainMenu()
     {
+        transform.GetChild(0).gameObject.SetActive(false);
         SceneManager.LoadScene("MainMenu");
     }
 }
