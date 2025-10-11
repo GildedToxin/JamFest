@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6655257105238988408}
-  - component: {fileID: 6320342549085464583}
+  - component: {fileID: 3805875844875060304}
   m_Layer: 0
   m_Name: UIManager
   m_TagString: Untagged
@@ -33,7 +33,7 @@ Transform:
   - {fileID: 3474562830460991170}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6320342549085464583
+--- !u!114 &3805875844875060304
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -42,9 +42,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 4429741678593378065}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 34e910e38d4bb6344b2edb16e96a4e5f, type: 3}
+  m_Script: {fileID: 11500000, guid: fabcc3ee60b1b194980e03f5b9914cc4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UIController
+  settingsBar: {fileID: 0}
+  rainObject: {fileID: 0}
+  snowObject: {fileID: 0}
+  rainSliders: {fileID: 0}
+  snowSliders: {fileID: 0}
 --- !u!1001 &5726537727958328890
 PrefabInstance:
   m_ObjectHideFlags: 0
