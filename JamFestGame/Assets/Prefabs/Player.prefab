@@ -185,11 +185,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Movement
   rb: {fileID: 0}
-  speed: 5
-  jumpForce: 15
-  slideSpeed: 2
-  wallJumpLerp: 40
-  dashSpeed: 20
+  speed: 7
+  jumpForce: 12
+  slideSpeed: 1
+  wallJumpLerp: 5
+  dashSpeed: 40
   canMove: 1
   wallGrab: 0
   wallJumped: 0
