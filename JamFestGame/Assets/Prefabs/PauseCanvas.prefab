@@ -1,5 +1,42 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1620369642896421894
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1686637900750654298}
+  m_Layer: 5
+  m_Name: Pause Pannel
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1686637900750654298
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1620369642896421894}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 3592651821794119612}
+  - {fileID: 6009968214460023458}
+  m_Father: {fileID: 9169504510332309752}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 1201, y: 481}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1895985710871992864
 GameObject:
   m_ObjectHideFlags: 0
@@ -34,7 +71,7 @@ RectTransform:
   - {fileID: 6114381403322705734}
   - {fileID: 3338864501197971097}
   - {fileID: 4654598794761133087}
-  m_Father: {fileID: 9169504510332309752}
+  m_Father: {fileID: 1686637900750654298}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -253,7 +290,7 @@ GameObject:
   - component: {fileID: 6874632501476465327}
   - component: {fileID: 5195207451893692557}
   - component: {fileID: 1395946973093502918}
-  - component: {fileID: 4661654791615635294}
+  - component: {fileID: 2817816893761029526}
   m_Layer: 5
   m_Name: PauseCanvas
   m_TagString: Untagged
@@ -273,8 +310,7 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 6009968214460023458}
-  - {fileID: 3592651821794119612}
+  - {fileID: 1686637900750654298}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -345,7 +381,7 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &4661654791615635294
+--- !u!114 &2817816893761029526
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -614,7 +650,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4661654791615635294}
+      - m_Target: {fileID: 2817816893761029526}
         m_TargetAssemblyTypeName: PauseMenuController, Assembly-CSharp
         m_MethodName: MainMenu
         m_Mode: 1
@@ -747,7 +783,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4661654791615635294}
+      - m_Target: {fileID: 2817816893761029526}
         m_TargetAssemblyTypeName: PauseMenuController, Assembly-CSharp
         m_MethodName: ResumeGame
         m_Mode: 1
@@ -880,7 +916,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4661654791615635294}
+      - m_Target: {fileID: 2817816893761029526}
         m_TargetAssemblyTypeName: PauseMenuController, Assembly-CSharp
         m_MethodName: OpenSettings
         m_Mode: 1
@@ -1055,12 +1091,12 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8627567231270128817}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 9169504510332309752}
+  m_Father: {fileID: 1686637900750654298}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
