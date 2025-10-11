@@ -10,7 +10,7 @@ public class Movement : MonoBehaviour
     private Collision coll;
     [HideInInspector]
     public Rigidbody2D rb;
-    //private AnimationScript anim;
+    private AnimationScript anim;
 
     [Space]
     [Header("Stats")]
@@ -46,7 +46,7 @@ public class Movement : MonoBehaviour
     {
         coll = GetComponent<Collision>();
         rb = GetComponent<Rigidbody2D>();
-        //anim = GetComponentInChildren<AnimationScript>();
+        anim = GetComponentInChildren<AnimationScript>();
     }
 
 
@@ -59,7 +59,7 @@ public class Movement : MonoBehaviour
         Vector2 dir = new Vector2(x, y);
 
         Walk(dir);
-        //anim.SetHorizontalMovement(x, y, rb.velocity.y);
+        anim.SetHorizontalMovement(x, y, rb.linearVelocity.y);
 
         if (coll.onWall && Input.GetButton("Fire3") && canMove)
         {
@@ -110,7 +110,7 @@ public class Movement : MonoBehaviour
 
         if (Input.GetButtonDown("Jump"))
         {
-            //anim.SetTrigger("jump");
+            anim.SetTrigger("jump");
 
             if (coll.onGround)
                 Jump(Vector2.up, false);
@@ -172,7 +172,7 @@ public class Movement : MonoBehaviour
 
         hasDashed = true;
 
-        //anim.SetTrigger("dash");
+        anim.SetTrigger("dash");
 
         rb.linearVelocity = Vector2.zero;
         Vector2 dir = new Vector2(x, y);
