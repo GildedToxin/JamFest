@@ -47,7 +47,7 @@ public class Movement : MonoBehaviour
     {
         coll = GetComponent<Collision>();
         rb = GetComponent<Rigidbody2D>();
-        anim = GetComponentInChildren<AnimationScript>();
+        anim = GetComponent<AnimationScript>();
     }
 
 
