@@ -1,9 +1,9 @@
-using System.Collections;                               
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
 public enum AbilityType { Dash, DoubleJump, WallJump, WallGrab, Grapple, Glide, Teleport, Shrink, Hover, None }
+
 public class Abilities : MonoBehaviour
 {
     private Movement movement;
@@ -11,36 +11,44 @@ public class Abilities : MonoBehaviour
     private Rigidbody2D rb;
     private BetterJumping betterJumping;
     private AnimationScript anim;
+    private GhostTrail ghostTrail;
+    private SpriteRenderer sr;
+
     public bool isGrappling = false;
     public bool isTeleporting = false;
     public bool isGliding = false;
     public bool isSuperSpeed = false;
     public bool isShrinking = false;
-
     public bool canUseAbilities = true;
 
     private float defaultSpeed;
-    private Vector2 grappleTarget;
     private float originalGravity;
+
+    private Vector2 grappleTarget;
+    private bool shouldGrappleMove = false;
 
     public List<AbilityType> abilities = new List<AbilityType>();
 
+    [Header("Teleport Settings")]
     public float teleportForce = 5f;
-
     public float teleportDuration = 0.3f;
     public AnimationCurve teleportCurve;
-
     public ParticleSystem teleportInEffect;
     public ParticleSystem teleportOutEffect;
-    public ParticleSystem speedParticle;
-
-    private SpriteRenderer sr;
-
     private Vector2 teleportPreviewSpot;
 
+    [Header("Super Speed")]
+    public ParticleSystem speedParticle;
     public float deaccelerateSpeed = 0.15f;
 
-    private bool shouldGrappleMove = false;
+    [Header("Grapple Settings")]
+    public float grappleSpeed = 15f;
+    public Vector2 grappleLaunchDirection = Vector2.up;
+    public float grappleLaunchForce = 10f;
+
+    [Header("Glide Settings")]
+    public float maxGlideTime = 2f;
+    private float glideTimer;
 
     void Start()
     {
@@ -49,55 +57,37 @@ public class Abilities : MonoBehaviour
         collision = GetComponent<Collision>();
         betterJumping = GetComponent<BetterJumping>();
         anim = GetComponentInChildren<AnimationScript>();
-        defaultSpeed = movement.speed;
         sr = GetComponent<SpriteRenderer>();
+        ghostTrail = FindObjectOfType<GhostTrail>();
+
+        defaultSpeed = movement.speed;
+        originalGravity = rb.gravityScale;
 
         if (teleportCurve == null)
-        {
             teleportCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
-        }
 
-        originalGravity = rb.gravityScale;
         glideTimer = maxGlideTime;
     }
 
     void Update()
     {
+        // --- GENERAL MOVEMENT ---
         if (!isSuperSpeed)
-        {
             movement.speed = Mathf.Lerp(movement.speed, defaultSpeed, deaccelerateSpeed);
-        }
-        // Reset glide timer when landing
+
+        // Reset glide timer when grounded
         if (collision.onGround)
-        {
             glideTimer = maxGlideTime;
-        }
 
-        // Teleport activation  
+        // --- ABILITY INPUTS ---
         if (Input.GetKeyDown(KeyCode.T) && !isTeleporting && canUseAbilities)
-        {
             StartCoroutine(TeleportSequence());
-        }
 
-        // Grapple activation
         if (Input.GetKeyDown(KeyCode.H) && canUseAbilities)
-        {
             GrappleHook();
-            isGrappling = true;
-            FindObjectOfType<GhostTrail>().ShowGhost();
-        }
 
-        // SuperSpeed activation (hold J, works in air too)
         if (Input.GetKey(KeyCode.J) && canUseAbilities)
-        {
             SuperSpeed();
-            // Only play particles if on ground
-            if (collision.onGround && speedParticle && !speedParticle.isPlaying)
-                speedParticle.Play();
-            // Stop particles if not on ground
-            if (!collision.onGround && speedParticle && speedParticle.isPlaying)
-                speedParticle.Stop();
-        }
         else
         {
             isSuperSpeed = false;
@@ -105,70 +95,62 @@ public class Abilities : MonoBehaviour
                 speedParticle.Stop();
         }
 
-        // Glide activation
         if (Input.GetKeyDown(KeyCode.G) && glideTimer > 0 && canUseAbilities)
-        {
             Glide();
-        }
-        if (Input.GetKeyDown(KeyCode.F))
-        {
-            Shrink();
-        }
 
-        // Gliding Update Logic
+        if (Input.GetKeyDown(KeyCode.F))
+            Shrink();
+
+        // --- GLIDE LOGIC ---
         if (isGliding && glideTimer > 0)
         {
-            if (rb != null)
-            {
-                rb.gravityScale = 0.5f; // Reduce gravity for gliding effect
-                betterJumping.enabled = false;
-            }
+            rb.gravityScale = 0.5f;
+            betterJumping.enabled = false;
             glideTimer -= Time.deltaTime;
+
             if (glideTimer <= 0)
-            {
                 isGliding = false;
-            }
         }
+
         if (!(isGliding || isGrappling) || collision.onGround)
         {
-            if (rb != null)
-            {
-                rb.gravityScale = 3f; // Reset to normal gravity when not gliding
-                isGliding = false;
-                betterJumping.enabled = true;
-            }
+            rb.gravityScale = 3f;
+            isGliding = false;
+            betterJumping.enabled = true;
         }
 
-        // Grappling update logic
-        if (isGrappling)
-        {
-            rb.gravityScale = 0;
-            if (grappleTarget != null)
-                transform.position = Vector2.Lerp(transform.position, grappleTarget, .03f);
-        }
-        if (isGrappling && Vector2.Distance(transform.position, grappleTarget) < 1f)
-        {
-            anim.SetBool("isGrappling", false);
-            isGrappling = false;
-            movement.canMove = true;
-            rb.gravityScale = 3;
-        }
-
+        // --- TELEPORT PREVIEW ---
         float x = Input.GetAxis("Horizontal");
         float y = Input.GetAxis("Vertical");
         Vector2 dir = new Vector2(x, y).normalized;
-
         teleportPreviewSpot = (Vector2)transform.position + dir * teleportForce;
     }
+
+    void FixedUpdate()
+    {
+        // --- GRAPPLE MOVEMENT ---
+        if (isGrappling && shouldGrappleMove)
+        {
+            rb.gravityScale = 0;
+            rb.MovePosition(Vector2.Lerp(rb.position, grappleTarget, 0.1f));
+
+            if (Vector2.Distance(rb.position, grappleTarget) < 1f)
+            {
+                anim.SetBool("isGrappling", false);
+                isGrappling = false;
+                shouldGrappleMove = false;
+                movement.canMove = true;
+                rb.gravityScale = 3f;
+            }
+        }
+    }
+
+    // ========== ABILITY METHODS ==========
+
     public void Glide()
     {
-        // Implementation for Glide ability
         Debug.Log("Glide ability activated.");
-
-        if (rb != null)
-        {
-            isGliding = true;
-        }
+        isGliding = true;
     }
 
     public void GrappleHook()
@@ -180,14 +162,9 @@ public class Abilities : MonoBehaviour
         List<Collider2D> grapplePoints = new List<Collider2D>();
 
         foreach (var col in found)
-        {
             if (col.CompareTag("GrapplePoint"))
-            {
                 grapplePoints.Add(col);
-            }
-        }
 
-        Vector2 referencePosition = transform.position;
         Collider2D closest = null;
         float minDistance = Mathf.Infinity;
 
@@ -201,22 +178,28 @@ public class Abilities : MonoBehaviour
             }
         }
 
-        Vector2 grappleDirection = closest.transform.position;
+        if (closest == null)
+        {
+            Debug.LogWarning("No grapple points found nearby!");
+            return;
+        }
+
+        grappleTarget = closest.transform.position;
+
         if (rb != null)
         {
-            if (transform.position.x != grappleDirection.x && transform.position.y != grappleDirection.y)
-            {
-                movement.canMove = false;
-                rb.gravityScale = 0;
-                grappleTarget = grappleDirection;
-                anim.SetTrigger("grappleCast");
-                anim.SetBool("isGrappling", true);
-                shouldGrappleMove = true; // Start grapple movement in FixedUpdate
-            }
+            anim.Flip(grappleTarget.x < transform.position.x ? -1 : 1);
+            movement.canMove = false;
+            rb.gravityScale = 0;
+            anim.SetTrigger("grappleCast");
+            anim.SetBool("isGrappling", true);
+            shouldGrappleMove = true;
+            isGrappling = true;
 
+            if (ghostTrail != null)
+                ghostTrail.ShowGhost();
         }
     }
-
 
     IEnumerator TeleportSequence()
     {
@@ -238,29 +221,23 @@ public class Abilities : MonoBehaviour
         float y = Input.GetAxis("Vertical");
         Vector2 dir = new Vector2(x, y).normalized;
 
-
-        float maxDistance = teleportForce;  
+        float maxDistance = teleportForce;
         Collider2D myCollider = GetComponent<Collider2D>();
 
-        Vector2 intendedEnd = (Vector2) transform.position + dir * maxDistance;
-
-        // Check if there is a collider at the intended end point
-        float checkRadius = myCollider.bounds.extents.magnitude * 0.9f; // Slightly less than player size
+        Vector2 intendedEnd = (Vector2)transform.position + dir * maxDistance;
+        float checkRadius = myCollider.bounds.extents.magnitude * 0.9f;
         Collider2D hitAtEnd = Physics2D.OverlapCircle(intendedEnd, checkRadius);
 
         if (hitAtEnd == null || hitAtEnd == myCollider)
         {
-            // No collider at the end, teleport directly
             transform.position = intendedEnd;
         }
         else
         {
-            // Collider at the end, use raycast to find farthest valid point
-            Collider2D farthestCollider = null;
+            RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, dir, maxDistance);
             Vector2 farthestHitPoint = Vector2.zero;
             float farthestDistance = -Mathf.Infinity;
 
-            RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, dir, maxDistance);
             foreach (RaycastHit2D hit in hits)
             {
                 if (hit.collider != null && hit.collider != myCollider)
@@ -269,16 +246,13 @@ public class Abilities : MonoBehaviour
                     if (distance > farthestDistance)
                     {
                         farthestDistance = distance;
-                        farthestCollider = hit.collider;
                         farthestHitPoint = hit.point;
                     }
                 }
             }
 
             if (farthestHitPoint != Vector2.zero)
-            {
-                transform.position = farthestHitPoint + (Vector2)(-dir * (myCollider.bounds.extents.magnitude + 0.1f));
-            }
+                transform.position = farthestHitPoint + (-dir * (myCollider.bounds.extents.magnitude + 0.1f));
         }
 
         yield return StartCoroutine(ReformEffect());
@@ -294,8 +268,12 @@ public class Abilities : MonoBehaviour
         float duration = teleportDuration / 2f;
         float t = 0;
         Vector3 startScale = transform.localScale;
-        FindObjectOfType<GhostTrail>().ShowGhost();
-        teleportInEffect.Play();
+
+        if (ghostTrail != null)
+            ghostTrail.ShowGhost();
+
+        if (teleportInEffect)
+            teleportInEffect.Play();
 
         while (t < duration)
         {
@@ -315,7 +293,6 @@ public class Abilities : MonoBehaviour
         float t = 0;
         Vector3 endScale = Vector3.one;
 
-
         while (t < duration)
         {
             t += Time.deltaTime;
@@ -326,74 +303,40 @@ public class Abilities : MonoBehaviour
             yield return null;
         }
 
-        teleportOutEffect.Play();
+        if (teleportOutEffect)
+            teleportOutEffect.Play();
     }
-
 
     public void SuperSpeed()
     {
-        Debug.Log("Super Speed ability activated.");
         isSuperSpeed = true;
         movement.speed = defaultSpeed * 3;
+
+        if (collision.onGround && speedParticle && !speedParticle.isPlaying)
+            speedParticle.Play();
     }
 
     public void Shrink()
     {
-        if(transform.localScale == new Vector3(0.5f, 0.5f, 1f))
+        if (transform.localScale == new Vector3(0.5f, 0.5f, 1f))
         {
             canUseAbilities = true;
             isShrinking = false;
             transform.localScale = Vector3.one;
             return;
         }
+
         canUseAbilities = false;
         isShrinking = true;
         transform.localScale = new Vector3(0.5f, 0.5f, 1f);
     }
 
-    public void AddAbility(AbilityType ability)
-    {
-        abilities.Add(ability);
-    }
-    public bool HasAbility(AbilityType ability)
-    {
-        return abilities.Contains(ability);
-    }
-
-    public float maxGlideTime = 2f; // Duration allowed for gliding (can be set in Inspector)
-    private float glideTimer;       // Tracks remaining glide time
+    public void AddAbility(AbilityType ability) => abilities.Add(ability);
+    public bool HasAbility(AbilityType ability) => abilities.Contains(ability);
 
     public void SuperSpeedJump(float jumpForce)
     {
         if (collision.onGround)
-        {
-            rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce); // GOOD: preserves X speed
-        }
-    }
-
-    void OnDrawGizmos()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawSphere(teleportPreviewSpot, 0.15f); // 0.15 is the radius of the dot
-    }
-
-    void FixedUpdate()
-    {
-        // Grapple movement (physics-based)
-        if (isGrappling && shouldGrappleMove)
-        {
-            rb.gravityScale = 0;
-            if (grappleTarget != null)
-                transform.position = Vector2.Lerp(transform.position, grappleTarget, .03f);
-
-            if (Vector2.Distance(transform.position, grappleTarget) < 1f)
-            {
-                anim.SetBool("isGrappling", false);
-                isGrappling = false;
-                shouldGrappleMove = false;
-                movement.canMove = true;
-                rb.gravityScale = 3;
-            }
-        }
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
     }
 }
