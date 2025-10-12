@@ -11,11 +11,15 @@ public class SnowController : MonoBehaviour
     [Range(0, 7f)] public float snowLevel;
 
     public bool autoUpdate = true;
-    public bool dynamicWeather = true; 
+    public bool dynamicWeather = true;
 
     public ParticleSystem snowPart;
     public ParticleSystem windPart;
     public ParticleSystem fogPart;
+
+    [Header("Audio")]
+    public AudioSource windAudio; // assign your wind AudioSource here
+    [Range(0f, 1f)] public float windVolumeMultiplier = 1f; // maximum volume
 
     private ParticleSystem.EmissionModule snowEmission;
     private ParticleSystem.ForceOverLifetimeModule snowForce;
@@ -26,7 +30,6 @@ public class SnowController : MonoBehaviour
     private Transform snowTransform;
 
     public Material snowMat;
-
 
     private float snowSeed, windSeed, fogSeed;
 
@@ -52,8 +55,7 @@ public class SnowController : MonoBehaviour
         if (dynamicWeather)
             RandomizeWeather();
 
-        if (autoUpdate)
-            UpdateAll();
+        UpdateAll(); // always update particles and audio
     }
 
     void RandomizeWeather()
@@ -61,7 +63,6 @@ public class SnowController : MonoBehaviour
         float time = Time.time * 0.05f;
 
         snowIntensity = SkewedPerlinWithZero(snowSeed, time, 2f, 0.02f);
-
         windIntensity = SkewedPerlin(windSeed, time, 0.3f);
         fogIntensity = SkewedPerlin(fogSeed, time, 0.3f);
     }
@@ -69,11 +70,10 @@ public class SnowController : MonoBehaviour
     float SkewedPerlinWithZero(float seed, float time, float power, float zeroThreshold)
     {
         float n = Mathf.PerlinNoise(seed, time);
-        n = Mathf.Pow(n, power); 
-        if (n < zeroThreshold) n = 0f; 
+        n = Mathf.Pow(n, power);
+        if (n < zeroThreshold) n = 0f;
         return Mathf.Clamp01(n);
     }
-
 
     float SkewedPerlin(float seed, float time, float bias)
     {
@@ -85,7 +85,7 @@ public class SnowController : MonoBehaviour
 
     void UpdateAll()
     {
-   
+        // --- Snow particles ---
         snowEmission.rateOverTime = 110f * masterIntensity * snowIntensity;
         snowShape.radius = 30f * Mathf.Clamp(windIntensity, 0.4f, 1f) * masterIntensity;
 
@@ -93,18 +93,32 @@ public class SnowController : MonoBehaviour
         float maxX = windIntensity == 0 ? 0.5f : -9f * windIntensity;
         snowForce.x = new ParticleSystem.MinMaxCurve(minX, maxX);
 
-
+        // --- Wind particles ---
         windEmission.rateOverTime = 14f * masterIntensity * (windIntensity + fogIntensity);
         windMain.startLifetime = 2f + 6f * (1f - windIntensity);
         windMain.startSpeed = new ParticleSystem.MinMaxCurve(15f * windIntensity, 20f * windIntensity);
 
+        // --- Fog ---
         fogEmission.rateOverTime = (fogIntensity + (snowIntensity + windIntensity) * 0.5f) * masterIntensity;
 
-    
+        // --- Snow material ---
         snowMat.SetFloat("_SnowLevel", snowLevel);
+
+        // --- Wind audio ---
+        if (windAudio != null)
+        {
+            float targetVolume = windIntensity * windVolumeMultiplier;
+            // Smoothly interpolate volume
+            windAudio.volume = Mathf.Lerp(windAudio.volume, targetVolume, Time.deltaTime * 2f);
+
+            if (!windAudio.isPlaying && windIntensity > 0.01f)
+                windAudio.Play();
+            else if (windIntensity <= 0.01f)
+                windAudio.Stop();
+        }
     }
 
-
+    // --- UI sliders ---
     public void OnMasterChanged(float value) { masterIntensity = value; UpdateAll(); }
     public void OnSnowChanged(float value) { snowIntensity = value; UpdateAll(); }
     public void OnWindChanged(float value) { windIntensity = value; UpdateAll(); }

@@ -51,6 +51,7 @@ public class PlayerHealth : MonoBehaviour
         float savedGravity = rb.gravityScale;
 
         animator.SetTrigger("Die");
+        SFXManager.Instance.Play(SFXManager.Instance.deathClip);
 
 
         if (movement != null)
