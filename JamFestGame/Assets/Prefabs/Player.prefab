@@ -5318,13 +5318,14 @@ MonoBehaviour:
   jumpForce: 12
   slideSpeed: 1
   wallJumpLerp: 5
-  dashSpeed: 70
+  dashSpeed: 100
   canMove: 1
   wallGrab: 0
   wallJumped: 0
   wallSlide: 0
   isDashing: 0
   pushedWall: 0
+  doubleJumped: 0
   hasDoubleJump: 0
   side: 1
   dashParticle: {fileID: 3598900281984406665}
@@ -5387,7 +5388,7 @@ MonoBehaviour:
   isSuperSpeed: 0
   isShrinking: 0
   canUseAbilities: 1
-  abilities: 
+  abilities: 0000000001000000020000000300000004000000050000000600000007000000
   teleportForce: 5
   teleportDuration: 0.3
   teleportCurve:
@@ -5427,6 +5428,11 @@ MonoBehaviour:
   superSpeedKey: 106
   glideKey: 103
   shrinkKey: 102
+  dashkKey: 304
+  doubleJumpKey: 111
+  hoverKey: 107
+  launchDir: {x: 0, y: 0}
+  test: {x: 0, y: 0}
 --- !u!114 &4028168548735385891
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5461,10 +5467,7 @@ MonoBehaviour:
   grassStepSource: {fileID: 656972625747702309}
   stoneStepSource: {fileID: 7863941443899402136}
   cloudStepSource: {fileID: 5255142569916238850}
-  groundLayer:
-    serializedVersion: 2
-    m_Bits: 64
-  rayDistance: 0.2
+  groundTilemap: {fileID: 0}
 --- !u!1 &1427819693451023563
 GameObject:
   m_ObjectHideFlags: 0
