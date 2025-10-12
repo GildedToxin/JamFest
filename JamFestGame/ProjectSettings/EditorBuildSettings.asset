@@ -11,6 +11,12 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/MainMenu.unity
     guid: 3a660300b57e4e1479eea9f2ab8d8a0f
+  - enabled: 1
+    path: Assets/Scenes/AlexTestScene.unity
+    guid: 87a0db3df6dbb564fbce890c7f2742a0
+  - enabled: 1
+    path: Assets/Scenes/JoyLevel.unity
+    guid: 7617144dbd721af44b5fd9e08018e612
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_UseUCBPForAssetBundles: 0
