@@ -21,6 +21,7 @@ public class Abilities : MonoBehaviour
     public bool isSuperSpeed = false;
     public bool isShrinking = false;
     public bool canUseAbilities = true;
+    private bool hasGrappled = false;
 
     private float defaultSpeed;
     private float originalGravity;
@@ -49,7 +50,7 @@ public class Abilities : MonoBehaviour
     public float deaccelerateSpeed = 0.15f;
 
     [Header("Grapple Settings")]
-    public float grappleSpeed = 15f;
+    public float grappleSpeed = 10f;
     public Vector2 grappleLaunchDirection = Vector2.up;
     public float grappleLaunchForce = 10f;
 
@@ -186,10 +187,10 @@ public class Abilities : MonoBehaviour
         // --- GRAPPLE MOVEMENT ---
         if (isGrappling && shouldGrappleMove)
         {
-            rb.gravityScale = 0;
-            rb.MovePosition(Vector2.Lerp(rb.position, grappleTarget, 0.1f));
+            rb.AddForce((grappleTarget - rb.position).normalized * grappleSpeed / 2, ForceMode2D.Impulse);
+            rb.gravityScale = 0f;
 
-            if (Vector2.Distance(rb.position, grappleTarget) < 1f)
+            if (Vector2.Distance(rb.position, grappleTarget) < 2f)
             {
                 anim.SetBool("isGrappling", false);
                 isGrappling = false;
