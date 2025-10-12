@@ -42,6 +42,10 @@ public class AnimationScript : MonoBehaviour
     {
         anim.SetTrigger(trigger);
     }
+    public void SetBool(string trigger, bool state)
+    {
+        anim.SetBool(trigger, state);
+    }
 
     public void Flip(int side)
     {

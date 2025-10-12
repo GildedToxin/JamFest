@@ -10,6 +10,7 @@ public class Abilities : MonoBehaviour
     private Collision collision;
     private Rigidbody2D rb;
     private BetterJumping betterJumping;
+    private AnimationScript anim;
     public bool isGrappling = false;
     public bool isTeleporting = false;
     public bool isGliding = false;
@@ -39,12 +40,15 @@ public class Abilities : MonoBehaviour
 
     public float deaccelerateSpeed = 0.15f;
 
+    private bool shouldGrappleMove = false;
+
     void Start()
     {
         movement = GetComponent<Movement>();
         rb = GetComponent<Rigidbody2D>();
         collision = GetComponent<Collision>();
         betterJumping = GetComponent<BetterJumping>();
+        anim = GetComponentInChildren<AnimationScript>();
         defaultSpeed = movement.speed;
         sr = GetComponent<SpriteRenderer>();
 
@@ -60,9 +64,8 @@ public class Abilities : MonoBehaviour
     void Update()
     {
         if (!isSuperSpeed)
-        {////////////////////////////// 7 <--------------- 21
+        {
             movement.speed = Mathf.Lerp(movement.speed, defaultSpeed, deaccelerateSpeed);
-            print(movement.speed);  
         }
         // Reset glide timer when landing
         if (collision.onGround)
@@ -126,7 +129,7 @@ public class Abilities : MonoBehaviour
                 isGliding = false;
             }
         }
-        if (!isGliding || collision.onGround)
+        if (!(isGliding || isGrappling) || collision.onGround)
         {
             if (rb != null)
             {
@@ -139,11 +142,13 @@ public class Abilities : MonoBehaviour
         // Grappling update logic
         if (isGrappling)
         {
+            rb.gravityScale = 0;
             if (grappleTarget != null)
                 transform.position = Vector2.Lerp(transform.position, grappleTarget, .03f);
         }
-        if (isGrappling && Vector2.Distance(transform.position, grappleTarget) < 0.5f)
+        if (isGrappling && Vector2.Distance(transform.position, grappleTarget) < 1f)
         {
+            anim.SetBool("isGrappling", false);
             isGrappling = false;
             movement.canMove = true;
             rb.gravityScale = 3;
@@ -204,6 +209,9 @@ public class Abilities : MonoBehaviour
                 movement.canMove = false;
                 rb.gravityScale = 0;
                 grappleTarget = grappleDirection;
+                anim.SetTrigger("grappleCast");
+                anim.SetBool("isGrappling", true);
+                shouldGrappleMove = true; // Start grapple movement in FixedUpdate
             }
 
         }
@@ -367,5 +375,25 @@ public class Abilities : MonoBehaviour
     {
         Gizmos.color = Color.red;
         Gizmos.DrawSphere(teleportPreviewSpot, 0.15f); // 0.15 is the radius of the dot
+    }
+
+    void FixedUpdate()
+    {
+        // Grapple movement (physics-based)
+        if (isGrappling && shouldGrappleMove)
+        {
+            rb.gravityScale = 0;
+            if (grappleTarget != null)
+                transform.position = Vector2.Lerp(transform.position, grappleTarget, .03f);
+
+            if (Vector2.Distance(transform.position, grappleTarget) < 1f)
+            {
+                anim.SetBool("isGrappling", false);
+                isGrappling = false;
+                shouldGrappleMove = false;
+                movement.canMove = true;
+                rb.gravityScale = 3;
+            }
+        }
     }
 }

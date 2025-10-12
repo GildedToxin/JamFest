@@ -45,6 +45,8 @@ public class Movement : MonoBehaviour
     public ParticleSystem wallJumpParticle;
     public ParticleSystem slideParticle;
 
+    private Vector2 inputDirection;
+
     void Start()
     {
         coll = GetComponent<Collision>();
@@ -54,22 +56,20 @@ public class Movement : MonoBehaviour
         betterJumping = GetComponent<BetterJumping>();
     }
 
-
     void Update()
     {
+        // Read input in Update
         float x = Input.GetAxis("Horizontal");
         float y = Input.GetAxis("Vertical");
-        float xRaw = Input.GetAxisRaw("Horizontal");
-        float yRaw = Input.GetAxisRaw("Vertical");
-        Vector2 dir = new Vector2(x, y);
+        inputDirection = new Vector2(x, y);
 
-        Walk(dir);
+        // Keep non-physics logic here (animation, state changes, etc.)
         anim.SetHorizontalMovement(x, y, rb.linearVelocity.y);
 
         if (coll.onWall && Input.GetButton("Fire3") && canMove)
         {
             if (side != coll.wallSide)
-                anim.Flip(side*-1);
+                anim.Flip(side * -1);
             wallGrab = true;
             wallSlide = false;
         }
@@ -85,28 +85,8 @@ public class Movement : MonoBehaviour
             wallJumped = false;
             betterJumping.enabled = true;
         }
-        
-        if (wallGrab && !isDashing)
-        {
-            rb.gravityScale = 0;
-            if(x > .2f || x < -.2f)
-            rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0);
 
-            float speedModifier = y > 0 ? .5f : 1;
-
-            rb.linearVelocity = new Vector2(rb.linearVelocity.x, y * (speed * speedModifier));
-        }
-        else if (abilities.isGliding && !coll.onGround)
-        {
-            rb.gravityScale = 0.5f;
-            betterJumping.enabled = false;
-        }
-        else if (!wallGrab && !abilities.isGliding && !isDashing)
-        {
-            rb.gravityScale = 3;
-        }
-
-        if(coll.onWall && !coll.onGround)
+        if (coll.onWall && !coll.onGround)
         {
             if (x != 0 && !wallGrab)
             {
@@ -130,7 +110,9 @@ public class Movement : MonoBehaviour
 
         if (Input.GetButtonDown("Fire1") && !hasDashed && abilities.canUseAbilities)
         {
-            if(xRaw != 0 || yRaw != 0)
+            float xRaw = Input.GetAxisRaw("Horizontal");
+            float yRaw = Input.GetAxisRaw("Vertical");
+            if (xRaw != 0 || yRaw != 0)
                 Dash(xRaw, yRaw);
         }
 
@@ -140,7 +122,7 @@ public class Movement : MonoBehaviour
             groundTouch = true;
         }
 
-        if(!coll.onGround && groundTouch)
+        if (!coll.onGround && groundTouch)
         {
             groundTouch = false;
         }
@@ -150,7 +132,7 @@ public class Movement : MonoBehaviour
         if (wallGrab || wallSlide || !canMove)
             return;
 
-        if(x > 0)
+        if (x > 0)
         {
             side = 1;
             anim.Flip(side);
@@ -160,8 +142,32 @@ public class Movement : MonoBehaviour
             side = -1;
             anim.Flip(side);
         }
+    }
 
+    void FixedUpdate()
+    {
+        // Move physics logic here
+        Walk(inputDirection);
 
+        if (wallGrab && !isDashing)
+        {
+            rb.gravityScale = 0;
+            if (inputDirection.x > .2f || inputDirection.x < -.2f)
+                rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0);
+
+            float speedModifier = inputDirection.y > 0 ? .5f : 1;
+
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, inputDirection.y * (speed * speedModifier));
+        }
+        else if (abilities.isGliding && !coll.onGround)
+        {
+            rb.gravityScale = 0.5f;
+            betterJumping.enabled = false;
+        }
+        else if (!wallGrab && !abilities.isGliding && !isDashing)
+        {
+            rb.gravityScale = 3;
+        }
     }
 
     void GroundTouch()
@@ -246,7 +252,7 @@ public class Movement : MonoBehaviour
             return;
 
         bool pushingWall = false;
-        if((rb.linearVelocity.x > 0 && coll.onRightWall) || (rb.linearVelocity.x < 0 && coll.onLeftWall))
+        if ((rb.linearVelocity.x > 0 && coll.onRightWall) || (rb.linearVelocity.x < 0 && coll.onLeftWall))
         {
             pushingWall = true;
         }
@@ -257,11 +263,7 @@ public class Movement : MonoBehaviour
 
     private void Walk(Vector2 dir)
     {
-        if (!canMove)
-            return;
-
-        if (wallGrab)
-            return;
+        if (!canMove || wallGrab) return;
 
         if (!wallJumped)
         {
@@ -269,7 +271,7 @@ public class Movement : MonoBehaviour
         }
         else
         {
-            rb.linearVelocity = Vector2.Lerp(rb.linearVelocity, (new Vector2(dir.x * speed, rb.linearVelocity.y)), wallJumpLerp * Time.deltaTime);
+            rb.linearVelocity = Vector2.Lerp(rb.linearVelocity, new Vector2(dir.x * speed, rb.linearVelocity.y), wallJumpLerp * Time.fixedDeltaTime);
         }
     }
 
@@ -283,7 +285,7 @@ public class Movement : MonoBehaviour
 
         particle.Play();
     }
-    
+
     IEnumerator DisableMovement(float time)
     {
         canMove = false;
