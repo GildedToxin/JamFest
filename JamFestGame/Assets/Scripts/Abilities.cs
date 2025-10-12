@@ -1,6 +1,6 @@
-using UnityEngine;
-using System.Collections.Generic;
 using System.Collections;                               
+using System.Collections.Generic;
+using UnityEngine;
 
 
 public enum AbilityType { Dash, DoubleJump, WallJump, WallGrab, Grapple, Glide, Teleport, Shrink, Hover, None }
@@ -31,6 +31,8 @@ public class Abilities : MonoBehaviour
     public ParticleSystem speedParticle;
 
     private SpriteRenderer sr;
+
+    private Vector2 teleportPreviewSpot;
 
     void Start()
     {
@@ -133,6 +135,12 @@ public class Abilities : MonoBehaviour
             movement.canMove = true;
             rb.gravityScale = 3;
         }
+
+        float x = Input.GetAxis("Horizontal");
+        float y = Input.GetAxis("Vertical");
+        Vector2 dir = new Vector2(x, y).normalized;
+
+        teleportPreviewSpot = (Vector2)transform.position + dir * teleportForce;
     }
     public void Glide()
     {
@@ -174,7 +182,7 @@ public class Abilities : MonoBehaviour
                 closest = targPoint;
             }
         }
-    
+
         Vector2 grappleDirection = closest.transform.position;
         if (rb != null)
         {
@@ -184,10 +192,11 @@ public class Abilities : MonoBehaviour
                 rb.gravityScale = 0;
                 grappleTarget = grappleDirection;
             }
-            
+
         }
     }
 
+    public bool onLeftWall = false;
     IEnumerator TeleportSequence()
     {
         isTeleporting = true;
@@ -207,52 +216,48 @@ public class Abilities : MonoBehaviour
         float x = Input.GetAxis("Horizontal");
         float y = Input.GetAxis("Vertical");
         Vector2 dir = new Vector2(x, y).normalized;
-        if (dir == Vector2.zero)
-            dir = Vector2.right; // Default direction
 
-        Vector2 startPosition = transform.position;
-        float maxDistance = teleportForce;
-        float checkRadius = 0.5f; // Adjust to fit your player size
-        LayerMask mask = LayerMask.GetMask("Default");
+
+        float maxDistance = teleportForce;  
         Collider2D myCollider = GetComponent<Collider2D>();
 
-        Vector2 furthestValidPosition = startPosition;
-        for (float d = 0.1f; d <= maxDistance; d += 0.1f)
-        {
-            Vector2 testPos = startPosition + dir * d;
-            Collider2D[] hits = Physics2D.OverlapCircleAll(testPos, checkRadius, mask);
-            bool blocked = false;
-            foreach (var hit in hits)
-            {
-                if (hit != null && hit != myCollider)
-                {
-                    blocked = true;
-                    break;
-                }
-            }
-            if (!blocked)
-            {
-                furthestValidPosition = testPos;
-            }
-            else
-            {
-                // Stop at the last valid position before hitting a collider
-                break;
-            }
-        }
+        Vector2 intendedEnd = (Vector2) transform.position + dir * maxDistance;
 
-        if (furthestValidPosition != startPosition)
+        // Check if there is a collider at the intended end point
+        float checkRadius = myCollider.bounds.extents.magnitude * 0.9f; // Slightly less than player size
+        Collider2D hitAtEnd = Physics2D.OverlapCircle(intendedEnd, checkRadius);
+
+        if (hitAtEnd == null || hitAtEnd == myCollider)
         {
-            transform.position = furthestValidPosition;
-            if (teleportOutEffect)
-            {
-                ParticleSystem instance = Instantiate(teleportOutEffect, transform.position, Quaternion.identity);
-                Destroy(instance.gameObject, instance.main.duration + instance.main.startLifetime.constantMax);
-            }
+            // No collider at the end, teleport directly
+            transform.position = intendedEnd;
         }
         else
         {
-            Debug.Log("Teleport blocked by collision at destination!");
+            // Collider at the end, use raycast to find farthest valid point
+            Collider2D farthestCollider = null;
+            Vector2 farthestHitPoint = Vector2.zero;
+            float farthestDistance = -Mathf.Infinity;
+
+            RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, dir, maxDistance);
+            foreach (RaycastHit2D hit in hits)
+            {
+                if (hit.collider != null && hit.collider != myCollider)
+                {
+                    float distance = Vector2.Distance(transform.position, hit.point);
+                    if (distance > farthestDistance)
+                    {
+                        farthestDistance = distance;
+                        farthestCollider = hit.collider;
+                        farthestHitPoint = hit.point;
+                    }
+                }
+            }
+
+            if (farthestHitPoint != Vector2.zero)
+            {
+                transform.position = farthestHitPoint + (Vector2)(-dir * (myCollider.bounds.extents.magnitude + 0.1f));
+            }
         }
 
         yield return StartCoroutine(ReformEffect());
@@ -310,7 +315,7 @@ public class Abilities : MonoBehaviour
         isSuperSpeed = true;
         movement.speed = defaultSpeed * 3;
     }
-    
+
     public void AddAbility(AbilityType ability)
     {
         abilities.Add(ability);
@@ -329,5 +334,11 @@ public class Abilities : MonoBehaviour
         {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce); // GOOD: preserves X speed
         }
+    }
+
+    void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawSphere(teleportPreviewSpot, 0.15f); // 0.15 is the radius of the dot
     }
 }
