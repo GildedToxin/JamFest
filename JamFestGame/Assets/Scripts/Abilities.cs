@@ -152,12 +152,9 @@ public class Abilities : MonoBehaviour
                     if (speedParticle && speedParticle.isPlaying)
                         speedParticle.Stop();
                 }
-            
-            if (Input.GetKeyDown(KeyCode.G) && glideTimer > 0 && canUseAbilities)
-                Glide();
 
-            if (Input.GetKeyDown(KeyCode.F))
-                Shrink();
+
+
 
             // --- GLIDE LOGIC ---
             if (isGliding && glideTimer > 0)
@@ -418,9 +415,7 @@ public class Abilities : MonoBehaviour
             }
         }
 
-        canUseAbilities = false;
-        isShrinking = true;
-        transform.localScale = new Vector3(0.5f, 0.5f, 1f);
+
     }
 
     public void AddAbility(AbilityType ability) => abilities.Add(ability);
