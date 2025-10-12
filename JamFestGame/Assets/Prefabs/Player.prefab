@@ -5105,7 +5105,7 @@ CapsuleCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
-  m_Size: {x: 0.8, y: 1.5}
+  m_Size: {x: 0.86, y: 1.5}
   m_Direction: 0
 --- !u!114 &2703635534725265265
 MonoBehaviour:
@@ -5170,10 +5170,10 @@ MonoBehaviour:
   onRightWall: 0
   onLeftWall: 0
   wallSide: 0
-  collisionRadius: 0.1
+  collisionRadius: 0.2
   bottomOffset: {x: 0, y: -0.79}
-  rightOffset: {x: 0.5, y: -0.33}
-  leftOffset: {x: -0.5, y: -0.33}
+  rightOffset: {x: 0.45, y: -0.33}
+  leftOffset: {x: -0.45, y: -0.33}
 --- !u!114 &2639631367771431498
 MonoBehaviour:
   m_ObjectHideFlags: 0
