@@ -59,11 +59,18 @@ public class AbilityOrb : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if (!collision.CompareTag("Player"))
+            return;
 
-        SFXManager.Instance.Play(SFXManager.Instance.orbCollectClip);
-        Abilities abilities = collision.gameObject.GetComponent<Abilities>();
+        Abilities abilities = collision.GetComponent<Abilities>();
         if (!abilities)
             return;
+
+        if (SFXManager.Instance.orbCollectClip != null)
+        {
+            SFXManager.Instance.orbCollectClip.Play();
+        }
+
 
         if (!abilities.HasAbility(ability))
             abilities.AddAbility(ability);
@@ -71,8 +78,6 @@ public class AbilityOrb : MonoBehaviour
         if (shuffleAbilities)
             abilities.ResetAbilities();
 
-
-     
         Destroy(gameObject);
     }
 
