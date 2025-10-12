@@ -57,8 +57,37 @@ public class Abilities : MonoBehaviour
         {
             glideTimer = maxGlideTime;
         }
-        
-        // Activate glide only if timer > 0
+
+        // Teleport activation
+        if (Input.GetKeyDown(KeyCode.T) && !isTeleporting)
+        {
+            StartCoroutine(TeleportSequence());
+        }
+
+        // Grapple activation
+        if (Input.GetKeyDown(KeyCode.H))
+        {
+            GrappleHook();
+            isGrappling = true;
+            FindObjectOfType<GhostTrail>().ShowGhost();
+        }
+
+        // SuperSpeed activation (hold J)
+        if (Input.GetKey(KeyCode.J) && collision.onGround)
+        {
+            SuperSpeed();
+            if (speedParticle && !speedParticle.isPlaying)
+                speedParticle.Play();
+        }
+        else
+        {
+            movement.speed = defaultSpeed;
+            isSuperSpeed = false;
+            if (speedParticle && speedParticle.isPlaying)
+                speedParticle.Stop();
+        }
+
+        // Glide activation
         if (Input.GetKeyDown(KeyCode.G) && glideTimer > 0)
         {
             Glide();
