@@ -79,7 +79,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -7191606475247939017, guid: c1e2b890695861a4c8f9f460a7a077a9, type: 3}
+  m_Sprite: {fileID: -4658320675170628372, guid: c1e2b890695861a4c8f9f460a7a077a9, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -116,7 +116,7 @@ Transform:
   m_GameObject: {fileID: 7487993974771685019}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -0.5}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -265,11 +265,11 @@ MonoBehaviour:
   dash: {fileID: 1695422225892428480, guid: c1e2b890695861a4c8f9f460a7a077a9, type: 3}
   doubleJump: {fileID: -1982739837168601118, guid: c1e2b890695861a4c8f9f460a7a077a9, type: 3}
   glide: {fileID: -6294282047490209634, guid: c1e2b890695861a4c8f9f460a7a077a9, type: 3}
-  teleport: {fileID: 7463384701434304406, guid: c1e2b890695861a4c8f9f460a7a077a9, type: 3}
-  grapple: {fileID: -4451912923054015260, guid: c1e2b890695861a4c8f9f460a7a077a9, type: 3}
+  teleport: {fileID: 6300305393958761507, guid: c1e2b890695861a4c8f9f460a7a077a9, type: 3}
+  grapple: {fileID: -7083710679255214026, guid: c1e2b890695861a4c8f9f460a7a077a9, type: 3}
   speed: {fileID: -2959501315571005923, guid: c1e2b890695861a4c8f9f460a7a077a9, type: 3}
-  hover: {fileID: 715811745334232289, guid: c1e2b890695861a4c8f9f460a7a077a9, type: 3}
-  shrink: {fileID: -4133752253406528666, guid: c1e2b890695861a4c8f9f460a7a077a9, type: 3}
+  hover: {fileID: 7463384701434304406, guid: c1e2b890695861a4c8f9f460a7a077a9, type: 3}
+  shrink: {fileID: 3646926571644565130, guid: c1e2b890695861a4c8f9f460a7a077a9, type: 3}
   icon: {fileID: 7487993974771685019}
 --- !u!58 &7429414366941963605
 CircleCollider2D:
