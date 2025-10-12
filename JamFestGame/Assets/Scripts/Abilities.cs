@@ -24,6 +24,7 @@ public class Abilities : MonoBehaviour
     public bool isShrinking = false;
     public bool canUseAbilities = true;
     private bool hasGrappled = false;
+    public bool canTeleport = true;
 
     private float defaultSpeed;
     private float originalGravity;
@@ -158,7 +159,7 @@ public class Abilities : MonoBehaviour
         }
 
         // Teleport activation  
-        if (Input.GetKeyDown(teleportKey) && !isTeleporting && canUseAbilities && HasAbility(AbilityType.Teleport))
+        if (Input.GetKeyDown(teleportKey) && !isTeleporting && canUseAbilities && HasAbility(AbilityType.Teleport) && canTeleport)
         {
             StartCoroutine(TeleportSequence());
         }
@@ -209,7 +210,8 @@ public class Abilities : MonoBehaviour
             float y = Input.GetAxis("Vertical");
             Vector2 dir = new Vector2(x, y).normalized;
             teleportPreviewSpot = (Vector2)transform.position + dir * teleportForce;
-
+        if (collision.onGround)
+            canTeleport = true;
     }
 
     public Vector2 launchDir;
@@ -314,6 +316,7 @@ public class Abilities : MonoBehaviour
 
     IEnumerator TeleportSequence()
     {
+        canTeleport = false;
         isTeleporting = true;
         movement.canMove = false;
         rb.linearVelocity = Vector2.zero;
