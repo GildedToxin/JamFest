@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Grapple
+  m_Name: sWallSlide
   serializedVersion: 7
   m_Legacy: 0
   m_Compressed: 0
@@ -21,15 +21,7 @@ AnimationClip:
   - serializedVersion: 2
     curve:
     - time: 0
-      value: {fileID: -6818249064498292331, guid: f97403c33fe5c2f4c87f61159d9ab251, type: 3}
-    - time: 0.06666667
-      value: {fileID: 3892263122123472438, guid: f97403c33fe5c2f4c87f61159d9ab251, type: 3}
-    - time: 0.15
-      value: {fileID: 1123016337418910927, guid: f97403c33fe5c2f4c87f61159d9ab251, type: 3}
-    - time: 0.26666668
-      value: {fileID: -7162781918824486394, guid: f97403c33fe5c2f4c87f61159d9ab251, type: 3}
-    - time: 0.33333334
-      value: {fileID: 2139998957961697443, guid: f97403c33fe5c2f4c87f61159d9ab251, type: 3}
+      value: {fileID: 603112662264515810, guid: 07bf24054ee9b754bafe2d7670129046, type: 3}
     attribute: m_Sprite
     path: 
     classID: 212
@@ -52,17 +44,13 @@ AnimationClip:
       isIntCurve: 0
       isSerializeReferenceCurve: 0
     pptrCurveMapping:
-    - {fileID: -6818249064498292331, guid: f97403c33fe5c2f4c87f61159d9ab251, type: 3}
-    - {fileID: 3892263122123472438, guid: f97403c33fe5c2f4c87f61159d9ab251, type: 3}
-    - {fileID: 1123016337418910927, guid: f97403c33fe5c2f4c87f61159d9ab251, type: 3}
-    - {fileID: -7162781918824486394, guid: f97403c33fe5c2f4c87f61159d9ab251, type: 3}
-    - {fileID: 2139998957961697443, guid: f97403c33fe5c2f4c87f61159d9ab251, type: 3}
+    - {fileID: 603112662264515810, guid: 07bf24054ee9b754bafe2d7670129046, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 0.35000002
+    m_StopTime: 0.016666668
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0

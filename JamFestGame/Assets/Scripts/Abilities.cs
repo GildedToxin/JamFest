@@ -1,9 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
-public enum AbilityType { Dash, DoubleJump, WallJump, WallGrab, Grapple, Glide, Teleport, Shrink, Hover, None }
 
+public enum AbilityType { Dash, DoubleJump, WallJump, WallGrab, Grapple, Glide, Teleport, Shrink, Hover, SuperSpeed, None }
 public class Abilities : MonoBehaviour
 {
     private Movement movement;
@@ -26,6 +27,12 @@ public class Abilities : MonoBehaviour
 
     private Vector2 grappleTarget;
     private bool shouldGrappleMove = false;
+    private float originalCollisionRadius;
+    private Vector2 originalBottomOffset;
+    private Vector2 originalRightOffset;
+    private Vector2 originalLeftOffset;
+    private Vector2 originalCapsulesSize;
+    private Vector2 originalCapsuleOffset;
 
     public List<AbilityType> abilities = new List<AbilityType>();
 
@@ -50,6 +57,18 @@ public class Abilities : MonoBehaviour
     public float maxGlideTime = 2f;
     private float glideTimer;
 
+
+    public KeyCode teleportKey = KeyCode.T;
+    public KeyCode grappleKey = KeyCode.H;
+    public KeyCode superSpeedKey = KeyCode.J;
+    public KeyCode glideKey = KeyCode.G;
+    public KeyCode shrinkKey = KeyCode.F;
+
+    string[] keyStrings = new string[]
+{
+    "LeftShift", "Y", "H", "U", "J", "I", "K", "O", "L", "P", "Semicolon", "LeftBracket", "RightBracket", "Quote" };
+
+
     void Start()
     {
         movement = GetComponent<Movement>();
@@ -62,13 +81,27 @@ public class Abilities : MonoBehaviour
 
         defaultSpeed = movement.speed;
         originalGravity = rb.gravityScale;
+        CapsuleCollider2D capsule = GetComponent<CapsuleCollider2D>();
+
+        if (capsule != null)
+        {
+            originalCapsulesSize = capsule.size;
+            originalCapsuleOffset = capsule.offset;
+        }
+
+        if (collision != null)
+        {
+            originalCollisionRadius = collision.collisionRadius;
+            originalBottomOffset = collision.bottomOffset;
+            originalRightOffset = collision.rightOffset;
+            originalLeftOffset = collision.leftOffset;
+        }
 
         if (teleportCurve == null)
             teleportCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
 
         glideTimer = maxGlideTime;
     }
-
     void Update()
     {
         // --- GENERAL MOVEMENT ---
@@ -80,52 +113,77 @@ public class Abilities : MonoBehaviour
             glideTimer = maxGlideTime;
 
         // --- ABILITY INPUTS ---
-        if (Input.GetKeyDown(KeyCode.T) && !isTeleporting && canUseAbilities)
-            StartCoroutine(TeleportSequence());
-
-        if (Input.GetKeyDown(KeyCode.H) && canUseAbilities)
-            GrappleHook();
-
-        if (Input.GetKey(KeyCode.J) && canUseAbilities)
-            SuperSpeed();
-        else
+        if (Input.GetKeyDown(KeyCode.Q))
         {
-            isSuperSpeed = false;
-            if (speedParticle && speedParticle.isPlaying)
-                speedParticle.Stop();
+            ResetAbilities();
         }
-
-        if (Input.GetKeyDown(KeyCode.G) && glideTimer > 0 && canUseAbilities)
+        // Glide activation
+        if (Input.GetKeyDown(glideKey) && glideTimer > 0 && canUseAbilities)
+        {
             Glide();
-
-        if (Input.GetKeyDown(KeyCode.F))
+        }
+        if (Input.GetKeyDown(shrinkKey))
+        {
             Shrink();
+        }
 
-        // --- GLIDE LOGIC ---
-        if (isGliding && glideTimer > 0)
+        // Teleport activation  
+        if (Input.GetKeyDown(teleportKey) && !isTeleporting && canUseAbilities)
         {
-            rb.gravityScale = 0.5f;
-            betterJumping.enabled = false;
-            glideTimer -= Time.deltaTime;
+            StartCoroutine(TeleportSequence());
+        }
+        // Grapple activation
+        if (Input.GetKeyDown(grappleKey) && canUseAbilities)
+        {
+            GrappleHook();
+        }
+                // SuperSpeed activation (hold J, works in air too)
+                if (Input.GetKey(superSpeedKey) && canUseAbilities && (collision.onGround || isSuperSpeed))
+                {
+                    SuperSpeed();
 
-            if (glideTimer <= 0)
+                if (!collision.onGround && speedParticle && speedParticle.isPlaying)
+                    speedParticle.Stop();
+
+                }
+                else
+                {
+                    isSuperSpeed = false;
+                    if (speedParticle && speedParticle.isPlaying)
+                        speedParticle.Stop();
+                }
+            
+            if (Input.GetKeyDown(KeyCode.G) && glideTimer > 0 && canUseAbilities)
+                Glide();
+
+            if (Input.GetKeyDown(KeyCode.F))
+                Shrink();
+
+            // --- GLIDE LOGIC ---
+            if (isGliding && glideTimer > 0)
+            {
+                rb.gravityScale = 0.5f;
+                betterJumping.enabled = false;
+                glideTimer -= Time.deltaTime;
+
+                if (glideTimer <= 0)
+                    isGliding = false;
+            }
+
+            if (!(isGliding || isGrappling) || collision.onGround)
+            {
+                rb.gravityScale = 3f;
                 isGliding = false;
-        }
+                betterJumping.enabled = true;
+            }
 
-        if (!(isGliding || isGrappling) || collision.onGround)
-        {
-            rb.gravityScale = 3f;
-            isGliding = false;
-            betterJumping.enabled = true;
-        }
-
-        // --- TELEPORT PREVIEW ---
-        float x = Input.GetAxis("Horizontal");
-        float y = Input.GetAxis("Vertical");
-        Vector2 dir = new Vector2(x, y).normalized;
-        teleportPreviewSpot = (Vector2)transform.position + dir * teleportForce;
+            // --- TELEPORT PREVIEW ---
+            float x = Input.GetAxis("Horizontal");
+            float y = Input.GetAxis("Vertical");
+            Vector2 dir = new Vector2(x, y).normalized;
+            teleportPreviewSpot = (Vector2)transform.position + dir * teleportForce;
+        
     }
-
     void FixedUpdate()
     {
         // --- GRAPPLE MOVEMENT ---
@@ -157,7 +215,7 @@ public class Abilities : MonoBehaviour
     {
         Debug.Log("Grapple Hook ability activated.");
 
-        CircleCollider2D grappleRange = GetComponent<CircleCollider2D>();
+        CircleCollider2D grappleRange = GetComponentInChildren<CircleCollider2D>();
         Collider2D[] found = Physics2D.OverlapCircleAll(transform.position, grappleRange.radius);
         List<Collider2D> grapplePoints = new List<Collider2D>();
 
@@ -318,12 +376,46 @@ public class Abilities : MonoBehaviour
 
     public void Shrink()
     {
-        if (transform.localScale == new Vector3(0.5f, 0.5f, 1f))
+        Collision coll = GetComponent<Collision>();
+        CapsuleCollider2D capsule = GetComponent<CapsuleCollider2D>();
+
+        if (isShrinking)
         {
-            canUseAbilities = true;
-            isShrinking = false;
             transform.localScale = Vector3.one;
-            return;
+            isShrinking = false;
+            canUseAbilities = true;
+
+            if (coll != null)
+            {
+                coll.collisionRadius = originalCollisionRadius;
+                coll.bottomOffset = originalBottomOffset;
+                coll.rightOffset = originalRightOffset;
+                coll.leftOffset = originalLeftOffset;
+            }
+            if (capsule != null)
+            {
+                capsule.size = originalCapsulesSize;
+                capsule.offset = originalCapsuleOffset;
+            }
+        }
+        else
+        {
+            isShrinking = true;
+            canUseAbilities = false;
+
+            if (coll != null)
+            {
+                coll.collisionRadius *= 0.5f;
+                coll.bottomOffset *= 0.5f;
+                coll.rightOffset *= 0.5f;
+                coll.leftOffset *= 0.5f;
+            }
+
+            if (capsule!= null)
+            {
+                capsule.size *= 0.5f;
+                capsule.offset = new Vector2(capsule.offset.x, 0f);
+            }
         }
 
         canUseAbilities = false;
@@ -338,5 +430,47 @@ public class Abilities : MonoBehaviour
     {
         if (collision.onGround)
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
+    }
+
+    public void ResetAbilities()
+    {
+        // Create a temporary list of available keys
+        List<string> availableKeys = new List<string>(keyStrings);
+
+        foreach (AbilityType ability in abilities)
+        {
+            if (availableKeys.Count == 0)
+                break; // No more keys to assign
+
+            int index = Random.Range(0, availableKeys.Count);
+            KeyCode randomKey = (KeyCode)System.Enum.Parse(typeof(KeyCode), availableKeys[index]);
+
+            switch (ability)
+            {
+                case AbilityType.Grapple:
+                    grappleKey = randomKey;
+                    break;
+                case AbilityType.Teleport:
+                    teleportKey = randomKey;
+                    break;
+                case AbilityType.SuperSpeed:
+                    superSpeedKey = randomKey;
+                    break;
+                case AbilityType.Glide:
+                    glideKey = randomKey;
+                    break;
+                case AbilityType.Shrink:
+                    shrinkKey = randomKey;
+                    break;
+                    // Add more cases for other abilities with keys as needed
+            }
+
+            availableKeys.RemoveAt(index); // Remove used key
+        }
+    }
+    void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawSphere(teleportPreviewSpot, 0.15f); // 0.15 is the radius of the dot
     }
 }
