@@ -157,7 +157,7 @@ public class Abilities : MonoBehaviour
     {
         Debug.Log("Grapple Hook ability activated.");
 
-        CircleCollider2D grappleRange = GetComponent<CircleCollider2D>();
+        CircleCollider2D grappleRange = GetComponentInChildren<CircleCollider2D>();
         Collider2D[] found = Physics2D.OverlapCircleAll(transform.position, grappleRange.radius);
         List<Collider2D> grapplePoints = new List<Collider2D>();
 

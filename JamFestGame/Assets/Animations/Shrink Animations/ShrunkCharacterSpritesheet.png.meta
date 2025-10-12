@@ -1,97 +1,97 @@
 fileFormatVersion: 2
-guid: c9c031c7648e59749a34e636a9b359f8
+guid: 1053d7c959b041747b4db4b556d01401
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 2481130367028502837
-    second: CharacterSpritesheet_0
+      213: 8140431960736078282
+    second: ShrunkCharacterSpritesheet_0
   - first:
-      213: 285753964064125630
-    second: CharacterSpritesheet_1
+      213: 4568429305468710468
+    second: ShrunkCharacterSpritesheet_1
   - first:
-      213: 9153207279402659708
-    second: CharacterSpritesheet_2
+      213: 5674252721025503601
+    second: ShrunkCharacterSpritesheet_2
   - first:
-      213: 4827397016449691305
-    second: CharacterSpritesheet_3
+      213: -2439551706467660483
+    second: ShrunkCharacterSpritesheet_3
   - first:
-      213: -2115441247568057974
-    second: CharacterSpritesheet_4
+      213: -40135236307965319
+    second: ShrunkCharacterSpritesheet_4
   - first:
-      213: -5869651730541546785
-    second: CharacterSpritesheet_5
+      213: 121921095211696333
+    second: ShrunkCharacterSpritesheet_5
   - first:
-      213: -8248373323259183822
-    second: CharacterSpritesheet_6
+      213: -969114857320525788
+    second: ShrunkCharacterSpritesheet_6
   - first:
-      213: 5131077897349433162
-    second: CharacterSpritesheet_7
+      213: -2700307410320515680
+    second: ShrunkCharacterSpritesheet_7
   - first:
-      213: 6511470032912666501
-    second: CharacterSpritesheet_8
+      213: 6665243606553469833
+    second: ShrunkCharacterSpritesheet_8
   - first:
-      213: -2812009109852995773
-    second: CharacterSpritesheet_9
+      213: -7722371432062358378
+    second: ShrunkCharacterSpritesheet_9
   - first:
-      213: 534741065363809137
-    second: CharacterSpritesheet_10
+      213: -860058187754035053
+    second: ShrunkCharacterSpritesheet_10
   - first:
-      213: 1201068388223038149
-    second: CharacterSpritesheet_11
+      213: 7401209067483340086
+    second: ShrunkCharacterSpritesheet_11
   - first:
-      213: -929928241728976721
-    second: CharacterSpritesheet_12
+      213: 2909212095936106557
+    second: ShrunkCharacterSpritesheet_12
   - first:
-      213: 8071873476128375714
-    second: CharacterSpritesheet_13
+      213: 2587119369053535346
+    second: ShrunkCharacterSpritesheet_13
   - first:
-      213: -3547643490149143323
-    second: CharacterSpritesheet_14
+      213: 372326122874205459
+    second: ShrunkCharacterSpritesheet_14
   - first:
-      213: -6919090567548245167
-    second: CharacterSpritesheet_15
+      213: -4398945398791735631
+    second: ShrunkCharacterSpritesheet_15
   - first:
-      213: -1406733954834492955
-    second: CharacterSpritesheet_16
+      213: 9146700740770362814
+    second: ShrunkCharacterSpritesheet_16
   - first:
-      213: -5176002209997715743
-    second: CharacterSpritesheet_17
+      213: -5158551018985941976
+    second: ShrunkCharacterSpritesheet_17
   - first:
-      213: 2383371541328734559
-    second: CharacterSpritesheet_18
+      213: 5486587182601685514
+    second: ShrunkCharacterSpritesheet_18
   - first:
-      213: -6506578250452115949
-    second: CharacterSpritesheet_19
+      213: -8121844358700905263
+    second: ShrunkCharacterSpritesheet_19
   - first:
-      213: 6111910509223467111
-    second: CharacterSpritesheet_20
+      213: -6191342800802558657
+    second: ShrunkCharacterSpritesheet_20
   - first:
-      213: 2125722565176706746
-    second: CharacterSpritesheet_21
+      213: 4338164210105561234
+    second: ShrunkCharacterSpritesheet_21
   - first:
-      213: -1194989774955612035
-    second: CharacterSpritesheet_22
+      213: -3963883114027560193
+    second: ShrunkCharacterSpritesheet_22
   - first:
-      213: -7164909197192161710
-    second: CharacterSpritesheet_23
+      213: -8867907819430087059
+    second: ShrunkCharacterSpritesheet_23
   - first:
-      213: 6517196866797529538
-    second: CharacterSpritesheet_24
+      213: 9220759907245603707
+    second: ShrunkCharacterSpritesheet_24
   - first:
-      213: 1147902810384845524
-    second: CharacterSpritesheet_25
+      213: -2188802020954237289
+    second: ShrunkCharacterSpritesheet_25
   - first:
-      213: 2620530863438884745
-    second: CharacterSpritesheet_26
+      213: -8990064719521535501
+    second: ShrunkCharacterSpritesheet_26
   - first:
-      213: 7598971860852079615
-    second: CharacterSpritesheet_27
+      213: 3338236754729604440
+    second: ShrunkCharacterSpritesheet_27
   - first:
-      213: 5130179791868973033
-    second: CharacterSpritesheet_28
+      213: -8116683421254143661
+    second: ShrunkCharacterSpritesheet_28
   - first:
-      213: -279629221511791982
-    second: CharacterSpritesheet_29
+      213: 374211719892641324
+    second: ShrunkCharacterSpritesheet_29
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -162,7 +162,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 1
     textureFormat: -1
-    textureCompression: 0
+    textureCompression: 2
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -187,13 +187,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: CharacterSpritesheet_0
+      name: ShrunkCharacterSpritesheet_0
       rect:
         serializedVersion: 2
-        x: 18
-        y: 204
-        width: 18
-        height: 33
+        x: 9
+        y: 102
+        width: 9
+        height: 17
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -202,20 +202,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 5312b285ceebe6220800000000000000
-      internalID: 2481130367028502837
+      spriteID: ac919e90dbf98f070800000000000000
+      internalID: 8140431960736078282
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: CharacterSpritesheet_1
+      name: ShrunkCharacterSpritesheet_1
       rect:
         serializedVersion: 2
-        x: 87
-        y: 204
-        width: 18
-        height: 33
+        x: 43
+        y: 102
+        width: 9
+        height: 17
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -224,20 +224,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: eb2b33167b337f300800000000000000
-      internalID: 285753964064125630
+      spriteID: 44e62fdaf32566f30800000000000000
+      internalID: 4568429305468710468
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: CharacterSpritesheet_2
+      name: ShrunkCharacterSpritesheet_2
       rect:
         serializedVersion: 2
-        x: 155
-        y: 204
-        width: 21
-        height: 33
+        x: 77
+        y: 102
+        width: 11
+        height: 17
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -246,20 +246,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: c7fa05c5689b60f70800000000000000
-      internalID: 9153207279402659708
+      spriteID: 171d48a49cefebe40800000000000000
+      internalID: 5674252721025503601
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: CharacterSpritesheet_3
+      name: ShrunkCharacterSpritesheet_3
       rect:
         serializedVersion: 2
-        x: 224
-        y: 204
-        width: 20
-        height: 31
+        x: 112
+        y: 102
+        width: 10
+        height: 16
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -268,20 +268,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 9aea343820c5ef240800000000000000
-      internalID: 4827397016449691305
+      spriteID: d3d0cc4f5a8f42ed0800000000000000
+      internalID: -2439551706467660483
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: CharacterSpritesheet_4
+      name: ShrunkCharacterSpritesheet_4
       rect:
         serializedVersion: 2
-        x: 294
-        y: 204
-        width: 19
-        height: 31
+        x: 147
+        y: 102
+        width: 9
+        height: 16
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -290,20 +290,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: a892f77b46174a2e0800000000000000
-      internalID: -2115441247568057974
+      spriteID: 97a23e81739617ff0800000000000000
+      internalID: -40135236307965319
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: CharacterSpritesheet_5
+      name: ShrunkCharacterSpritesheet_5
       rect:
         serializedVersion: 2
-        x: 362
-        y: 204
-        width: 19
-        height: 33
+        x: 181
+        y: 102
+        width: 9
+        height: 17
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -312,284 +312,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: fd270dd89deca8ea0800000000000000
-      internalID: -5869651730541546785
+      spriteID: dc048b2179621b100800000000000000
+      internalID: 121921095211696333
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: CharacterSpritesheet_6
-      rect:
-        serializedVersion: 2
-        x: 12
-        y: 160
-        width: 25
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 23df35c0a24e78d80800000000000000
-      internalID: -8248373323259183822
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: CharacterSpritesheet_7
-      rect:
-        serializedVersion: 2
-        x: 82
-        y: 163
-        width: 24
-        height: 28
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: a470f5a7920453740800000000000000
-      internalID: 5131077897349433162
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: CharacterSpritesheet_8
-      rect:
-        serializedVersion: 2
-        x: 150
-        y: 162
-        width: 27
-        height: 28
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 58f4c55ee736d5a50800000000000000
-      internalID: 6511470032912666501
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: CharacterSpritesheet_9
-      rect:
-        serializedVersion: 2
-        x: 222
-        y: 160
-        width: 21
-        height: 27
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 34fbc0efc9cb9f8d0800000000000000
-      internalID: -2812009109852995773
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: CharacterSpritesheet_10
-      rect:
-        serializedVersion: 2
-        x: 288
-        y: 160
-        width: 29
-        height: 28
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 173e2df6a28cb6700800000000000000
-      internalID: 534741065363809137
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: CharacterSpritesheet_11
-      rect:
-        serializedVersion: 2
-        x: 358
-        y: 163
-        width: 28
-        height: 26
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 5c23cf6e55d0ba010800000000000000
-      internalID: 1201068388223038149
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: CharacterSpritesheet_12
-      rect:
-        serializedVersion: 2
-        x: 19
-        y: 113
-        width: 21
-        height: 33
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: fa8042de03b3813f0800000000000000
-      internalID: -929928241728976721
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: CharacterSpritesheet_13
-      rect:
-        serializedVersion: 2
-        x: 88
-        y: 113
-        width: 20
-        height: 35
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 2a38780f82e050070800000000000000
-      internalID: 8071873476128375714
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: CharacterSpritesheet_14
-      rect:
-        serializedVersion: 2
-        x: 156
-        y: 114
-        width: 21
-        height: 35
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 5eceeebba0d34cec0800000000000000
-      internalID: -3547643490149143323
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: CharacterSpritesheet_15
-      rect:
-        serializedVersion: 2
-        x: 224
-        y: 114
-        width: 23
-        height: 38
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 15be788a9c37aff90800000000000000
-      internalID: -6919090567548245167
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: CharacterSpritesheet_16
-      rect:
-        serializedVersion: 2
-        x: 294
-        y: 111
-        width: 22
-        height: 41
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 5e11c98dbe64a7ce0800000000000000
-      internalID: -1406733954834492955
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: CharacterSpritesheet_17
-      rect:
-        serializedVersion: 2
-        x: 363
-        y: 111
-        width: 22
-        height: 41
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 1e60374e9652b28b0800000000000000
-      internalID: -5176002209997715743
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: CharacterSpritesheet_18
+      name: ShrunkCharacterSpritesheet_6
       rect:
         serializedVersion: 2
         x: 6
-        y: 64
-        width: 36
-        height: 41
+        y: 80
+        width: 12
+        height: 16
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -598,20 +334,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: f59aca80acf631120800000000000000
-      internalID: 2383371541328734559
+      spriteID: 4205bdefb230d82f0800000000000000
+      internalID: -969114857320525788
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: CharacterSpritesheet_19
+      name: ShrunkCharacterSpritesheet_7
       rect:
         serializedVersion: 2
-        x: 71
-        y: 64
-        width: 36
-        height: 41
+        x: 41
+        y: 82
+        width: 12
+        height: 14
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -620,20 +356,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 31ed486fd8df3b5a0800000000000000
-      internalID: -6506578250452115949
+      spriteID: 0ad9d7797b4968ad0800000000000000
+      internalID: -2700307410320515680
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: CharacterSpritesheet_20
+      name: ShrunkCharacterSpritesheet_8
       rect:
         serializedVersion: 2
-        x: 137
-        y: 64
-        width: 36
-        height: 41
+        x: 75
+        y: 81
+        width: 13
+        height: 14
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -642,20 +378,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 768dd31d93ed1d450800000000000000
-      internalID: 6111910509223467111
+      spriteID: 98320160fb3bf7c50800000000000000
+      internalID: 6665243606553469833
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: CharacterSpritesheet_21
+      name: ShrunkCharacterSpritesheet_9
       rect:
         serializedVersion: 2
-        x: 206
-        y: 64
-        width: 40
-        height: 41
+        x: 111
+        y: 80
+        width: 10
+        height: 14
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -664,20 +400,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: ab6c3641965108d10800000000000000
-      internalID: 2125722565176706746
+      spriteID: 69c6c40f810a4d490800000000000000
+      internalID: -7722371432062358378
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: CharacterSpritesheet_22
+      name: ShrunkCharacterSpritesheet_10
       rect:
         serializedVersion: 2
-        x: 275
-        y: 64
-        width: 43
-        height: 41
+        x: 144
+        y: 80
+        width: 14
+        height: 14
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -686,20 +422,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: d78fb89812b8a6fe0800000000000000
-      internalID: -1194989774955612035
+      spriteID: 39821c092a57014f0800000000000000
+      internalID: -860058187754035053
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: CharacterSpritesheet_23
+      name: ShrunkCharacterSpritesheet_11
       rect:
         serializedVersion: 2
-        x: 343
-        y: 64
-        width: 44
-        height: 41
+        x: 179
+        y: 82
+        width: 14
+        height: 13
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -708,20 +444,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 2569e65eb01219c90800000000000000
-      internalID: -7164909197192161710
+      spriteID: 63d9ebffe6066b660800000000000000
+      internalID: 7401209067483340086
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: CharacterSpritesheet_24
+      name: ShrunkCharacterSpritesheet_12
       rect:
         serializedVersion: 2
-        x: 14
-        y: 11
-        width: 20
-        height: 29
+        x: 9
+        y: 57
+        width: 11
+        height: 16
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -730,20 +466,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 2c961c0550cb17a50800000000000000
-      internalID: 6517196866797529538
+      spriteID: d309a82dcf89f5820800000000000000
+      internalID: 2909212095936106557
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: CharacterSpritesheet_25
+      name: ShrunkCharacterSpritesheet_13
       rect:
         serializedVersion: 2
-        x: 82
-        y: 11
-        width: 21
-        height: 26
+        x: 44
+        y: 57
+        width: 10
+        height: 17
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -752,19 +488,41 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 4da49a1368b2eef00800000000000000
-      internalID: 1147902810384845524
+      spriteID: 27cf7f7eb5b47e320800000000000000
+      internalID: 2587119369053535346
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: CharacterSpritesheet_26
+      name: ShrunkCharacterSpritesheet_14
       rect:
         serializedVersion: 2
-        x: 145
-        y: 11
-        width: 33
+        x: 78
+        y: 57
+        width: 10
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 315f386d2a4ca2500800000000000000
+      internalID: 372326122874205459
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ShrunkCharacterSpritesheet_15
+      rect:
+        serializedVersion: 2
+        x: 112
+        y: 57
+        width: 11
         height: 19
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -774,20 +532,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 98fe836afeefd5420800000000000000
-      internalID: 2620530863438884745
+      spriteID: 1b6fda6677ec3f2c0800000000000000
+      internalID: -4398945398791735631
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: CharacterSpritesheet_27
+      name: ShrunkCharacterSpritesheet_16
       rect:
         serializedVersion: 2
-        x: 213
-        y: 11
-        width: 34
-        height: 18
+        x: 147
+        y: 56
+        width: 11
+        height: 20
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -796,20 +554,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: ffbf64875a8f47960800000000000000
-      internalID: 7598971860852079615
+      spriteID: eb57b68ccdb9fee70800000000000000
+      internalID: 9146700740770362814
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: CharacterSpritesheet_28
+      name: ShrunkCharacterSpritesheet_17
       rect:
         serializedVersion: 2
-        x: 281
-        y: 11
-        width: 35
-        height: 18
+        x: 181
+        y: 56
+        width: 11
+        height: 20
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -818,20 +576,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 9efcc30075f023740800000000000000
-      internalID: 5130179791868973033
+      spriteID: 8241d9ded252968b0800000000000000
+      internalID: -5158551018985941976
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: CharacterSpritesheet_29
+      name: ShrunkCharacterSpritesheet_18
       rect:
         serializedVersion: 2
-        x: 360
-        y: 11
-        width: 21
-        height: 21
+        x: 3
+        y: 31
+        width: 18
+        height: 17
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -840,8 +598,250 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 29a78fe54be8e1cf0800000000000000
-      internalID: -279629221511791982
+      spriteID: a0a4f2039f5442c40800000000000000
+      internalID: 5486587182601685514
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ShrunkCharacterSpritesheet_19
+      rect:
+        serializedVersion: 2
+        x: 35
+        y: 31
+        width: 18
+        height: 17
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1dc4f9e4699694f80800000000000000
+      internalID: -8121844358700905263
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ShrunkCharacterSpritesheet_20
+      rect:
+        serializedVersion: 2
+        x: 69
+        y: 32
+        width: 17
+        height: 17
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f3dcd7b968ee31aa0800000000000000
+      internalID: -6191342800802558657
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ShrunkCharacterSpritesheet_21
+      rect:
+        serializedVersion: 2
+        x: 103
+        y: 32
+        width: 20
+        height: 17
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 290b7a05d51443c30800000000000000
+      internalID: 4338164210105561234
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ShrunkCharacterSpritesheet_22
+      rect:
+        serializedVersion: 2
+        x: 137
+        y: 32
+        width: 22
+        height: 17
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ff2d7313f457df8c0800000000000000
+      internalID: -3963883114027560193
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ShrunkCharacterSpritesheet_23
+      rect:
+        serializedVersion: 2
+        x: 171
+        y: 32
+        width: 23
+        height: 17
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d66f5f982dcdee480800000000000000
+      internalID: -8867907819430087059
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ShrunkCharacterSpritesheet_24
+      rect:
+        serializedVersion: 2
+        x: 7
+        y: 5
+        width: 10
+        height: 15
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b7bb98e2848b6ff70800000000000000
+      internalID: 9220759907245603707
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ShrunkCharacterSpritesheet_25
+      rect:
+        serializedVersion: 2
+        x: 41
+        y: 5
+        width: 10
+        height: 14
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7969d51a820df91e0800000000000000
+      internalID: -2188802020954237289
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ShrunkCharacterSpritesheet_26
+      rect:
+        serializedVersion: 2
+        x: 73
+        y: 5
+        width: 16
+        height: 10
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3f9a52dd4cfdc3380800000000000000
+      internalID: -8990064719521535501
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ShrunkCharacterSpritesheet_27
+      rect:
+        serializedVersion: 2
+        x: 107
+        y: 5
+        width: 16
+        height: 10
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8559fc544acc35e20800000000000000
+      internalID: 3338236754729604440
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ShrunkCharacterSpritesheet_28
+      rect:
+        serializedVersion: 2
+        x: 142
+        y: 5
+        width: 16
+        height: 10
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 35138d1be6fbb5f80800000000000000
+      internalID: -8116683421254143661
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ShrunkCharacterSpritesheet_29
+      rect:
+        serializedVersion: 2
+        x: 180
+        y: 5
+        width: 10
+        height: 11
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c262dfa9397713500800000000000000
+      internalID: 374211719892641324
       vertices: []
       indices: 
       edges: []
@@ -850,7 +850,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 100ba3ef34f3fc743bfc612e855433ea
+    spriteID: 0bf78b8bebb91ee42901ac15d5af286f
     internalID: 0
     vertices: []
     indices: 
@@ -862,36 +862,36 @@ TextureImporter:
       - key: SpriteEditor.SliceSettings
         value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":64.0,"y":64.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":0,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
-      CharacterSpritesheet_0: 2481130367028502837
-      CharacterSpritesheet_1: 285753964064125630
-      CharacterSpritesheet_10: 534741065363809137
-      CharacterSpritesheet_11: 1201068388223038149
-      CharacterSpritesheet_12: -929928241728976721
-      CharacterSpritesheet_13: 8071873476128375714
-      CharacterSpritesheet_14: -3547643490149143323
-      CharacterSpritesheet_15: -6919090567548245167
-      CharacterSpritesheet_16: -1406733954834492955
-      CharacterSpritesheet_17: -5176002209997715743
-      CharacterSpritesheet_18: 2383371541328734559
-      CharacterSpritesheet_19: -6506578250452115949
-      CharacterSpritesheet_2: 9153207279402659708
-      CharacterSpritesheet_20: 6111910509223467111
-      CharacterSpritesheet_21: 2125722565176706746
-      CharacterSpritesheet_22: -1194989774955612035
-      CharacterSpritesheet_23: -7164909197192161710
-      CharacterSpritesheet_24: 6517196866797529538
-      CharacterSpritesheet_25: 1147902810384845524
-      CharacterSpritesheet_26: 2620530863438884745
-      CharacterSpritesheet_27: 7598971860852079615
-      CharacterSpritesheet_28: 5130179791868973033
-      CharacterSpritesheet_29: -279629221511791982
-      CharacterSpritesheet_3: 4827397016449691305
-      CharacterSpritesheet_4: -2115441247568057974
-      CharacterSpritesheet_5: -5869651730541546785
-      CharacterSpritesheet_6: -8248373323259183822
-      CharacterSpritesheet_7: 5131077897349433162
-      CharacterSpritesheet_8: 6511470032912666501
-      CharacterSpritesheet_9: -2812009109852995773
+      ShrunkCharacterSpritesheet_0: 8140431960736078282
+      ShrunkCharacterSpritesheet_1: 4568429305468710468
+      ShrunkCharacterSpritesheet_10: -860058187754035053
+      ShrunkCharacterSpritesheet_11: 7401209067483340086
+      ShrunkCharacterSpritesheet_12: 2909212095936106557
+      ShrunkCharacterSpritesheet_13: 2587119369053535346
+      ShrunkCharacterSpritesheet_14: 372326122874205459
+      ShrunkCharacterSpritesheet_15: -4398945398791735631
+      ShrunkCharacterSpritesheet_16: 9146700740770362814
+      ShrunkCharacterSpritesheet_17: -5158551018985941976
+      ShrunkCharacterSpritesheet_18: 5486587182601685514
+      ShrunkCharacterSpritesheet_19: -8121844358700905263
+      ShrunkCharacterSpritesheet_2: 5674252721025503601
+      ShrunkCharacterSpritesheet_20: -6191342800802558657
+      ShrunkCharacterSpritesheet_21: 4338164210105561234
+      ShrunkCharacterSpritesheet_22: -3963883114027560193
+      ShrunkCharacterSpritesheet_23: -8867907819430087059
+      ShrunkCharacterSpritesheet_24: 9220759907245603707
+      ShrunkCharacterSpritesheet_25: -2188802020954237289
+      ShrunkCharacterSpritesheet_26: -8990064719521535501
+      ShrunkCharacterSpritesheet_27: 3338236754729604440
+      ShrunkCharacterSpritesheet_28: -8116683421254143661
+      ShrunkCharacterSpritesheet_29: 374211719892641324
+      ShrunkCharacterSpritesheet_3: -2439551706467660483
+      ShrunkCharacterSpritesheet_4: -40135236307965319
+      ShrunkCharacterSpritesheet_5: 121921095211696333
+      ShrunkCharacterSpritesheet_6: -969114857320525788
+      ShrunkCharacterSpritesheet_7: -2700307410320515680
+      ShrunkCharacterSpritesheet_8: 6665243606553469833
+      ShrunkCharacterSpritesheet_9: -7722371432062358378
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
