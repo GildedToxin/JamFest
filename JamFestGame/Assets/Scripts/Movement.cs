@@ -32,6 +32,7 @@ public class Movement : MonoBehaviour
     public bool isDashing;
     public bool pushedWall;
     public bool doubleJumped;
+    public bool hasDoubleJump;
 
     [Space]
 
