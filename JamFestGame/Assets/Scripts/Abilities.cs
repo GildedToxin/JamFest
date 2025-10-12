@@ -58,7 +58,7 @@ public class Abilities : MonoBehaviour
             glideTimer = maxGlideTime;
         }
 
-        // Teleport activation
+        // Teleport activation  
         if (Input.GetKeyDown(KeyCode.T) && !isTeleporting)
         {
             StartCoroutine(TeleportSequence());
@@ -72,12 +72,16 @@ public class Abilities : MonoBehaviour
             FindObjectOfType<GhostTrail>().ShowGhost();
         }
 
-        // SuperSpeed activation (hold J)
-        if (Input.GetKey(KeyCode.J) && collision.onGround)
+        // SuperSpeed activation (hold J, works in air too)
+        if (Input.GetKey(KeyCode.J))
         {
             SuperSpeed();
-            if (speedParticle && !speedParticle.isPlaying)
+            // Only play particles if on ground
+            if (collision.onGround && speedParticle && !speedParticle.isPlaying)
                 speedParticle.Play();
+            // Stop particles if not on ground
+            if (!collision.onGround && speedParticle && speedParticle.isPlaying)
+                speedParticle.Stop();
         }
         else
         {
@@ -198,19 +202,57 @@ public class Abilities : MonoBehaviour
         {
             ParticleSystem instance = Instantiate(teleportInEffect, transform.position, Quaternion.identity);
             Destroy(instance.gameObject, instance.main.duration + instance.main.startLifetime.constantMax);
-
         }
 
         float x = Input.GetAxis("Horizontal");
         float y = Input.GetAxis("Vertical");
         Vector2 dir = new Vector2(x, y).normalized;
+        if (dir == Vector2.zero)
+            dir = Vector2.right; // Default direction
 
-        transform.position = (Vector2)transform.position + dir * teleportForce;
+        Vector2 startPosition = transform.position;
+        float maxDistance = teleportForce;
+        float checkRadius = 0.5f; // Adjust to fit your player size
+        LayerMask mask = LayerMask.GetMask("Default");
+        Collider2D myCollider = GetComponent<Collider2D>();
 
-        if (teleportOutEffect) 
+        Vector2 furthestValidPosition = startPosition;
+        for (float d = 0.1f; d <= maxDistance; d += 0.1f)
         {
-            ParticleSystem instance = Instantiate(teleportOutEffect, transform.position, Quaternion.identity);
-            Destroy(instance.gameObject, instance.main.duration + instance.main.startLifetime.constantMax);
+            Vector2 testPos = startPosition + dir * d;
+            Collider2D[] hits = Physics2D.OverlapCircleAll(testPos, checkRadius, mask);
+            bool blocked = false;
+            foreach (var hit in hits)
+            {
+                if (hit != null && hit != myCollider)
+                {
+                    blocked = true;
+                    break;
+                }
+            }
+            if (!blocked)
+            {
+                furthestValidPosition = testPos;
+            }
+            else
+            {
+                // Stop at the last valid position before hitting a collider
+                break;
+            }
+        }
+
+        if (furthestValidPosition != startPosition)
+        {
+            transform.position = furthestValidPosition;
+            if (teleportOutEffect)
+            {
+                ParticleSystem instance = Instantiate(teleportOutEffect, transform.position, Quaternion.identity);
+                Destroy(instance.gameObject, instance.main.duration + instance.main.startLifetime.constantMax);
+            }
+        }
+        else
+        {
+            Debug.Log("Teleport blocked by collision at destination!");
         }
 
         yield return StartCoroutine(ReformEffect());
@@ -280,4 +322,12 @@ public class Abilities : MonoBehaviour
 
     public float maxGlideTime = 2f; // Duration allowed for gliding (can be set in Inspector)
     private float glideTimer;       // Tracks remaining glide time
+
+    public void SuperSpeedJump(float jumpForce)
+    {
+        if (collision.onGround)
+        {
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce); // GOOD: preserves X speed
+        }
+    }
 }
