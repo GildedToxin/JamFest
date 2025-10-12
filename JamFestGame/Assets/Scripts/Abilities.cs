@@ -28,6 +28,7 @@ public class Abilities : MonoBehaviour
 
     public ParticleSystem teleportInEffect;
     public ParticleSystem teleportOutEffect;
+    public ParticleSystem speedParticle;
 
     private SpriteRenderer sr;
 
@@ -67,14 +68,18 @@ public class Abilities : MonoBehaviour
             StartCoroutine(TeleportSequence());
         }
 
-        if (Input.GetKey(KeyCode.J))
+        if (Input.GetKey(KeyCode.J) && collision.onGround       )
         {
             SuperSpeed();
+            if (speedParticle && !speedParticle.isPlaying)
+                speedParticle.Play();
         }
         else
         {
             movement.speed = defaultSpeed;
             isSuperSpeed = false;
+            if (speedParticle && speedParticle.isPlaying)
+                speedParticle.Stop();
         }
 
         // Gliding Update Logic
@@ -244,7 +249,6 @@ public class Abilities : MonoBehaviour
 
     public void SuperSpeed()
     {
-        // Implementation for Super Speed ability
         Debug.Log("Super Speed ability activated.");
         isSuperSpeed = true;
         movement.speed = defaultSpeed * 3;
