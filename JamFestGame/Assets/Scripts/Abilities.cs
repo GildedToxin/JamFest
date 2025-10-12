@@ -47,49 +47,35 @@ public class Abilities : MonoBehaviour
         }
 
         originalGravity = rb.gravityScale;
+        glideTimer = maxGlideTime;
     }
 
     void Update()
     {
-        // For testing purposes, activate abilities with key presses
-        if (Input.GetKeyDown(KeyCode.G))
+        // Reset glide timer when landing
+        if (collision.onGround)
+        {
+            glideTimer = maxGlideTime;
+        }
+        
+        // Activate glide only if timer > 0
+        if (Input.GetKeyDown(KeyCode.G) && glideTimer > 0)
         {
             Glide();
-            isGliding = true;
-        }
-        if (Input.GetKeyDown(KeyCode.H))
-        {
-            GrappleHook();
-            isGrappling = true;
-            FindObjectOfType<GhostTrail>().ShowGhost();
-        }
-        if (Input.GetKeyDown(KeyCode.T) && !isTeleporting)
-        {
-            StartCoroutine(TeleportSequence());
-        }
-
-        if (Input.GetKey(KeyCode.J) && collision.onGround       )
-        {
-            SuperSpeed();
-            if (speedParticle && !speedParticle.isPlaying)
-                speedParticle.Play();
-        }
-        else
-        {
-            movement.speed = defaultSpeed;
-            isSuperSpeed = false;
-            if (speedParticle && speedParticle.isPlaying)
-                speedParticle.Stop();
         }
 
         // Gliding Update Logic
-        if (isGliding)
+        if (isGliding && glideTimer > 0)
         {
-            // Implement gliding effect, e.g., reduce gravity or control descent
             if (rb != null)
             {
                 rb.gravityScale = 0.5f; // Reduce gravity for gliding effect
                 betterJumping.enabled = false;
+            }
+            glideTimer -= Time.deltaTime;
+            if (glideTimer <= 0)
+            {
+                isGliding = false;
             }
         }
         if (!isGliding || collision.onGround)
@@ -263,4 +249,6 @@ public class Abilities : MonoBehaviour
         return abilities.Contains(ability);
     }
 
+    public float maxGlideTime = 2f; // Duration allowed for gliding (can be set in Inspector)
+    private float glideTimer;       // Tracks remaining glide time
 }

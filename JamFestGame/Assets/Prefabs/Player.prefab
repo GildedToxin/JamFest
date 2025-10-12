@@ -5220,6 +5220,7 @@ MonoBehaviour:
   teleportInEffect: {fileID: 2564347316225932662}
   teleportOutEffect: {fileID: 7421731670179035536}
   speedParticle: {fileID: 2928694878764718513}
+  maxGlideTime: 2
 --- !u!1 &1427819693451023563
 GameObject:
   m_ObjectHideFlags: 0
