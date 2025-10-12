@@ -301,7 +301,7 @@ public class Movement : MonoBehaviour
 
         if (!wallJumped)
         {
-            rb.linearVelocity = new Vector2(dir.x * speed, rb.linearVelocity.y);
+            rb.linearVelocity = Vector2.Lerp(rb.linearVelocity, new Vector2(dir.x * speed, rb.linearVelocity.y), 0.2f );
         }
         else
         {

@@ -22,11 +22,13 @@ public class Abilities : MonoBehaviour
     public bool isSuperSpeed = false;
     public bool isShrinking = false;
     public bool canUseAbilities = true;
+    private bool hasGrappled = false;
 
     private float defaultSpeed;
     private float originalGravity;
 
     private Vector2 grappleTarget;
+    private Vector2 currentPos;
     private bool shouldGrappleMove = false;
     private float originalCollisionRadius;
     private Vector2 originalBottomOffset;
@@ -50,7 +52,7 @@ public class Abilities : MonoBehaviour
     public float deaccelerateSpeed = 0.15f;
 
     [Header("Grapple Settings")]
-    public float grappleSpeed = 15f;
+    public float grappleSpeed = 10f;
     public Vector2 grappleLaunchDirection = Vector2.up;
     public float grappleLaunchForce = 10f;
 
@@ -202,25 +204,42 @@ public class Abilities : MonoBehaviour
             float y = Input.GetAxis("Vertical");
             Vector2 dir = new Vector2(x, y).normalized;
             teleportPreviewSpot = (Vector2)transform.position + dir * teleportForce;
-        
+
     }
+
+    public Vector2 launchDir;
     void FixedUpdate()
     {
-        // --- GRAPPLE MOVEMENT ---
         if (isGrappling && shouldGrappleMove)
         {
-            rb.gravityScale = 0;
-            rb.MovePosition(Vector2.Lerp(rb.position, grappleTarget, 0.1f));
+            Vector2 toTarget = grappleTarget - rb.position;
+            float distance = toTarget.magnitude;
+            Vector2 directionToTarget = toTarget.normalized;
 
-            if (Vector2.Distance(rb.position, grappleTarget) < 1f)
+            float moveStep = grappleSpeed * Time.fixedDeltaTime;
+
+            if (distance > 0.1f) // move straight toward target
             {
+                rb.MovePosition(rb.position + directionToTarget * Mathf.Min(moveStep, distance));
+                rb.gravityScale = 0f;
+            }
+            else // reached target, launch
+            {
+                // Add horizontal movement toward the target
+               // launchDir = new Vector2(test.x, 1f).normalized; // always move horizontally toward target, slight upward
+                rb.linearVelocity = test * 50;
+
                 anim.SetBool("isGrappling", false);
                 isGrappling = false;
                 shouldGrappleMove = false;
                 movement.canMove = true;
                 rb.gravityScale = 3f;
+                betterJumping.enabled = true;
             }
         }
+
+        if (rb.linearVelocity.magnitude > 40f)
+            rb.linearVelocity = rb.linearVelocity.normalized * 40f;
     }
 
     // ========== ABILITY METHODS ==========
@@ -231,6 +250,7 @@ public class Abilities : MonoBehaviour
         isGliding = true;
     }
 
+    public Vector2 test;
     public void GrappleHook()
     {
         Debug.Log("Grapple Hook ability activated.");
@@ -275,12 +295,16 @@ public class Abilities : MonoBehaviour
             anim.SetBool("isGrappling", true);
             shouldGrappleMove = true;
             isGrappling = true;
+            currentPos = rb.position;
+            betterJumping.enabled = false;
 
             SFXManager.Instance.Play(SFXManager.Instance.grappleClip, 1f, 0.95f, 1.05f);
 
             if (ghostTrail != null)
                 ghostTrail.ShowGhost();
         }
+
+        test = grappleTarget - rb.position;
     }
 
     IEnumerator TeleportSequence()
