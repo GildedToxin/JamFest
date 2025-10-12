@@ -196,7 +196,7 @@ public class Abilities : MonoBehaviour
         }
     }
 
-    public bool onLeftWall = false;
+
     IEnumerator TeleportSequence()
     {
         isTeleporting = true;
