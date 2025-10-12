@@ -109,7 +109,7 @@ public class Movement : MonoBehaviour
             if (coll.onWall && !coll.onGround)
                 WallJump();
         }
-        if(coll.onGround && !hasDoubleJump)
+        if((coll.onGround || coll.onWall) && !hasDoubleJump)
         {
             hasDoubleJump = true;
         }

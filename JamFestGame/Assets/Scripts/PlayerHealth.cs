@@ -56,7 +56,7 @@ public class PlayerHealth : MonoBehaviour
         if (movement != null)
             movement.canMove = false;
         if (abilities != null)
-            abilities.enabled = false;
+            abilities.canUseAbilities = false;
 
         // Freeze physics
         rb.linearVelocity = Vector2.zero;
