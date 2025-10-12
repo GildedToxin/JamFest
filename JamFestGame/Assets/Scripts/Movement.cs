@@ -22,6 +22,8 @@ public class Movement : MonoBehaviour
     public float slideSpeed = 5;
     public float wallJumpLerp = 10;
     public float dashSpeed = 20;
+    public float dashSpeedBetter = 7;
+    public float dashDragTime = 1f;
 
     [Space]
     [Header("Booleans")]
@@ -235,7 +237,7 @@ public class Movement : MonoBehaviour
     {
         FindObjectOfType<GhostTrail>().ShowGhost();
         StartCoroutine(GroundDash());
-        DOVirtual.Float(14, 0, .8f, RigidbodyDrag);
+        DOVirtual.Float(dashSpeedBetter, 0, dashDragTime, RigidbodyDrag);
 
         dashParticle.Play();
         rb.gravityScale = 0;
