@@ -128,7 +128,7 @@ public class Movement : MonoBehaviour
                 WallJump();
         }
 
-        if (Input.GetButtonDown("Fire1") && !hasDashed)
+        if (Input.GetButtonDown("Fire1") && !hasDashed && abilities.canUseAbilities)
         {
             if(xRaw != 0 || yRaw != 0)
                 Dash(xRaw, yRaw);

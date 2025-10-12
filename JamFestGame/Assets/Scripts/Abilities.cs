@@ -14,6 +14,9 @@ public class Abilities : MonoBehaviour
     public bool isTeleporting = false;
     public bool isGliding = false;
     public bool isSuperSpeed = false;
+    public bool isShrinking = false;
+
+    public bool canUseAbilities = true;
 
     private float defaultSpeed;
     private Vector2 grappleTarget;
@@ -33,6 +36,8 @@ public class Abilities : MonoBehaviour
     private SpriteRenderer sr;
 
     private Vector2 teleportPreviewSpot;
+
+    public float deaccelerateSpeed = 0.15f;
 
     void Start()
     {
@@ -54,6 +59,11 @@ public class Abilities : MonoBehaviour
 
     void Update()
     {
+        if (!isSuperSpeed)
+        {////////////////////////////// 7 <--------------- 21
+            movement.speed = Mathf.Lerp(movement.speed, defaultSpeed, deaccelerateSpeed);
+            print(movement.speed);  
+        }
         // Reset glide timer when landing
         if (collision.onGround)
         {
@@ -61,13 +71,13 @@ public class Abilities : MonoBehaviour
         }
 
         // Teleport activation  
-        if (Input.GetKeyDown(KeyCode.T) && !isTeleporting)
+        if (Input.GetKeyDown(KeyCode.T) && !isTeleporting && canUseAbilities)
         {
             StartCoroutine(TeleportSequence());
         }
 
         // Grapple activation
-        if (Input.GetKeyDown(KeyCode.H))
+        if (Input.GetKeyDown(KeyCode.H) && canUseAbilities)
         {
             GrappleHook();
             isGrappling = true;
@@ -75,7 +85,7 @@ public class Abilities : MonoBehaviour
         }
 
         // SuperSpeed activation (hold J, works in air too)
-        if (Input.GetKey(KeyCode.J))
+        if (Input.GetKey(KeyCode.J) && canUseAbilities)
         {
             SuperSpeed();
             // Only play particles if on ground
@@ -87,16 +97,19 @@ public class Abilities : MonoBehaviour
         }
         else
         {
-            movement.speed = defaultSpeed;
             isSuperSpeed = false;
             if (speedParticle && speedParticle.isPlaying)
                 speedParticle.Stop();
         }
 
         // Glide activation
-        if (Input.GetKeyDown(KeyCode.G) && glideTimer > 0)
+        if (Input.GetKeyDown(KeyCode.G) && glideTimer > 0 && canUseAbilities)
         {
             Glide();
+        }
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            Shrink();
         }
 
         // Gliding Update Logic
@@ -314,6 +327,20 @@ public class Abilities : MonoBehaviour
         Debug.Log("Super Speed ability activated.");
         isSuperSpeed = true;
         movement.speed = defaultSpeed * 3;
+    }
+
+    public void Shrink()
+    {
+        if(transform.localScale == new Vector3(0.5f, 0.5f, 1f))
+        {
+            canUseAbilities = true;
+            isShrinking = false;
+            transform.localScale = Vector3.one;
+            return;
+        }
+        canUseAbilities = false;
+        isShrinking = true;
+        transform.localScale = new Vector3(0.5f, 0.5f, 1f);
     }
 
     public void AddAbility(AbilityType ability)
