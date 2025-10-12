@@ -101,14 +101,19 @@ public class Movement : MonoBehaviour
         {
             anim.SetTrigger("jump");
 
-            // Play jump sound
-            SFXManager.Instance.Play(SFXManager.Instance.jumpClip, 1f, 0.95f, 1.05f);
-
+            // Only play jump sound if a jump actually happens
             if (coll.onGround || (hasDoubleJump && !coll.onWall))
+            {
                 Jump(Vector2.up, false);
-            if (coll.onWall && !coll.onGround)
+                SFXManager.Instance.Play(SFXManager.Instance.jumpClip, 1f, 0.95f, 1.05f);
+            }
+            else if (coll.onWall && !coll.onGround)
+            {
                 WallJump();
+                SFXManager.Instance.Play(SFXManager.Instance.jumpClip, 1f, 0.95f, 1.05f);
+            }
         }
+
 
         void GroundTouch()
 
