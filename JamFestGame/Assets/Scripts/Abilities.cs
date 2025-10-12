@@ -27,6 +27,7 @@ public class Abilities : MonoBehaviour
     private float originalGravity;
 
     private Vector2 grappleTarget;
+    private Vector2 currentPos;
     private bool shouldGrappleMove = false;
     private float originalCollisionRadius;
     private Vector2 originalBottomOffset;
@@ -187,7 +188,7 @@ public class Abilities : MonoBehaviour
         // --- GRAPPLE MOVEMENT ---
         if (isGrappling && shouldGrappleMove)
         {
-            rb.AddForce((grappleTarget - rb.position).normalized * grappleSpeed / 2, ForceMode2D.Impulse);
+            rb.AddForce((grappleTarget - currentPos) * grappleSpeed / 1.3f, ForceMode2D.Impulse);
             rb.gravityScale = 0f;
 
             if (Vector2.Distance(rb.position, grappleTarget) < 2f)
@@ -197,7 +198,13 @@ public class Abilities : MonoBehaviour
                 shouldGrappleMove = false;
                 movement.canMove = true;
                 rb.gravityScale = 3f;
+                betterJumping.enabled = true;
             }
+        }
+
+        if (rb.linearVelocity.magnitude > 40f)
+        {
+            rb.linearVelocity = rb.linearVelocity.normalized * 40f;
         }
     }
 
@@ -251,6 +258,8 @@ public class Abilities : MonoBehaviour
             anim.SetBool("isGrappling", true);
             shouldGrappleMove = true;
             isGrappling = true;
+            currentPos = rb.position;
+            betterJumping.enabled = false;
 
             if (ghostTrail != null)
                 ghostTrail.ShowGhost();
