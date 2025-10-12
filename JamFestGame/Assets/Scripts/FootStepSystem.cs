@@ -7,7 +7,8 @@ public enum SurfaceType { Default, Grass, Stone, Cloud }
 public class FootstepSystem : MonoBehaviour
 {
     [Header("Step Settings")]
-    public float stepInterval = 0.35f;
+    public float stepInterval = 0.35f; // seconds between steps if moving fast enough
+    public float stepDistance = 0.5f;  // minimum distance traveled to trigger next step
     public float pitchMin = 0.95f;
     public float pitchMax = 1.05f;
 
@@ -22,6 +23,7 @@ public class FootstepSystem : MonoBehaviour
 
     private SurfaceType currentSurface = SurfaceType.Default;
     private float stepTimer = 0f;
+    private Vector3 lastStepPosition;
 
     [Header("Tilemap Settings")]
     public Tilemap groundTilemap;
@@ -30,6 +32,7 @@ public class FootstepSystem : MonoBehaviour
     {
         movement = GetComponent<Movement>();
         coll = GetComponent<Collision>();
+        lastStepPosition = transform.position;
     }
 
     void Update()
@@ -37,24 +40,26 @@ public class FootstepSystem : MonoBehaviour
         UpdateSurface();
 
         // Movement-based footstep triggering
-        if (movement.rb.linearVelocity.magnitude > 0.1f && coll.onGround)
+        if (coll.onGround && movement.rb.linearVelocity.magnitude > 0.1f)
         {
             stepTimer += Time.deltaTime;
-            if (stepTimer >= stepInterval)
+
+            float distanceMoved = Vector3.Distance(transform.position, lastStepPosition);
+
+            if (stepTimer >= stepInterval && distanceMoved >= stepDistance)
             {
                 PlayFootstep();
                 stepTimer = 0f;
+                lastStepPosition = transform.position;
             }
         }
         else
         {
-            stepTimer = stepInterval; // Reset timer when not moving
+            stepTimer = 0f; // reset timer if not moving
+            lastStepPosition = transform.position;
         }
     }
 
-    /// <summary>
-    /// Detect the surface the player is standing on via Tilemap
-    /// </summary>
     void UpdateSurface()
     {
         if (groundTilemap == null)
@@ -63,7 +68,7 @@ public class FootstepSystem : MonoBehaviour
             return;
         }
 
-        Vector3 worldPos = transform.position + Vector3.down * 0.1f; // Slightly below player feet
+        Vector3 worldPos = transform.position + Vector3.down * 0.1f;
         Vector3Int cellPos = groundTilemap.WorldToCell(worldPos);
         TileBase tile = groundTilemap.GetTile(cellPos);
 
