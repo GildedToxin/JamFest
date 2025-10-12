@@ -175,42 +175,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2639631367771431498, guid: 0ff1572ec9d8f654c9ee208fcd6be0ea, type: 3}
-      propertyPath: abilities.Array.size
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 2639631367771431498, guid: 0ff1572ec9d8f654c9ee208fcd6be0ea, type: 3}
-      propertyPath: 'abilities.Array.data[1]'
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2639631367771431498, guid: 0ff1572ec9d8f654c9ee208fcd6be0ea, type: 3}
-      propertyPath: 'abilities.Array.data[2]'
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 2639631367771431498, guid: 0ff1572ec9d8f654c9ee208fcd6be0ea, type: 3}
-      propertyPath: 'abilities.Array.data[3]'
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 2639631367771431498, guid: 0ff1572ec9d8f654c9ee208fcd6be0ea, type: 3}
-      propertyPath: 'abilities.Array.data[4]'
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 2639631367771431498, guid: 0ff1572ec9d8f654c9ee208fcd6be0ea, type: 3}
-      propertyPath: 'abilities.Array.data[5]'
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 2639631367771431498, guid: 0ff1572ec9d8f654c9ee208fcd6be0ea, type: 3}
-      propertyPath: 'abilities.Array.data[6]'
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 2639631367771431498, guid: 0ff1572ec9d8f654c9ee208fcd6be0ea, type: 3}
-      propertyPath: 'abilities.Array.data[7]'
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 2703635534725265265, guid: 0ff1572ec9d8f654c9ee208fcd6be0ea, type: 3}
-      propertyPath: dashSpeed
-      value: 100
-      objectReference: {fileID: 0}
     - target: {fileID: 4028168548735385891, guid: 0ff1572ec9d8f654c9ee208fcd6be0ea, type: 3}
       propertyPath: respawnPoint
       value: 
