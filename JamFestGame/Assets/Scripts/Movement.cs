@@ -31,7 +31,7 @@ public class Movement : MonoBehaviour
     public bool wallSlide;
     public bool isDashing;
     public bool pushedWall;
-    public bool hasDoubleJump;
+    public bool doubleJumped;
 
     [Space]
 
@@ -97,6 +97,13 @@ public class Movement : MonoBehaviour
             }
         }
 
+        if (!coll.onWall || coll.onGround)
+            wallSlide = false;
+
+        if (!coll.onGround && Input.GetKeyDown(abilities.doubleJumpKey) && doubleJumped && !coll.onWall && abilities.canUseAbilities && abilities.HasAbility(AbilityType.DoubleJump)){
+            Jump(Vector2.up, false);
+        }
+
         if (Input.GetButtonDown("Jump"))
         {
             anim.SetTrigger("jump");
@@ -129,10 +136,10 @@ public class Movement : MonoBehaviour
         }
         if ((coll.onGround || coll.onWall) && !hasDoubleJump)
         {
-            hasDoubleJump = true;
+            doubleJumped = true;
         }
 
-        if (Input.GetButtonDown("Fire1") && !hasDashed && abilities.canUseAbilities)
+        if (Input.GetKeyDown(abilities.dashkKey) && !hasDashed && abilities.canUseAbilities && abilities.HasAbility(AbilityType.Dash))
         {
             float xRaw = Input.GetAxisRaw("Horizontal");
             float yRaw = Input.GetAxisRaw("Vertical");
@@ -304,7 +311,7 @@ public class Movement : MonoBehaviour
     private void Jump(Vector2 dir, bool wall)
     {
         if (!coll.onGround && !coll.onWall)
-            hasDoubleJump = false;
+            doubleJumped = false;
 
         slideParticle.transform.parent.localScale = new Vector3(ParticleSide(), 1, 1);
         ParticleSystem particle = wall ? wallJumpParticle : jumpParticle;

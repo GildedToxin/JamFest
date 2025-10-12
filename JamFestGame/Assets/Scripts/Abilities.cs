@@ -1,10 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 
-public enum AbilityType { Dash, DoubleJump, WallJump, WallGrab, Grapple, Glide, Teleport, Shrink, Hover, SuperSpeed, None }
+public enum AbilityType { Dash, DoubleJump, Grapple, Glide, Teleport, Shrink, Hover, SuperSpeed, None }
 public class Abilities : MonoBehaviour
 {
     private Movement movement;
@@ -63,10 +64,27 @@ public class Abilities : MonoBehaviour
     public KeyCode superSpeedKey = KeyCode.J;
     public KeyCode glideKey = KeyCode.G;
     public KeyCode shrinkKey = KeyCode.F;
+    public KeyCode dashkKey = KeyCode.LeftShift;
+    public KeyCode doubleJumpKey = KeyCode.O;
+    public KeyCode hoverKey = KeyCode.K;
+
+    private Dictionary<AbilityType, string> abilityLetters = new Dictionary<AbilityType, string>()
+    {
+        { AbilityType.Dash, "" },
+        { AbilityType.DoubleJump, "" },
+        { AbilityType.Grapple, "" },
+        { AbilityType.Glide, "" },
+        { AbilityType.Teleport, "" },
+        { AbilityType.Shrink, "" },
+        { AbilityType.Hover, "" },
+        { AbilityType.SuperSpeed, "" },
+        { AbilityType.None, "" }
+    };
+
 
     string[] keyStrings = new string[]
 {
-    "LeftShift", "Y", "H", "U", "J", "I", "K", "O", "L", "P", "Semicolon", "LeftBracket", "RightBracket", "Quote" };
+    "Y", "H", "U", "J", "I", "K", "O", "L", "P", "Semicolon", "LeftBracket", "RightBracket", "Quote" };
 
 
     void Start()
@@ -113,32 +131,37 @@ public class Abilities : MonoBehaviour
             glideTimer = maxGlideTime;
 
         // --- ABILITY INPUTS ---
+        if (Input.GetKeyDown(hoverKey))
+        {
+            StartCoroutine(StopAllMomentum(2f));
+        }
+
         if (Input.GetKeyDown(KeyCode.Q))
         {
             ResetAbilities();
         }
         // Glide activation
-        if (Input.GetKeyDown(glideKey) && glideTimer > 0 && canUseAbilities)
+        if (Input.GetKeyDown(glideKey) && glideTimer > 0 && canUseAbilities && HasAbility(AbilityType.Glide))
         {
             Glide();
         }
-        if (Input.GetKeyDown(shrinkKey))
+        if (Input.GetKeyDown(shrinkKey) && HasAbility(AbilityType.Shrink))
         {
             Shrink();
         }
 
         // Teleport activation  
-        if (Input.GetKeyDown(teleportKey) && !isTeleporting && canUseAbilities)
+        if (Input.GetKeyDown(teleportKey) && !isTeleporting && canUseAbilities && HasAbility(AbilityType.Teleport))
         {
             StartCoroutine(TeleportSequence());
         }
         // Grapple activation
-        if (Input.GetKeyDown(grappleKey) && canUseAbilities)
+        if (Input.GetKeyDown(grappleKey) && canUseAbilities && HasAbility(AbilityType.Grapple))
         {
             GrappleHook();
         }
                 // SuperSpeed activation (hold J, works in air too)
-                if (Input.GetKey(superSpeedKey) && canUseAbilities && (collision.onGround || isSuperSpeed))
+                if (Input.GetKey(superSpeedKey) && canUseAbilities && (collision.onGround || isSuperSpeed) && HasAbility(AbilityType.SuperSpeed))
                 {
                     SuperSpeed();
 
@@ -426,7 +449,52 @@ public class Abilities : MonoBehaviour
 
     }
 
-    public void AddAbility(AbilityType ability) => abilities.Add(ability);
+    public IEnumerator StopAllMomentum(float duration = 2f)
+    {
+        float originalGravity = rb.gravityScale;
+        Vector2 frozenPosition = rb.position;
+
+        // Disable any movement/gravity
+        rb.gravityScale = 0;
+        rb.linearVelocity = Vector2.zero;
+        rb.constraints = RigidbodyConstraints2D.FreezePosition | RigidbodyConstraints2D.FreezeRotation;
+
+        if (betterJumping != null)
+            betterJumping.enabled = false;
+        if (abilities != null)
+            canUseAbilities = false;
+        movement.canMove = false;
+        movement.isDashing = false;
+        movement.wallGrab = false;
+        movement.wallSlide = false;
+
+        float timer = 0f;
+        while (timer < duration)
+        {
+            // Forcefully maintain the frozen position
+            rb.position = frozenPosition;
+            rb.linearVelocity = Vector2.zero;
+            timer += Time.deltaTime;
+            yield return null;
+        }
+
+        // Restore physics
+        rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+        rb.gravityScale = originalGravity;
+
+        if (betterJumping != null)
+            betterJumping.enabled = true;
+        if (abilities != null)
+            canUseAbilities = true;
+        movement.canMove = true;
+
+        Debug.Log("Player unfrozen.");
+    }
+
+
+    public void AddAbility(AbilityType ability) { 
+        abilities.Add(ability);
+    }
     public bool HasAbility(AbilityType ability) => abilities.Contains(ability);
 
     public void SuperSpeedJump(float jumpForce)
@@ -465,11 +533,23 @@ public class Abilities : MonoBehaviour
                 case AbilityType.Shrink:
                     shrinkKey = randomKey;
                     break;
+                case AbilityType.Dash:
+                    dashkKey = randomKey;
+                    break;
+                case AbilityType.DoubleJump:
+                    doubleJumpKey = randomKey;
+                    break;
+                case AbilityType.Hover:
+                    hoverKey = randomKey;
+                    break;
                     // Add more cases for other abilities with keys as needed
             }
 
+            abilityLetters[ability] = randomKey.ToString();
             availableKeys.RemoveAt(index); // Remove used key
         }
+
+        FindAnyObjectByType<HUDController>()?.UpdateKeyIcons(abilityLetters);
     }
     void OnDrawGizmos()
     {

@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class AbilityOrb : MonoBehaviour
 {
-    public List<AbilityType> abilityPool = new List<AbilityType>();
+    //public List<AbilityType> abilityPool = new List<AbilityType>();
+    public AbilityType ability;
+    public bool shuffleAbilities = true;
 
     private void Start()
     {
@@ -19,7 +21,19 @@ public class AbilityOrb : MonoBehaviour
         if (!abilities)
             return;
 
-        // Make a copy of the pool to avoid modifying the original
+        if (abilities.HasAbility(ability))
+        {
+            if (shuffleAbilities)
+                abilities.ResetAbilities();
+            return;
+        }
+
+            abilities.AddAbility(ability);
+        if (shuffleAbilities)
+            abilities.ResetAbilities();
+
+
+        /* 
         List<AbilityType> availableAbilities = new List<AbilityType>(abilityPool);
 
         AbilityType rolledAbility = AbilityType.None;
@@ -47,7 +61,7 @@ public class AbilityOrb : MonoBehaviour
         {
             Debug.Log("Player already has all abilities in the pool.");
         }
-
+        */
         Destroy(gameObject);
     }
 
