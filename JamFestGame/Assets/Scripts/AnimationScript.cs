@@ -10,6 +10,7 @@ public class AnimationScript : MonoBehaviour
     private Collision coll;
     [HideInInspector]
     public SpriteRenderer sr;
+    private Abilities abilities;
 
     void Start()
     {
@@ -17,6 +18,7 @@ public class AnimationScript : MonoBehaviour
         coll = GetComponentInParent<Collision>();
         move = GetComponentInParent<Movement>();
         sr = GetComponent<SpriteRenderer>();
+        abilities = GetComponentInParent<Abilities>();
     }
 
     void Update()
@@ -28,6 +30,7 @@ public class AnimationScript : MonoBehaviour
         anim.SetBool("wallSlide", move.wallSlide);
         anim.SetBool("canMove", move.canMove);
         anim.SetBool("isDashing", move.isDashing);
+        anim.SetBool("isShrinked", abilities.isShrinking);
 
     }
 

@@ -22,6 +22,13 @@ public class Abilities : MonoBehaviour
     private Vector2 grappleTarget;
     private float originalGravity;
 
+    private float originalCollisionRadius;
+    private Vector2 originalBottomOffset;
+    private Vector2 originalRightOffset;
+    private Vector2 originalLeftOffset;
+    private Vector2 originalCapsulesSize;
+    private Vector2 originalCapsuleOffset;
+
     public List<AbilityType> abilities = new List<AbilityType>();
 
     public float teleportForce = 5f;
@@ -47,16 +54,28 @@ public class Abilities : MonoBehaviour
         betterJumping = GetComponent<BetterJumping>();
         defaultSpeed = movement.speed;
         sr = GetComponent<SpriteRenderer>();
+        CapsuleCollider2D capsule = GetComponent<CapsuleCollider2D>();
+
+        if (capsule != null)
+        {
+            originalCapsulesSize = capsule.size;
+            originalCapsuleOffset = capsule.offset;
+        }
+
+        if (collision != null)
+        {
+            originalCollisionRadius = collision.collisionRadius;
+            originalBottomOffset = collision.bottomOffset;
+            originalRightOffset = collision.rightOffset;
+            originalLeftOffset = collision.leftOffset;
+        }
 
         if (teleportCurve == null)
-        {
             teleportCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
-        }
 
         originalGravity = rb.gravityScale;
         glideTimer = maxGlideTime;
     }
-
     void Update()
     {
         if (!isSuperSpeed)
@@ -331,17 +350,51 @@ public class Abilities : MonoBehaviour
 
     public void Shrink()
     {
-        if(transform.localScale == new Vector3(0.5f, 0.5f, 1f))
+        Collision coll = GetComponent<Collision>();
+        CapsuleCollider2D capsule = GetComponent<CapsuleCollider2D>();
+
+        if (isShrinking)
         {
-            canUseAbilities = true;
-            isShrinking = false;
             transform.localScale = Vector3.one;
-            return;
+            isShrinking = false;
+            canUseAbilities = true;
+
+            if (coll != null)
+            {
+                coll.collisionRadius = originalCollisionRadius;
+                coll.bottomOffset = originalBottomOffset;
+                coll.rightOffset = originalRightOffset;
+                coll.leftOffset = originalLeftOffset;
+            }
+            if (capsule != null)
+            {
+                capsule.size = originalCapsulesSize;
+                capsule.offset = originalCapsuleOffset;
+            }
         }
-        canUseAbilities = false;
-        isShrinking = true;
-        transform.localScale = new Vector3(0.5f, 0.5f, 1f);
+        else
+        {
+            isShrinking = true;
+            canUseAbilities = false;
+
+            if (coll != null)
+            {
+                coll.collisionRadius *= 0.5f;
+                coll.bottomOffset *= 0.5f;
+                coll.rightOffset *= 0.5f;
+                coll.leftOffset *= 0.5f;
+            }
+
+            if (capsule!= null)
+            {
+                capsule.size *= 0.5f;
+                capsule.offset = new Vector2(capsule.offset.x, 0f);
+            }
+        }
     }
+
+
+
 
     public void AddAbility(AbilityType ability)
     {

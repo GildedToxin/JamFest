@@ -62,8 +62,11 @@ public class PlayerHealth : MonoBehaviour
         rb.gravityScale = 0;
         rb.simulated = false;
 
- 
+
         yield return new WaitForSeconds(respawnDelay);
+
+        animator.Rebind();
+        animator.Update(0f);
 
         // Respawn player
         transform.position = respawnPoint.position;
