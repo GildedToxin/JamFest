@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using DG.Tweening;
 
 
 public enum AbilityType { Dash, DoubleJump, Grapple, Glide, Teleport, Shrink, Hover, SuperSpeed, None }
@@ -60,6 +61,10 @@ public class Abilities : MonoBehaviour
     public float maxGlideTime = 2f;
     private float glideTimer;
 
+    [Header("Hover Settings")]
+    public float hoverDuration = 2f;
+    public ParticleSystem hoverParticle;
+    private bool isHovering = false;
 
     public KeyCode teleportKey = KeyCode.T;
     public KeyCode grappleKey = KeyCode.H;
@@ -135,7 +140,7 @@ public class Abilities : MonoBehaviour
         // --- ABILITY INPUTS ---
         if (Input.GetKeyDown(hoverKey))
         {
-            StartCoroutine(StopAllMomentum(2f));
+            StartCoroutine(HoverAbility());
         }
 
         if (Input.GetKeyDown(KeyCode.Q))
@@ -473,48 +478,53 @@ public class Abilities : MonoBehaviour
 
     }
 
-    public IEnumerator StopAllMomentum(float duration = 2f)
+    IEnumerator HoverAbility()
     {
-        float originalGravity = rb.gravityScale;
-        Vector2 frozenPosition = rb.position;
+        if (isHovering || !canUseAbilities || !HasAbility(AbilityType.Hover))
+            yield break;
 
-        // Disable any movement/gravity
-        rb.gravityScale = 0;
+        if (collision.onGround)
+            yield break;
+
+        isHovering = true;
+        canUseAbilities = false;
+        movement.canMove = false;
+
+        Camera.main.transform.DOComplete();
+        Camera.main.transform.DOShakePosition(0.2f, 0.5f, 14, 90, false, true);
+
+        float originalGravity = rb.gravityScale;
+        RigidbodyConstraints2D originalConstraints = rb.constraints;
+
+        rb.gravityScale = 0f;
         rb.linearVelocity = Vector2.zero;
         rb.constraints = RigidbodyConstraints2D.FreezePosition | RigidbodyConstraints2D.FreezeRotation;
 
-        if (betterJumping != null)
-            betterJumping.enabled = false;
-        if (abilities != null)
-            canUseAbilities = false;
-        movement.canMove = false;
-        movement.isDashing = false;
-        movement.wallGrab = false;
-        movement.wallSlide = false;
+        if (anim != null)
+            anim.SetBool("isHovering", true);
+
+        if (hoverParticle != null)
+            hoverParticle.Play();
 
         float timer = 0f;
-        while (timer < duration)
+        while (timer < hoverDuration)
         {
-            // Forcefully maintain the frozen position
-            rb.position = frozenPosition;
-            rb.linearVelocity = Vector2.zero;
             timer += Time.deltaTime;
             yield return null;
         }
 
-        // Restore physics
-        rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+        rb.constraints = originalConstraints;
         rb.gravityScale = originalGravity;
-
-        if (betterJumping != null)
-            betterJumping.enabled = true;
-        if (abilities != null)
-            canUseAbilities = true;
+        canUseAbilities = true;
         movement.canMove = true;
+        isHovering = false;
 
-        Debug.Log("Player unfrozen.");
+        if (anim != null)
+            anim.SetBool("isHovering", false);
+
+            if (hoverParticle != null)
+            hoverParticle.Stop();
     }
-
 
     public void AddAbility(AbilityType ability) { 
         abilities.Add(ability);
