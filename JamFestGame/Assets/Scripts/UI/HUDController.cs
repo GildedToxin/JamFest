@@ -19,22 +19,36 @@ public class HUDController : MonoBehaviour
     {
         foreach(Transform child in transform.GetChild(0))
         {
-            if(abilityLetters.ContainsKey(child.GetComponent<HUDKey>().ability))
+            var hudKey = child.GetComponent<HUDKey>();
+            if (hudKey == null)
             {
-                var test = abilityLetters[child.GetComponent<HUDKey>().ability].ToUpper() + "_KEY";
+                Debug.LogWarning($"HUDController: Child '{child.name}' does not have a HUDKey component.");
+                continue;
+            }
+
+                print(child.name);
+            print(hudKey.ability);
+
+            if (abilityLetters.ContainsKey(hudKey.ability))
+            {
+                print(hudKey.ability);
+                var test = abilityLetters[hudKey.ability].ToUpper() + "_KEY";
                 HUDKEY1 abilityData = Resources.Load<HUDKEY1>(test);
-                print(abilityData);
-                child.GetComponent<HUDKey>().startingIcon = abilityData.upIcon;
-                child.GetComponent<HUDKey>().pressedIcon = abilityData.downIcon;
-                child.GetComponent<HUDKey>().keyCode = abilityLetters[child.GetComponent<HUDKey>().ability];
-                child.GetComponent<HUDKey>().SetKey();  
+                if(abilityData == null)
+                {
+                    Debug.LogWarning($"HUDController: Resource '{test}' not found.");
+                    continue;
+                }
+                hudKey.startingIcon = abilityData.upIcon;
+                hudKey.pressedIcon = abilityData.downIcon;
+                hudKey.keyCode = abilityLetters[hudKey.ability];
+                hudKey.SetKey();  
             }
             else
             {
-                child.GetComponent<HUDKey>().keyCode = "";
-                child.GetComponent<HUDKey>().RemoveKey();
+                hudKey.keyCode = "";
+                hudKey.RemoveKey();
             }
-            
         }
     }
 }
