@@ -65,47 +65,14 @@ public class AbilityOrb : MonoBehaviour
         if (!abilities)
             return;
 
-        if (abilities.HasAbility(ability))
-        {
-            if (shuffleAbilities)
-                abilities.ResetAbilities();
-            return;
-        }
-
+        if (!abilities.HasAbility(ability))
             abilities.AddAbility(ability);
+
         if (shuffleAbilities)
             abilities.ResetAbilities();
 
 
-        /* 
-        List<AbilityType> availableAbilities = new List<AbilityType>(abilityPool);
-
-        AbilityType rolledAbility = AbilityType.None;
-        bool found = false;
-
-        while (availableAbilities.Count > 0 && !found)
-        {
-            int randomIndex = Random.Range(0, availableAbilities.Count);
-            rolledAbility = availableAbilities[randomIndex];
-
-            if (!abilities.HasAbility(rolledAbility))
-            {
-                abilities.AddAbility(rolledAbility);
-                found = true;
-            }
-            else
-            {
-                // Remove the already owned ability and try again
-                availableAbilities.RemoveAt(randomIndex);
-            }
-        }
-
-        // Optionally, handle the case where no new ability could be given
-        if (!found)
-        {
-            Debug.Log("Player already has all abilities in the pool.");
-        }
-        */
+     
         Destroy(gameObject);
     }
 
