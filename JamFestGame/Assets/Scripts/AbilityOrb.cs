@@ -15,6 +15,8 @@ public class AbilityOrb : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+
+        SFXManager.Instance.Play(SFXManager.Instance.orbCollectClip);
         Abilities abilities = collision.gameObject.GetComponent<Abilities>();
         if (!abilities)
             return;

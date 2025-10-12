@@ -14,10 +14,19 @@ public class RainController : MonoBehaviour
     public bool autoUpdate = true;
     public bool dynamicWeather = true;
 
+    [Header("Particle Systems")]
     public ParticleSystem rainPart;
     public ParticleSystem windPart;
     public ParticleSystem lightningPart;
     public ParticleSystem fogPart;
+
+    [Header("Audio Sources")]
+    public AudioSource rainAudio;  // assign your rain audio source
+    public AudioSource windAudio;  // assign your wind audio source
+
+    [Header("Audio Settings")]
+    [Range(0, 1f)] public float rainMaxVolume = 0.7f;
+    [Range(0, 1f)] public float windMaxVolume = 0.6f;
 
     private ParticleSystem.EmissionModule rainEmission;
     private ParticleSystem.ForceOverLifetimeModule rainForce;
@@ -27,7 +36,6 @@ public class RainController : MonoBehaviour
     private ParticleSystem.MainModule lightningMain;
     private ParticleSystem.EmissionModule fogEmission;
 
-   
     private float rainSeed, windSeed, fogSeed, lightningSeed;
 
     void Awake()
@@ -59,26 +67,21 @@ public class RainController : MonoBehaviour
 
     void RandomizeWeather()
     {
-        float time = Time.time * 0.05f; 
-
+        float time = Time.time * 0.05f;
 
         rainIntensity = SkewedPerlinWithZero(rainSeed, time, 4f, 0.1f);
-
-
         windIntensity = SkewedPerlin(windSeed, time, 0.3f);
         fogIntensity = SkewedPerlin(fogSeed, time, 0.3f);
         lightningIntensity = SkewedPerlin(lightningSeed, time, 0.15f);
     }
 
-
     float SkewedPerlinWithZero(float seed, float time, float power, float zeroThreshold)
     {
-        float n = Mathf.PerlinNoise(seed, time); 
-        n = Mathf.Pow(n, power); 
+        float n = Mathf.PerlinNoise(seed, time);
+        n = Mathf.Pow(n, power);
         if (n < zeroThreshold) n = 0f;
         return Mathf.Clamp01(n);
     }
-
 
     float SkewedPerlin(float seed, float time, float bias)
     {
@@ -90,22 +93,25 @@ public class RainController : MonoBehaviour
 
     void UpdateAll()
     {
-
+        // --- Particle systems ---
         rainEmission.rateOverTime = 200f * masterIntensity * rainIntensity;
         rainForce.x = new ParticleSystem.MinMaxCurve(-25f * windIntensity * masterIntensity, (-3 - 30f * windIntensity) * masterIntensity);
-
 
         windEmission.rateOverTime = 5f * masterIntensity * (windIntensity + fogIntensity);
         windMain.startLifetime = 2f + 5f * (1f - windIntensity);
         windMain.startSpeed = new ParticleSystem.MinMaxCurve(15f * windIntensity, 25f * windIntensity);
 
-
         fogEmission.rateOverTime = (1f + (rainIntensity + windIntensity) * 0.5f) * fogIntensity * masterIntensity;
 
-
         lightningEmission.rateOverTime = (rainIntensity * masterIntensity < 0.7f) ? 0 : lightningIntensity * masterIntensity * 0.4f;
-    }
 
+        // --- Audio ---
+        if (rainAudio != null)
+            rainAudio.volume = Mathf.Lerp(0f, rainMaxVolume, rainIntensity * masterIntensity);
+
+        if (windAudio != null)
+            windAudio.volume = Mathf.Lerp(0f, windMaxVolume, windIntensity * masterIntensity);
+    }
 
     public void OnMasterChanged(float value) { masterIntensity = value; UpdateAll(); }
     public void OnRainChanged(float value) { rainIntensity = value; UpdateAll(); }

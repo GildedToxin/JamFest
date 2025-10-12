@@ -264,8 +264,10 @@ public class Abilities : MonoBehaviour
 
         grappleTarget = closest.transform.position;
 
-        if (rb != null)
+        if (closest != null)
         {
+            grappleTarget = closest.transform.position;
+
             anim.Flip(grappleTarget.x < transform.position.x ? -1 : 1);
             movement.canMove = false;
             rb.gravityScale = 0;
@@ -273,6 +275,8 @@ public class Abilities : MonoBehaviour
             anim.SetBool("isGrappling", true);
             shouldGrappleMove = true;
             isGrappling = true;
+
+            SFXManager.Instance.Play(SFXManager.Instance.grappleClip, 1f, 0.95f, 1.05f);
 
             if (ghostTrail != null)
                 ghostTrail.ShowGhost();
@@ -286,6 +290,7 @@ public class Abilities : MonoBehaviour
         rb.linearVelocity = Vector2.zero;
         rb.gravityScale = 0;
         betterJumping.enabled = false;
+        SFXManager.Instance.Play(SFXManager.Instance.teleportOutClip, 1f);
 
         yield return StartCoroutine(ImplodeEffect());
 
@@ -346,6 +351,7 @@ public class Abilities : MonoBehaviour
         float duration = teleportDuration / 2f;
         float t = 0;
         Vector3 startScale = transform.localScale;
+        SFXManager.Instance.Play(SFXManager.Instance.teleportInClip, 1f);
 
         if (ghostTrail != null)
             ghostTrail.ShowGhost();
@@ -404,6 +410,7 @@ public class Abilities : MonoBehaviour
             transform.localScale = Vector3.one;
             isShrinking = false;
             canUseAbilities = true;
+            SFXManager.Instance.Play(SFXManager.Instance.unshrinkClip, 1f);
 
             if (coll != null)
             {
@@ -422,6 +429,7 @@ public class Abilities : MonoBehaviour
         {
             isShrinking = true;
             canUseAbilities = false;
+            SFXManager.Instance.Play(SFXManager.Instance.shrinkClip, 1f);
 
             if (coll != null)
             {

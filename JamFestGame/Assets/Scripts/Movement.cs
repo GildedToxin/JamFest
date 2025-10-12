@@ -108,12 +108,33 @@ public class Movement : MonoBehaviour
         {
             anim.SetTrigger("jump");
 
-            if (coll.onGround)
+            // Only play jump sound if a jump actually happens
+            if (coll.onGround || (hasDoubleJump && !coll.onWall))
+            {
                 Jump(Vector2.up, false);
-            if (coll.onWall && !coll.onGround)
+                SFXManager.Instance.Play(SFXManager.Instance.jumpClip, 1f, 0.95f, 1.05f);
+            }
+            else if (coll.onWall && !coll.onGround)
+            {
                 WallJump();
+                SFXManager.Instance.Play(SFXManager.Instance.jumpClip, 1f, 0.95f, 1.05f);
+            }
         }
-        if((coll.onGround || coll.onWall) && !doubleJumped)
+
+
+        void GroundTouch()
+
+        {
+            hasDashed = false;
+            isDashing = false;
+            side = anim.sr.flipX ? -1 : 1;
+
+            jumpParticle.Play();
+
+            // Play landing sound
+            SFXManager.Instance.Play(SFXManager.Instance.landClip, 1f, 0.95f, 1.05f);
+        }
+        if ((coll.onGround || coll.onWall) && !hasDoubleJump)
         {
             doubleJumped = true;
         }
@@ -197,15 +218,17 @@ public class Movement : MonoBehaviour
         FindObjectOfType<RippleEffect>().Emit(Camera.main.WorldToViewportPoint(transform.position));
 
         hasDashed = true;
-
         anim.SetTrigger("dash");
 
         rb.linearVelocity = Vector2.zero;
         Vector2 dir = new Vector2(x, y);
-
         rb.linearVelocity += dir.normalized * dashSpeed;
+
+        SFXManager.Instance.Play(SFXManager.Instance.dashClip, 1f, 0.95f, 1.05f);
+
         StartCoroutine(DashWait());
     }
+
 
     IEnumerator DashWait()
     {
