@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class PlayerHealth : MonoBehaviour
 {
@@ -64,7 +65,8 @@ public class PlayerHealth : MonoBehaviour
 
 
         yield return new WaitForSeconds(respawnDelay);
-
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        /*
         animator.Rebind();
         animator.Update(0f);
 
@@ -85,5 +87,6 @@ public class PlayerHealth : MonoBehaviour
             abilities.enabled = true;
 
         animator.SetTrigger("Respawn");
+        */
     }
 }

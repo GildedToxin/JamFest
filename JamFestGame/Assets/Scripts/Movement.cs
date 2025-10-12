@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem.Interactions;
 using DG.Tweening;
+using System.Dynamic;
 
 public class Movement : MonoBehaviour
 {
@@ -30,6 +31,7 @@ public class Movement : MonoBehaviour
     public bool wallSlide;
     public bool isDashing;
     public bool pushedWall;
+    public bool hasDoubleJump;
 
     [Space]
 
@@ -102,10 +104,14 @@ public class Movement : MonoBehaviour
         {
             anim.SetTrigger("jump");
 
-            if (coll.onGround)
+            if (coll.onGround || (hasDoubleJump && !coll.onWall))
                 Jump(Vector2.up, false);
             if (coll.onWall && !coll.onGround)
                 WallJump();
+        }
+        if(coll.onGround && !hasDoubleJump)
+        {
+            hasDoubleJump = true;
         }
 
         if (Input.GetButtonDown("Fire1") && !hasDashed && abilities.canUseAbilities)
@@ -238,8 +244,8 @@ public class Movement : MonoBehaviour
 
         Vector2 wallDir = coll.onRightWall ? Vector2.left : Vector2.right;
 
+       
         Jump((Vector2.up / 1.5f + wallDir / 1.5f), true);
-
         wallJumped = true;
     }
 
@@ -277,6 +283,9 @@ public class Movement : MonoBehaviour
 
     private void Jump(Vector2 dir, bool wall)
     {
+        if (!coll.onGround && !coll.onWall)
+            hasDoubleJump = false;
+
         slideParticle.transform.parent.localScale = new Vector3(ParticleSide(), 1, 1);
         ParticleSystem particle = wall ? wallJumpParticle : jumpParticle;
 
