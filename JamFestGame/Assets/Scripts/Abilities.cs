@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -64,10 +65,26 @@ public class Abilities : MonoBehaviour
     public KeyCode glideKey = KeyCode.G;
     public KeyCode shrinkKey = KeyCode.F;
     public KeyCode dashkKey = KeyCode.LeftShift;
+    public KeyCode doubleJumpKey = KeyCode.O;
+    public KeyCode hoverKey = KeyCode.K;
+
+    private Dictionary<AbilityType, string> abilityLetters = new Dictionary<AbilityType, string>()
+    {
+        { AbilityType.Dash, "" },
+        { AbilityType.DoubleJump, "" },
+        { AbilityType.Grapple, "" },
+        { AbilityType.Glide, "" },
+        { AbilityType.Teleport, "" },
+        { AbilityType.Shrink, "" },
+        { AbilityType.Hover, "" },
+        { AbilityType.SuperSpeed, "" },
+        { AbilityType.None, "" }
+    };
+
 
     string[] keyStrings = new string[]
 {
-    "LeftShift", "Y", "H", "U", "J", "I", "K", "O", "L", "P", "Semicolon", "LeftBracket", "RightBracket", "Quote" };
+    "Y", "H", "U", "J", "I", "K", "O", "L", "P", "Semicolon", "LeftBracket", "RightBracket", "Quote" };
 
 
     void Start()
@@ -114,6 +131,11 @@ public class Abilities : MonoBehaviour
             glideTimer = maxGlideTime;
 
         // --- ABILITY INPUTS ---
+        if (Input.GetKeyDown(hoverKey))
+        {
+            StartCoroutine(StopAllMomentum(2f));
+        }
+
         if (Input.GetKeyDown(KeyCode.Q))
         {
             ResetAbilities();
@@ -419,6 +441,49 @@ public class Abilities : MonoBehaviour
 
     }
 
+    public IEnumerator StopAllMomentum(float duration = 2f)
+    {
+        float originalGravity = rb.gravityScale;
+        Vector2 frozenPosition = rb.position;
+
+        // Disable any movement/gravity
+        rb.gravityScale = 0;
+        rb.linearVelocity = Vector2.zero;
+        rb.constraints = RigidbodyConstraints2D.FreezePosition | RigidbodyConstraints2D.FreezeRotation;
+
+        if (betterJumping != null)
+            betterJumping.enabled = false;
+        if (abilities != null)
+            canUseAbilities = false;
+        movement.canMove = false;
+        movement.isDashing = false;
+        movement.wallGrab = false;
+        movement.wallSlide = false;
+
+        float timer = 0f;
+        while (timer < duration)
+        {
+            // Forcefully maintain the frozen position
+            rb.position = frozenPosition;
+            rb.linearVelocity = Vector2.zero;
+            timer += Time.deltaTime;
+            yield return null;
+        }
+
+        // Restore physics
+        rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+        rb.gravityScale = originalGravity;
+
+        if (betterJumping != null)
+            betterJumping.enabled = true;
+        if (abilities != null)
+            canUseAbilities = true;
+        movement.canMove = true;
+
+        Debug.Log("Player unfrozen.");
+    }
+
+
     public void AddAbility(AbilityType ability) { 
         abilities.Add(ability);
     }
@@ -463,11 +528,20 @@ public class Abilities : MonoBehaviour
                 case AbilityType.Dash:
                     dashkKey = randomKey;
                     break;
+                case AbilityType.DoubleJump:
+                    doubleJumpKey = randomKey;
+                    break;
+                case AbilityType.Hover:
+                    hoverKey = randomKey;
+                    break;
                     // Add more cases for other abilities with keys as needed
             }
 
+            abilityLetters[ability] = randomKey.ToString();
             availableKeys.RemoveAt(index); // Remove used key
         }
+
+        FindAnyObjectByType<HUDController>()?.UpdateKeyIcons(abilityLetters);
     }
     void OnDrawGizmos()
     {

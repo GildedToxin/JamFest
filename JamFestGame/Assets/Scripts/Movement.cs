@@ -100,11 +100,15 @@ public class Movement : MonoBehaviour
         if (!coll.onWall || coll.onGround)
             wallSlide = false;
 
+        if (!coll.onGround && Input.GetKeyDown(abilities.doubleJumpKey) && doubleJumped && !coll.onWall && abilities.canUseAbilities && abilities.HasAbility(AbilityType.DoubleJump)){
+            Jump(Vector2.up, false);
+        }
+
         if (Input.GetButtonDown("Jump"))
         {
             anim.SetTrigger("jump");
 
-            if (coll.onGround || (doubleJumped && !coll.onWall && abilities.canUseAbilities && abilities.HasAbility(AbilityType.DoubleJump)))
+            if (coll.onGround)
                 Jump(Vector2.up, false);
             if (coll.onWall && !coll.onGround)
                 WallJump();
