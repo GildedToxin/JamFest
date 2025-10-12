@@ -1,9 +1,10 @@
 using System.Collections;                               
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 
-public enum AbilityType { Dash, DoubleJump, WallJump, WallGrab, Grapple, Glide, Teleport, Shrink, Hover, None }
+public enum AbilityType { Dash, DoubleJump, WallJump, WallGrab, Grapple, Glide, Teleport, Shrink, Hover, SuperSpeed, None }
 public class Abilities : MonoBehaviour
 {
     private Movement movement;
@@ -45,6 +46,20 @@ public class Abilities : MonoBehaviour
     private Vector2 teleportPreviewSpot;
 
     public float deaccelerateSpeed = 0.15f;
+
+    private bool shouldGrappleMove = false;
+
+
+    public KeyCode teleportKey = KeyCode.T;
+    public KeyCode grappleKey = KeyCode.H;
+    public KeyCode superSpeedKey = KeyCode.J;
+    public KeyCode glideKey = KeyCode.G;
+    public KeyCode shrinkKey = KeyCode.F;
+
+    string[] keyStrings = new string[]
+{
+    "LeftShift", "Y", "H", "U", "J", "I", "K", "O", "L", "P", "Semicolon", "LeftBracket", "RightBracket", "Quote" };
+
 
     void Start()
     {
@@ -89,14 +104,27 @@ public class Abilities : MonoBehaviour
             glideTimer = maxGlideTime;
         }
 
+        if (Input.GetKeyDown(KeyCode.Q)) {
+            ResetAbilities();
+        }
+        // Glide activation
+        if (Input.GetKeyDown(glideKey) && glideTimer > 0 && canUseAbilities)
+        {
+            Glide();
+        }
+        if (Input.GetKeyDown(shrinkKey))
+        {
+            Shrink();
+        }
+
         // Teleport activation  
-        if (Input.GetKeyDown(KeyCode.T) && !isTeleporting && canUseAbilities)
+        if (Input.GetKeyDown(teleportKey) && !isTeleporting && canUseAbilities)
         {
             StartCoroutine(TeleportSequence());
         }
 
         // Grapple activation
-        if (Input.GetKeyDown(KeyCode.H) && canUseAbilities)
+        if (Input.GetKeyDown(grappleKey) && canUseAbilities)
         {
             GrappleHook();
             isGrappling = true;
@@ -104,7 +132,7 @@ public class Abilities : MonoBehaviour
         }
 
         // SuperSpeed activation (hold J, works in air too)
-        if (Input.GetKey(KeyCode.J) && canUseAbilities)
+        if (Input.GetKey(superSpeedKey) && canUseAbilities)
         {
             SuperSpeed();
             // Only play particles if on ground
@@ -121,15 +149,6 @@ public class Abilities : MonoBehaviour
                 speedParticle.Stop();
         }
 
-        // Glide activation
-        if (Input.GetKeyDown(KeyCode.G) && glideTimer > 0 && canUseAbilities)
-        {
-            Glide();
-        }
-        if (Input.GetKeyDown(KeyCode.F))
-        {
-            Shrink();
-        }
 
         // Gliding Update Logic
         if (isGliding && glideTimer > 0)
@@ -415,6 +434,45 @@ public class Abilities : MonoBehaviour
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce); // GOOD: preserves X speed
         }
     }
+
+    public void ResetAbilities()
+    {
+        // Create a temporary list of available keys
+        List<string> availableKeys = new List<string>(keyStrings);
+
+        foreach (AbilityType ability in abilities)
+        {
+            if (availableKeys.Count == 0)
+                break; // No more keys to assign
+
+            int index = Random.Range(0, availableKeys.Count);
+            KeyCode randomKey = (KeyCode)System.Enum.Parse(typeof(KeyCode), availableKeys[index]);
+
+            switch (ability)
+            {
+                case AbilityType.Grapple:
+                    grappleKey = randomKey;
+                    break;
+                case AbilityType.Teleport:
+                    teleportKey = randomKey;
+                    break;
+                case AbilityType.SuperSpeed:
+                    superSpeedKey = randomKey;
+                    break;
+                case AbilityType.Glide:
+                    glideKey = randomKey;
+                    break;
+                case AbilityType.Shrink:
+                    shrinkKey = randomKey;
+                    break;
+                    // Add more cases for other abilities with keys as needed
+            }
+
+            availableKeys.RemoveAt(index); // Remove used key
+        }
+    }
+
+
 
     void OnDrawGizmos()
     {
