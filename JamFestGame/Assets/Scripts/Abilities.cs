@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System.Collections;                               
 
 
 public enum AbilityType { Dash, DoubleJump, WallJump, WallGrab, Grapple, Glide, Teleport, Shrink, Hover, None }
@@ -16,10 +17,19 @@ public class Abilities : MonoBehaviour
 
     private float defaultSpeed;
     private Vector2 grappleTarget;
+    private float originalGravity;
 
     public List<AbilityType> abilities = new List<AbilityType>();
 
     public float teleportForce = 5f;
+
+    public float teleportDuration = 0.3f;
+    public AnimationCurve teleportCurve;
+
+    public ParticleSystem teleportInEffect;
+    public ParticleSystem teleportOutEffect;
+
+    private SpriteRenderer sr;
 
     void Start()
     {
@@ -28,8 +38,16 @@ public class Abilities : MonoBehaviour
         collision = GetComponent<Collision>();
         betterJumping = GetComponent<BetterJumping>();
         defaultSpeed = movement.speed;
+        sr = GetComponent<SpriteRenderer>();
+
+        if (teleportCurve == null)
+        {
+            teleportCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
+        }
+
+        originalGravity = rb.gravityScale;
     }
-    
+
     void Update()
     {
         // For testing purposes, activate abilities with key presses
@@ -44,10 +62,9 @@ public class Abilities : MonoBehaviour
             isGrappling = true;
             FindObjectOfType<GhostTrail>().ShowGhost();
         }
-        if (Input.GetKeyDown(KeyCode.T))
+        if (Input.GetKeyDown(KeyCode.T) && !isTeleporting)
         {
-            Teleport();
-            isTeleporting = true;
+            StartCoroutine(TeleportSequence());
         }
 
         if (Input.GetKey(KeyCode.J))
@@ -146,21 +163,84 @@ public class Abilities : MonoBehaviour
             
         }
     }
-    public void Teleport()
+
+    IEnumerator TeleportSequence()
     {
-        Debug.Log("Teleport ability activated.");
+        isTeleporting = true;
+        movement.canMove = false;
+        rb.linearVelocity = Vector2.zero;
+        rb.gravityScale = 0;
+        betterJumping.enabled = false;
+
+        yield return StartCoroutine(ImplodeEffect());
+
+        if (teleportInEffect)
+        {
+            ParticleSystem instance = Instantiate(teleportInEffect, transform.position, Quaternion.identity);
+            Destroy(instance.gameObject, instance.main.duration + instance.main.startLifetime.constantMax);
+
+        }
 
         float x = Input.GetAxis("Horizontal");
         float y = Input.GetAxis("Vertical");
-        float xRaw = Input.GetAxisRaw("Horizontal");
-        float yRaw = Input.GetAxisRaw("Vertical");
-        Vector2 dir = new Vector2(x, y);
+        Vector2 dir = new Vector2(x, y).normalized;
 
-        Vector2 teleportDirection = dir * teleportForce;
+        transform.position = (Vector2)transform.position + dir * teleportForce;
 
-        transform.position = Vector2.Lerp(transform.position, transform.position + (Vector3)teleportDirection, 1f);
+        if (teleportOutEffect) 
+        {
+            ParticleSystem instance = Instantiate(teleportOutEffect, transform.position, Quaternion.identity);
+            Destroy(instance.gameObject, instance.main.duration + instance.main.startLifetime.constantMax);
+        }
 
+        yield return StartCoroutine(ReformEffect());
+
+        rb.gravityScale = originalGravity;
+        betterJumping.enabled = true;
+        movement.canMove = true;
+        isTeleporting = false;
     }
+
+    IEnumerator ImplodeEffect()
+    {
+        float duration = teleportDuration / 2f;
+        float t = 0;
+        Vector3 startScale = transform.localScale;
+        FindObjectOfType<GhostTrail>().ShowGhost();
+        teleportInEffect.Play();
+
+        while (t < duration)
+        {
+            t += Time.deltaTime;
+            float p = t / duration;
+            float scaleFactor = Mathf.Lerp(1f, 0f, teleportCurve.Evaluate(p));
+            transform.localScale = startScale * scaleFactor;
+
+            if (sr) sr.color = new Color(1, 1, 1, Mathf.Lerp(1f, 0.2f, p));
+            yield return null;
+        }
+    }
+
+    IEnumerator ReformEffect()
+    {
+        float duration = teleportDuration / 2f;
+        float t = 0;
+        Vector3 endScale = Vector3.one;
+
+
+        while (t < duration)
+        {
+            t += Time.deltaTime;
+            float p = t / duration;
+            float scaleFactor = Mathf.Lerp(0f, 1f, teleportCurve.Evaluate(p));
+            transform.localScale = endScale * scaleFactor;
+            if (sr) sr.color = new Color(1, 1, 1, Mathf.Lerp(0.2f, 1f, p));
+            yield return null;
+        }
+
+        teleportOutEffect.Play();
+    }
+
 
     public void SuperSpeed()
     {
