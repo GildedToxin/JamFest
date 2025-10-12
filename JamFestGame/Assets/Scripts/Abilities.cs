@@ -129,7 +129,7 @@ public class Abilities : MonoBehaviour
             Shrink();
         }
 
-        // Teleport activation  
+        // Teleport activation
         if (Input.GetKeyDown(teleportKey) && !isTeleporting && canUseAbilities)
         {
             StartCoroutine(TeleportSequence());
@@ -181,18 +181,31 @@ public class Abilities : MonoBehaviour
             float y = Input.GetAxis("Vertical");
             Vector2 dir = new Vector2(x, y).normalized;
             teleportPreviewSpot = (Vector2)transform.position + dir * teleportForce;
-        
+
     }
+
+    public Vector2 launchDir;
     void FixedUpdate()
     {
-        // --- GRAPPLE MOVEMENT ---
         if (isGrappling && shouldGrappleMove)
         {
-            rb.AddForce((grappleTarget - currentPos) * grappleSpeed / 1.3f, ForceMode2D.Impulse);
-            rb.gravityScale = 0f;
+            Vector2 toTarget = grappleTarget - rb.position;
+            float distance = toTarget.magnitude;
+            Vector2 directionToTarget = toTarget.normalized;
 
-            if (Vector2.Distance(rb.position, grappleTarget) < 2f)
+            float moveStep = grappleSpeed * Time.fixedDeltaTime;
+
+            if (distance > 0.1f) // move straight toward target
             {
+                rb.MovePosition(rb.position + directionToTarget * Mathf.Min(moveStep, distance));
+                rb.gravityScale = 0f;
+            }
+            else // reached target, launch
+            {
+                // Add horizontal movement toward the target
+               // launchDir = new Vector2(test.x, 1f).normalized; // always move horizontally toward target, slight upward
+                rb.linearVelocity = test * 50;
+
                 anim.SetBool("isGrappling", false);
                 isGrappling = false;
                 shouldGrappleMove = false;
@@ -203,9 +216,7 @@ public class Abilities : MonoBehaviour
         }
 
         if (rb.linearVelocity.magnitude > 40f)
-        {
             rb.linearVelocity = rb.linearVelocity.normalized * 40f;
-        }
     }
 
     // ========== ABILITY METHODS ==========
@@ -216,6 +227,7 @@ public class Abilities : MonoBehaviour
         isGliding = true;
     }
 
+    public Vector2 test;
     public void GrappleHook()
     {
         Debug.Log("Grapple Hook ability activated.");
@@ -264,6 +276,8 @@ public class Abilities : MonoBehaviour
             if (ghostTrail != null)
                 ghostTrail.ShowGhost();
         }
+
+        test = grappleTarget - rb.position;
     }
 
     IEnumerator TeleportSequence()
