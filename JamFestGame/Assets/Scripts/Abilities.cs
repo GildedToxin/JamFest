@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 
-public enum AbilityType { Dash, DoubleJump, WallJump, WallGrab, Grapple, Glide, Teleport, Shrink, Hover, SuperSpeed, None }
+public enum AbilityType { Dash, DoubleJump, Grapple, Glide, Teleport, Shrink, Hover, SuperSpeed, None }
 public class Abilities : MonoBehaviour
 {
     private Movement movement;
@@ -63,6 +63,7 @@ public class Abilities : MonoBehaviour
     public KeyCode superSpeedKey = KeyCode.J;
     public KeyCode glideKey = KeyCode.G;
     public KeyCode shrinkKey = KeyCode.F;
+    public KeyCode dashkKey = KeyCode.LeftShift;
 
     string[] keyStrings = new string[]
 {
@@ -118,27 +119,27 @@ public class Abilities : MonoBehaviour
             ResetAbilities();
         }
         // Glide activation
-        if (Input.GetKeyDown(glideKey) && glideTimer > 0 && canUseAbilities)
+        if (Input.GetKeyDown(glideKey) && glideTimer > 0 && canUseAbilities && HasAbility(AbilityType.Glide))
         {
             Glide();
         }
-        if (Input.GetKeyDown(shrinkKey))
+        if (Input.GetKeyDown(shrinkKey) && HasAbility(AbilityType.Shrink))
         {
             Shrink();
         }
 
         // Teleport activation  
-        if (Input.GetKeyDown(teleportKey) && !isTeleporting && canUseAbilities)
+        if (Input.GetKeyDown(teleportKey) && !isTeleporting && canUseAbilities && HasAbility(AbilityType.Teleport))
         {
             StartCoroutine(TeleportSequence());
         }
         // Grapple activation
-        if (Input.GetKeyDown(grappleKey) && canUseAbilities)
+        if (Input.GetKeyDown(grappleKey) && canUseAbilities && HasAbility(AbilityType.Grapple))
         {
             GrappleHook();
         }
                 // SuperSpeed activation (hold J, works in air too)
-                if (Input.GetKey(superSpeedKey) && canUseAbilities && (collision.onGround || isSuperSpeed))
+                if (Input.GetKey(superSpeedKey) && canUseAbilities && (collision.onGround || isSuperSpeed) && HasAbility(AbilityType.SuperSpeed))
                 {
                     SuperSpeed();
 
@@ -418,7 +419,9 @@ public class Abilities : MonoBehaviour
 
     }
 
-    public void AddAbility(AbilityType ability) => abilities.Add(ability);
+    public void AddAbility(AbilityType ability) { 
+        abilities.Add(ability);
+    }
     public bool HasAbility(AbilityType ability) => abilities.Contains(ability);
 
     public void SuperSpeedJump(float jumpForce)
@@ -456,6 +459,9 @@ public class Abilities : MonoBehaviour
                     break;
                 case AbilityType.Shrink:
                     shrinkKey = randomKey;
+                    break;
+                case AbilityType.Dash:
+                    dashkKey = randomKey;
                     break;
                     // Add more cases for other abilities with keys as needed
             }
