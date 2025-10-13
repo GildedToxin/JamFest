@@ -3,9 +3,11 @@ using UnityEngine;
 
 public class HUDController : MonoBehaviour
 {
+    public bool refreshAbilitiesOnStart = true;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        if(refreshAbilitiesOnStart)
         FindAnyObjectByType<Abilities>().ResetAbilities();
     }
 

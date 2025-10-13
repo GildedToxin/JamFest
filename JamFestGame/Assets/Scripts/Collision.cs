@@ -4,12 +4,10 @@ using UnityEngine;
 
 public class Collision : MonoBehaviour
 {
-
     [Header("Layers")]
     public LayerMask groundLayer;
 
-    [Space]
-
+    [Header("State")]
     public bool onGround;
     public bool onWall;
     public bool onRightWall;
@@ -17,62 +15,61 @@ public class Collision : MonoBehaviour
     public int wallSide;
     private bool wasOnWall = false;
 
-    [Space]
-
-    [Header("Collision")]
-
     public float collisionRadius = 0.25f;
     public Vector2 bottomOffset, rightOffset, leftOffset;
-    private Color debugCollisionColor = Color.red;
 
-    void Start()
-    {
-        
-    }
+    [Header("Ground Check")]
+    public BoxCollider2D groundCheck;
+
+    [Header("Ray Settings")]
+    public float skinWidth = 0.02f;
 
     void Update()
     {
-        onGround = Physics2D.OverlapCircle((Vector2)transform.position + bottomOffset, collisionRadius, groundLayer);
-        onRightWall = Physics2D.OverlapCircle((Vector2)transform.position + rightOffset, collisionRadius, groundLayer);
-        onLeftWall = Physics2D.OverlapCircle((Vector2)transform.position + leftOffset, collisionRadius, groundLayer);
-        onWall = onRightWall || onLeftWall;
+        CheckWalls();
+        CheckGround();
 
         wallSide = onRightWall ? -1 : 1;
-
-        if (onWall && !wasOnWall)
-        {
-            SnapToWall();
-        }
 
         wasOnWall = onWall;
     }
 
-
-    private void SnapToWall()
+    void CheckGround()
     {
-        Vector2 snapPosition = transform.position;
-
-        if (onRightWall)
+        if (groundCheck != null)
         {
-            snapPosition.x = transform.position.x + (rightOffset.x - collisionRadius);
+            Vector2 boxCenter = groundCheck.bounds.center;
+            Vector2 boxSize = groundCheck.bounds.size;
+            onGround = Physics2D.OverlapBox(boxCenter, boxSize, 0f, groundLayer);
         }
-        else if (onLeftWall)
-        {
-            snapPosition.x = transform.position.x + (leftOffset.x + collisionRadius);
-        }
-
-        transform.position = snapPosition;
     }
 
-    /*
+    void CheckWalls()
+    {
+        Bounds bounds = GetComponent<CapsuleCollider2D>().bounds;
+        Vector2 center = bounds.center;
+
+        Vector2 rightOrigin = new Vector2(center.x + bounds.extents.x - skinWidth, center.y);
+        Vector2 leftOrigin = new Vector2(center.x - bounds.extents.x + skinWidth, center.y);
+
+        onRightWall = Physics2D.Raycast(rightOrigin, Vector2.right, skinWidth * 2f, groundLayer);
+        onLeftWall = Physics2D.Raycast(leftOrigin, Vector2.left, skinWidth * 2f, groundLayer);
+
+        onWall = onRightWall || onLeftWall;
+    }
+
     void OnDrawGizmos()
     {
-        Gizmos.color = Color.red;
+        if (!Application.isPlaying) return;
 
-        var positions = new Vector2[] { bottomOffset, rightOffset, leftOffset };
+        Bounds bounds = GetComponent<CapsuleCollider2D>().bounds;
+        Vector2 center = bounds.center;
 
-        Gizmos.DrawWireSphere((Vector2)transform.position  + bottomOffset, collisionRadius);
-        Gizmos.DrawWireSphere((Vector2)transform.position + rightOffset, collisionRadius);
-        Gizmos.DrawWireSphere((Vector2)transform.position + leftOffset, collisionRadius);
-    } */
+        Vector2 rightOrigin = new Vector2(center.x + bounds.extents.x - skinWidth, center.y);
+        Vector2 leftOrigin = new Vector2(center.x - bounds.extents.x + skinWidth, center.y);
+
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawLine(rightOrigin, rightOrigin + Vector2.right * skinWidth * 2f);
+        Gizmos.DrawLine(leftOrigin, leftOrigin + Vector2.left * skinWidth * 2f);
+    }
 }
