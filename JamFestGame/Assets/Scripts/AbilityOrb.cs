@@ -78,6 +78,7 @@ public class AbilityOrb : MonoBehaviour
         if (shuffleAbilities)
             abilities.ResetAbilities();
 
+        FindObjectOfType<RippleEffect>().Emit(Camera.main.WorldToViewportPoint(transform.position));
         Destroy(gameObject);
     }
 
