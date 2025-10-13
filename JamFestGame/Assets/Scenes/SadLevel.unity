@@ -41465,7 +41465,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09faf031922d36043850e881da67a737, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Parallax
-  cam: {fileID: 0}
+  cam: {fileID: 715306954}
   relativeMove: 0.8
   lockY: 0
 --- !u!483693784 &256461514
@@ -49942,7 +49942,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09faf031922d36043850e881da67a737, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Parallax
-  cam: {fileID: 0}
+  cam: {fileID: 715306954}
   relativeMove: 0.3
   lockY: 1
 --- !u!483693784 &1534145630

@@ -143,11 +143,6 @@ public class Abilities : MonoBehaviour
         {
             StartCoroutine(HoverAbility());
         }
-
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            ResetAbilities();
-        }
         // Glide activation
         if (Input.GetKeyDown(glideKey) && glideTimer > 0 && canUseAbilities && HasAbility(AbilityType.Glide))
         {
