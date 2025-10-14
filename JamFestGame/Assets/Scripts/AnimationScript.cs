@@ -36,9 +36,6 @@ public class AnimationScript : MonoBehaviour
 
     public void SetHorizontalMovement(float x, float y, float yVel)
     {
-        if (!move.canMove) 
-            return;
-
         anim.SetFloat("HorizontalAxis", x);
         anim.SetFloat("VerticalAxis", y);
         anim.SetFloat("VerticalVelocity", yVel);

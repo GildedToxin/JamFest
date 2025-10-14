@@ -18,6 +18,11 @@ public class LavaScript : MonoBehaviour
         {
             this.transform.localScale += new Vector3(0, lavaSpeed, 0) * Time.deltaTime;
         }
+
+        if (trigger.triggered)
+        {
+            canLava = true;
+        }
     }  
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -26,9 +31,5 @@ public class LavaScript : MonoBehaviour
         {
             print("Player lavaed D:");
         }
-    }
-    public void ResetLava()
-    {
-        this.transform.localScale = new Vector3(this.transform.localScale.x, 1, this.transform.localScale.z);
     }
 }
