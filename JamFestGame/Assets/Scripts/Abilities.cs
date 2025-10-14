@@ -107,20 +107,12 @@ public class Abilities : MonoBehaviour
 
         defaultSpeed = movement.speed;
         originalGravity = rb.gravityScale;
-        CapsuleCollider2D capsule = GetComponent<CapsuleCollider2D>();
+        BoxCollider2D capsule = GetComponent<BoxCollider2D>();
 
         if (capsule != null)
         {
             originalCapsulesSize = capsule.size;
             originalCapsuleOffset = capsule.offset;
-        }
-
-        if (collision != null)
-        {
-            originalCollisionRadius = collision.collisionRadius;
-            originalBottomOffset = collision.bottomOffset;
-            originalRightOffset = collision.rightOffset;
-            originalLeftOffset = collision.leftOffset;
         }
 
         if (teleportCurve == null)
@@ -430,7 +422,7 @@ public class Abilities : MonoBehaviour
     public void Shrink()
     {
         Collision coll = GetComponent<Collision>();
-        CapsuleCollider2D capsule = GetComponent<CapsuleCollider2D>();
+        BoxCollider2D capsule = GetComponent<BoxCollider2D>();
 
         if (isShrinking)
         {
@@ -441,10 +433,8 @@ public class Abilities : MonoBehaviour
 
             if (coll != null)
             {
-                coll.collisionRadius = originalCollisionRadius;
-                coll.bottomOffset = originalBottomOffset;
-                coll.rightOffset = originalRightOffset;
-                coll.leftOffset = originalLeftOffset;
+                coll.groundCheck.transform.localPosition = coll.groundColliderBigPosition;
+                coll.groundCheck.size = coll.groundColliderBigSize;
             }
             if (capsule != null)
             {
@@ -460,10 +450,8 @@ public class Abilities : MonoBehaviour
 
             if (coll != null)
             {
-                coll.collisionRadius *= 0.5f;
-                coll.bottomOffset *= 0.5f;
-                coll.rightOffset *= 0.5f;
-                coll.leftOffset *= 0.5f;
+                coll.groundCheck.transform.localPosition = coll.groundColliderSmallPosition;
+                coll.groundCheck.size = coll.groundColliderSmallSize;
             }
 
             if (capsule!= null)

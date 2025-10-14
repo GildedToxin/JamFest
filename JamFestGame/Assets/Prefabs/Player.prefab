@@ -5329,7 +5329,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2407688030155094753}
   - component: {fileID: 3344135219783041264}
-  - component: {fileID: 6850178079110695962}
+  - component: {fileID: 7009751715124183456}
   - component: {fileID: 2703635534725265265}
   - component: {fileID: 1973449748522052157}
   - component: {fileID: 2793760010787750395}
@@ -5396,8 +5396,8 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 4
---- !u!70 &6850178079110695962
-CapsuleCollider2D:
+--- !u!61 &7009751715124183456
+BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -5431,8 +5431,17 @@ CapsuleCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
   m_Size: {x: 0.83, y: 1.5}
-  m_Direction: 0
+  m_EdgeRadius: 0
 --- !u!114 &2703635534725265265
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5495,20 +5504,18 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
-  whatIsWall:
-    serializedVersion: 2
-    m_Bits: 0
   onGround: 0
   onWall: 0
   onRightWall: 0
   onLeftWall: 0
   wallSide: 0
-  collisionRadius: 0.2
-  bottomOffset: {x: 0, y: -0.79}
-  rightOffset: {x: 0.45, y: 0}
-  leftOffset: {x: -0.45, y: 0}
   groundCheck: {fileID: 6483660684778762390}
   skinWidth: 0.02
+  boxCollider: {fileID: 7009751715124183456}
+  groundColliderBigPosition: {x: 0, y: 0, z: 0}
+  groundColliderSmallPosition: {x: 0, y: -0.29, z: 0}
+  groundColliderBigSize: {x: 0, y: 0}
+  groundColliderSmallSize: {x: 0.4, y: 0.33}
 --- !u!114 &2639631367771431498
 MonoBehaviour:
   m_ObjectHideFlags: 0

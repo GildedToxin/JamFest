@@ -15,8 +15,7 @@ public class Collision : MonoBehaviour
     public int wallSide;
     private bool wasOnWall = false;
 
-    public float collisionRadius = 0.25f;
-    public Vector2 bottomOffset, rightOffset, leftOffset;
+
 
     [Header("Ground Check")]
     public BoxCollider2D groundCheck;
@@ -24,6 +23,19 @@ public class Collision : MonoBehaviour
     [Header("Ray Settings")]
     public float skinWidth = 0.02f;
 
+    public BoxCollider2D boxCollider;
+
+    public Vector3 groundColliderBigPosition;
+    public Vector3 groundColliderSmallPosition;
+
+    public Vector2 groundColliderBigSize;
+    public Vector2 groundColliderSmallSize;
+
+    private void Start()
+    {
+        groundColliderBigPosition = groundCheck.transform.localPosition;
+        groundColliderBigSize = groundCheck.size;
+    }
     void Update()
     {
         CheckWalls();
@@ -46,7 +58,7 @@ public class Collision : MonoBehaviour
 
     void CheckWalls()
     {
-        Bounds bounds = GetComponent<CapsuleCollider2D>().bounds;
+        Bounds bounds = boxCollider.bounds;
         Vector2 center = bounds.center;
 
         Vector2 rightOrigin = new Vector2(center.x + bounds.extents.x - skinWidth, center.y);
@@ -62,7 +74,7 @@ public class Collision : MonoBehaviour
     {
         if (!Application.isPlaying) return;
 
-        Bounds bounds = GetComponent<CapsuleCollider2D>().bounds;
+        Bounds bounds = GetComponent<BoxCollider2D>().bounds;
         Vector2 center = bounds.center;
 
         Vector2 rightOrigin = new Vector2(center.x + bounds.extents.x - skinWidth, center.y);
