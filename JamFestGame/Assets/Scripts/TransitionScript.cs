@@ -14,23 +14,17 @@ public class TransitionScript : MonoBehaviour
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.W) && canUseDoor)
-        {
             UnityEngine.SceneManagement.SceneManager.LoadScene(transitionSceneName);
-        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Player"))
-        {
             canUseDoor = true;
-        }
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.CompareTag("Player"))
-        {
             canUseDoor = false;
-        }
     }
 }

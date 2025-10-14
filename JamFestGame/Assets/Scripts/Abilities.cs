@@ -9,6 +9,7 @@ using DG.Tweening;
 public enum AbilityType { Dash, DoubleJump, Grapple, Glide, Teleport, Shrink, Hover, SuperSpeed, None }
 public class Abilities : MonoBehaviour
 {
+    [Header("Componets")]
     private Movement movement;
     private Collision collision;
     private Rigidbody2D rb;
@@ -16,56 +17,42 @@ public class Abilities : MonoBehaviour
     private AnimationScript anim;
     private GhostTrail ghostTrail;
     private SpriteRenderer sr;
+    private BoxCollider2D playerBoxCollider;
 
-    public bool isGrappling = false;
-    public bool isTeleporting = false;
-    public bool isGliding = false;
-    public bool isSuperSpeed = false;
-    public bool isShrinking = false;
-    public bool canUseAbilities = true;
+    public List<AbilityType> abilities = new List<AbilityType>();
+
+    #region Ability State
+    [Header("Ability States")]
+    [field: SerializeField] public bool IsHovering { get; private set; }
+    [field: SerializeField] public bool IsGliding { get; private set; }
+    [field: SerializeField] public bool IsGrappling { get; private set; }
+    [field: SerializeField] public bool IsSuperSpeed { get; private set; }
+    [field: SerializeField] public bool IsShrinking { get; private set; }
+    [field: SerializeField] public bool IsTeleporting { get; private set; }
+    [field: SerializeField] public bool CanUseAbilities { get; set; } = true;
+    [field: SerializeField] public bool CanTeleport { get; set; } = true;
     private bool hasGrappled = false;
-    public bool canTeleport = true;
+    #endregion
 
     private float defaultSpeed;
     private float originalGravity;
 
     private Vector2 grappleTarget;
-    private Vector2 currentPos;
     private bool shouldGrappleMove = false;
-    private float originalCollisionRadius;
-    private Vector2 originalBottomOffset;
-    private Vector2 originalRightOffset;
-    private Vector2 originalLeftOffset;
+
+
     private Vector2 originalCapsulesSize;
     private Vector2 originalCapsuleOffset;
 
-    public List<AbilityType> abilities = new List<AbilityType>();
 
-    [Header("Teleport Settings")]
-    public float teleportForce = 5f;
-    public float teleportDuration = 0.3f;
-    public AnimationCurve teleportCurve;
-    public ParticleSystem teleportInEffect;
-    public ParticleSystem teleportOutEffect;
-    private Vector2 teleportPreviewSpot;
-
-    [Header("Super Speed")]
-    public ParticleSystem speedParticle;
-    public float deaccelerateSpeed = 0.15f;
-
-    [Header("Grapple Settings")]
-    public float grappleSpeed = 10f;
-    public Vector2 grappleLaunchDirection = Vector2.up;
-    public float grappleLaunchForce = 10f;
-
-    [Header("Glide Settings")]
-    public float maxGlideTime = 2f;
-    private float glideTimer;
-
-    [Header("Hover Settings")]
-    public float hoverDuration = 2f;
-    public ParticleSystem hoverParticle;
-    private bool isHovering = false;
+    #region Ability Instances
+    [Header("Ability Settings")]
+    public TeleportSettings teleport = new TeleportSettings();
+    public SuperSpeedSettings superSpeed = new SuperSpeedSettings();
+    public GrappleSettings grapple = new GrappleSettings();
+    public GlideSettings glide = new GlideSettings();
+    public HoverSettings hover = new HoverSettings();
+    #endregion
 
     public KeyCode teleportKey = KeyCode.T;
     public KeyCode grappleKey = KeyCode.H;
@@ -89,13 +76,10 @@ public class Abilities : MonoBehaviour
         { AbilityType.None, "" }
     };
 
-
-    string[] keyStrings = new string[]
-{
-    "Y", "H", "U", "J", "I", "K", "O", "L", "P", "Semicolon", "LeftBracket", "RightBracket", "Quote" };
+    private string[] keyStrings = new string[] { "Y", "H", "U", "J", "I", "K", "O", "L", "P", "Semicolon", "LeftBracket", "RightBracket", "Quote" };
 
 
-    void Start()
+    void Awake()
     {
         movement = GetComponent<Movement>();
         rb = GetComponent<Rigidbody2D>();
@@ -103,40 +87,43 @@ public class Abilities : MonoBehaviour
         betterJumping = GetComponent<BetterJumping>();
         anim = GetComponentInChildren<AnimationScript>();
         sr = GetComponent<SpriteRenderer>();
-        ghostTrail = FindObjectOfType<GhostTrail>();
+        ghostTrail = FindAnyObjectByType<GhostTrail>();
+        playerBoxCollider = GetComponent<BoxCollider2D>();
+    }
+
+    void Start()
+    {
 
         defaultSpeed = movement.speed;
         originalGravity = rb.gravityScale;
-        BoxCollider2D capsule = GetComponent<BoxCollider2D>();
 
-        if (capsule != null)
+        if (playerBoxCollider != null)
         {
-            originalCapsulesSize = capsule.size;
-            originalCapsuleOffset = capsule.offset;
+            originalCapsulesSize = playerBoxCollider.size;
+            originalCapsuleOffset = playerBoxCollider.offset;
         }
 
-        if (teleportCurve == null)
-            teleportCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
+        if (teleport.Curve == null)
+            teleport.Curve = AnimationCurve.EaseInOut(0, 0, 1, 1);
 
-        glideTimer = maxGlideTime;
+        glide.Timer = glide.MaxTime;
     }
     void Update()
     {
         // --- GENERAL MOVEMENT ---
-        if (!isSuperSpeed)
-            movement.speed = Mathf.Lerp(movement.speed, defaultSpeed, deaccelerateSpeed);
+        if (!IsSuperSpeed)
+            movement.speed = Mathf.Lerp(movement.speed, defaultSpeed, superSpeed.DeaccelerateSpeed);
 
         // Reset glide timer when grounded
         if (collision.onGround)
-            glideTimer = maxGlideTime;
+            glide.Timer = glide.MaxTime;
 
         // --- ABILITY INPUTS ---
         if (Input.GetKeyDown(hoverKey))
         {
             StartCoroutine(HoverAbility());
         }
-        // Glide activation
-        if (Input.GetKeyDown(glideKey) && glideTimer > 0 && canUseAbilities && HasAbility(AbilityType.Glide))
+        if (Input.GetKeyDown(glideKey) && glide.Timer > 0 && CanUseAbilities && HasAbility(AbilityType.Glide))
         {
             Glide();
         }
@@ -144,73 +131,61 @@ public class Abilities : MonoBehaviour
         {
             Shrink();
         }
-
-        // Teleport activation  
-        if (Input.GetKeyDown(teleportKey) && !isTeleporting && canUseAbilities && HasAbility(AbilityType.Teleport) && canTeleport)
+        if (Input.GetKeyDown(teleportKey) && !IsTeleporting && IsHovering && HasAbility(AbilityType.Teleport) && CanTeleport)
         {
             StartCoroutine(TeleportSequence());
         }
-        // Grapple activation
-        if (Input.GetKeyDown(grappleKey) && canUseAbilities && HasAbility(AbilityType.Grapple))
+        if (Input.GetKeyDown(grappleKey) && IsHovering && HasAbility(AbilityType.Grapple))
         {
             GrappleHook();
         }
-                // SuperSpeed activation (hold J, works in air too)
-                if (Input.GetKey(superSpeedKey) && canUseAbilities && (collision.onGround || isSuperSpeed) && HasAbility(AbilityType.SuperSpeed))
-                {
-                    SuperSpeed();
+        if (Input.GetKey(superSpeedKey) && IsHovering && (collision.onGround || IsSuperSpeed) && HasAbility(AbilityType.SuperSpeed))
+        {
+            SuperSpeed();
 
-                if (!collision.onGround && speedParticle && speedParticle.isPlaying)
-                    speedParticle.Stop();
+            if (!collision.onGround && superSpeed.SpeedParticle && superSpeed.SpeedParticle.isPlaying)
+                superSpeed.SpeedParticle.Stop();
 
-                }
-                else
-                {
-                    isSuperSpeed = false;
-                    if (speedParticle && speedParticle.isPlaying)
-                        speedParticle.Stop();
-                }
-
-
-
-
-            // --- GLIDE LOGIC ---
-            if (isGliding && glideTimer > 0)
+            else
             {
-                rb.gravityScale = 0.5f;
-                betterJumping.enabled = false;
-                glideTimer -= Time.deltaTime;
-
-                if (glideTimer <= 0)
-                    isGliding = false;
+                IsSuperSpeed = false;
+                if (superSpeed.SpeedParticle && superSpeed.SpeedParticle.isPlaying)
+                    superSpeed.SpeedParticle.Stop();
             }
+        }
+        if (IsGliding && glide.Timer > 0)
+        {
+            rb.gravityScale = 0.5f;
+            betterJumping.enabled = false;
+            glide.Timer -= Time.deltaTime;
 
-            if (!(isGliding || isGrappling) || collision.onGround)
-            {
-                rb.gravityScale = 3f;
-                isGliding = false;
-                betterJumping.enabled = true;
-            }
+            if (glide.Timer <= 0)
+                IsGliding = false;
+        }
 
-            // --- TELEPORT PREVIEW ---
-            float x = Input.GetAxis("Horizontal");
-            float y = Input.GetAxis("Vertical");
-            Vector2 dir = new Vector2(x, y).normalized;
-            teleportPreviewSpot = (Vector2)transform.position + dir * teleportForce;
+        if (!(IsGliding || IsGrappling) || collision.onGround)
+        {
+            rb.gravityScale = 3f;
+            IsGliding = false;
+            betterJumping.enabled = true;
+        }
+
+        float x = Input.GetAxis("Horizontal");
+        float y = Input.GetAxis("Vertical");
+        Vector2 dir = new Vector2(x, y).normalized;
+        teleport.PreviewSpot = (Vector2)transform.position + dir * teleport.Force;
         if (collision.onGround)
-            canTeleport = true;
+            CanTeleport = true;
     }
-
-    public Vector2 launchDir;
     void FixedUpdate()
     {
-        if (isGrappling && shouldGrappleMove)
+        if (IsGrappling && shouldGrappleMove)
         {
             Vector2 toTarget = grappleTarget - rb.position;
             float distance = toTarget.magnitude;
             Vector2 directionToTarget = toTarget.normalized;
 
-            float moveStep = grappleSpeed * Time.fixedDeltaTime;
+            float moveStep = grapple.Speed * Time.fixedDeltaTime;
 
             if (distance > 0.1f) // move straight toward target
             {
@@ -219,12 +194,10 @@ public class Abilities : MonoBehaviour
             }
             else // reached target, launch
             {
-                // Add horizontal movement toward the target
-               // launchDir = new Vector2(test.x, 1f).normalized; // always move horizontally toward target, slight upward
                 rb.linearVelocity = test * 50;
 
                 anim.SetBool("isGrappling", false);
-                isGrappling = false;
+                IsGrappling = false;
                 shouldGrappleMove = false;
                 movement.canMove = true;
                 rb.gravityScale = 3f;
@@ -238,11 +211,60 @@ public class Abilities : MonoBehaviour
 
     // ========== ABILITY METHODS ==========
 
+    IEnumerator HoverAbility()
+    {
+        if (IsHovering || !CanUseAbilities || !HasAbility(AbilityType.Hover) || collision.onGround)
+            yield break;
+
+        IsHovering = true;
+        CanUseAbilities = false;
+        movement.canMove = false;
+
+        Camera.main.transform.DOComplete();
+        Camera.main.transform.DOShakePosition(0.2f, 0.5f, 14, 90, false, true);
+
+        float originalGravity = rb.gravityScale;
+        RigidbodyConstraints2D originalConstraints = rb.constraints;
+
+        rb.gravityScale = 0f;
+        rb.linearVelocity = Vector2.zero;
+        rb.constraints = RigidbodyConstraints2D.FreezePosition | RigidbodyConstraints2D.FreezeRotation;
+
+        if (anim != null)
+            anim.SetBool("isHovering", true);
+
+        if (hover.HoverParticle != null)
+            hover.HoverParticle.Play();
+
+        float timer = 0f;
+        while (timer < hover.Duration)
+        {
+            timer += Time.deltaTime;
+            yield return null;
+        }
+
+        IsHovering = false;
+        CanUseAbilities = true;
+        movement.canMove = true;
+
+        rb.gravityScale = originalGravity;
+        rb.constraints = originalConstraints;
+
+        if (anim != null)
+            anim.SetBool("isHovering", false);
+
+        if (hover.HoverParticle != null)
+            hover.HoverParticle.Stop();
+    }
+
+
     public void Glide()
     {
         Debug.Log("Glide ability activated.");
-        isGliding = true;
+        IsGliding = true;
     }
+
+
 
     public Vector2 test;
     public void GrappleHook()
@@ -288,8 +310,7 @@ public class Abilities : MonoBehaviour
             anim.SetTrigger("grappleCast");
             anim.SetBool("isGrappling", true);
             shouldGrappleMove = true;
-            isGrappling = true;
-            currentPos = rb.position;
+            IsGrappling = true;
             betterJumping.enabled = false;
 
             SFXManager.Instance.Play(SFXManager.Instance.grappleClip, 1f, 0.95f, 1.05f);
@@ -301,10 +322,37 @@ public class Abilities : MonoBehaviour
         test = grappleTarget - rb.position;
     }
 
+
+
+    public void Shrink()
+    {
+        CanUseAbilities = IsShrinking ? false : true;
+        AudioSource sfxToPlay = IsShrinking ? SFXManager.Instance.shrinkClip : SFXManager.Instance.unshrinkClip;
+        SFXManager.Instance.Play(sfxToPlay, 1f);
+
+        IsShrinking = !IsShrinking;
+        collision.ChangeSize(IsShrinking);
+    }
+
+    public void SuperSpeed()
+    {
+        IsSuperSpeed = true;
+        movement.speed = defaultSpeed * 3;
+
+        if (collision.onGround && superSpeed.SpeedParticle && !superSpeed.SpeedParticle.isPlaying)
+            superSpeed?.SpeedParticle.Play();
+    }
+
+    public void SuperSpeedJump(float jumpForce)
+    {
+        if (collision.onGround)
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
+    }
+
     IEnumerator TeleportSequence()
     {
-        canTeleport = false;
-        isTeleporting = true;
+        CanTeleport = false;
+        IsTeleporting = true;
         movement.canMove = false;
         rb.linearVelocity = Vector2.zero;
         rb.gravityScale = 0;
@@ -313,9 +361,9 @@ public class Abilities : MonoBehaviour
 
         yield return StartCoroutine(ImplodeEffect());
 
-        if (teleportInEffect)
+        if (teleport.InEffect)
         {
-            ParticleSystem instance = Instantiate(teleportInEffect, transform.position, Quaternion.identity);
+            ParticleSystem instance = Instantiate(teleport.InEffect, transform.position, Quaternion.identity);
             Destroy(instance.gameObject, instance.main.duration + instance.main.startLifetime.constantMax);
         }
 
@@ -323,7 +371,7 @@ public class Abilities : MonoBehaviour
         float y = Input.GetAxis("Vertical");
         Vector2 dir = new Vector2(x, y).normalized;
 
-        float maxDistance = teleportForce;
+        float maxDistance = teleport.Force;
         Collider2D myCollider = GetComponent<Collider2D>();
 
         Vector2 intendedEnd = (Vector2)transform.position + dir * maxDistance;
@@ -362,12 +410,12 @@ public class Abilities : MonoBehaviour
         rb.gravityScale = originalGravity;
         betterJumping.enabled = true;
         movement.canMove = true;
-        isTeleporting = false;
+        IsTeleporting = false;
     }
 
     IEnumerator ImplodeEffect()
     {
-        float duration = teleportDuration / 2f;
+        float duration = teleport.Duration / 2f;
         float t = 0;
         Vector3 startScale = transform.localScale;
         SFXManager.Instance.Play(SFXManager.Instance.teleportInClip, 1f);
@@ -375,14 +423,14 @@ public class Abilities : MonoBehaviour
         if (ghostTrail != null)
             ghostTrail.ShowGhost();
 
-        if (teleportInEffect)
-            teleportInEffect.Play();
+        if (teleport.InEffect)
+            teleport.InEffect.Play();
 
         while (t < duration)
         {
             t += Time.deltaTime;
             float p = t / duration;
-            float scaleFactor = Mathf.Lerp(1f, 0f, teleportCurve.Evaluate(p));
+            float scaleFactor = Mathf.Lerp(1f, 0f, teleport.Curve.Evaluate(p));
             transform.localScale = startScale * scaleFactor;
 
             if (sr) sr.color = new Color(1, 1, 1, Mathf.Lerp(1f, 0.2f, p));
@@ -392,7 +440,7 @@ public class Abilities : MonoBehaviour
 
     IEnumerator ReformEffect()
     {
-        float duration = teleportDuration / 2f;
+        float duration = teleport.Duration / 2f;
         float t = 0;
         Vector3 endScale = Vector3.one;
 
@@ -400,128 +448,20 @@ public class Abilities : MonoBehaviour
         {
             t += Time.deltaTime;
             float p = t / duration;
-            float scaleFactor = Mathf.Lerp(0f, 1f, teleportCurve.Evaluate(p));
+            float scaleFactor = Mathf.Lerp(0f, 1f, teleport.Curve.Evaluate(p));
             transform.localScale = endScale * scaleFactor;
             if (sr) sr.color = new Color(1, 1, 1, Mathf.Lerp(0.2f, 1f, p));
             yield return null;
         }
 
-        if (teleportOutEffect)
-            teleportOutEffect.Play();
+        if (teleport.OutEffect)
+            teleport.OutEffect.Play();
     }
 
-    public void SuperSpeed()
-    {
-        isSuperSpeed = true;
-        movement.speed = defaultSpeed * 3;
-
-        if (collision.onGround && speedParticle && !speedParticle.isPlaying)
-            speedParticle.Play();
-    }
-
-    public void Shrink()
-    {
-        Collision coll = GetComponent<Collision>();
-        BoxCollider2D capsule = GetComponent<BoxCollider2D>();
-
-        if (isShrinking)
-        {
-            transform.localScale = Vector3.one;
-            isShrinking = false;
-            canUseAbilities = true;
-            SFXManager.Instance.Play(SFXManager.Instance.unshrinkClip, 1f);
-
-            if (coll != null)
-            {
-                coll.groundCheck.transform.localPosition = coll.groundColliderBigPosition;
-                coll.groundCheck.size = coll.groundColliderBigSize;
-            }
-            if (capsule != null)
-            {
-                capsule.size = originalCapsulesSize;
-                capsule.offset = originalCapsuleOffset;
-            }
-        }
-        else
-        {
-            isShrinking = true;
-            canUseAbilities = false;
-            SFXManager.Instance.Play(SFXManager.Instance.shrinkClip, 1f);
-
-            if (coll != null)
-            {
-                coll.groundCheck.transform.localPosition = coll.groundColliderSmallPosition;
-                coll.groundCheck.size = coll.groundColliderSmallSize;
-            }
-
-            if (capsule!= null)
-            {
-                capsule.size *= 0.5f;
-                capsule.offset = new Vector2(capsule.offset.x, 0f);
-            }
-        }
-
-
-    }
-
-    IEnumerator HoverAbility()
-    {
-        if (isHovering || !canUseAbilities || !HasAbility(AbilityType.Hover))
-            yield break;
-
-        if (collision.onGround)
-            yield break;
-
-        isHovering = true;
-        canUseAbilities = false;
-        movement.canMove = false;
-
-        Camera.main.transform.DOComplete();
-        Camera.main.transform.DOShakePosition(0.2f, 0.5f, 14, 90, false, true);
-
-        float originalGravity = rb.gravityScale;
-        RigidbodyConstraints2D originalConstraints = rb.constraints;
-
-        rb.gravityScale = 0f;
-        rb.linearVelocity = Vector2.zero;
-        rb.constraints = RigidbodyConstraints2D.FreezePosition | RigidbodyConstraints2D.FreezeRotation;
-
-        if (anim != null)
-            anim.SetBool("isHovering", true);
-
-        if (hoverParticle != null)
-            hoverParticle.Play();
-
-        float timer = 0f;
-        while (timer < hoverDuration)
-        {
-            timer += Time.deltaTime;
-            yield return null;
-        }
-
-        rb.constraints = originalConstraints;
-        rb.gravityScale = originalGravity;
-        canUseAbilities = true;
-        movement.canMove = true;
-        isHovering = false;
-
-        if (anim != null)
-            anim.SetBool("isHovering", false);
-
-            if (hoverParticle != null)
-            hoverParticle.Stop();
-    }
-
-    public void AddAbility(AbilityType ability) { 
-        abilities.Add(ability);
-    }
+    public void AddAbility(AbilityType ability) => abilities.Add(ability);
     public bool HasAbility(AbilityType ability) => abilities.Contains(ability);
 
-    public void SuperSpeedJump(float jumpForce)
-    {
-        if (collision.onGround)
-            rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
-    }
+
 
     public void ResetAbilities()
     {
@@ -574,6 +514,49 @@ public class Abilities : MonoBehaviour
     void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawSphere(teleportPreviewSpot, 0.15f); // 0.15 is the radius of the dot
+        Gizmos.DrawSphere(teleport.PreviewSpot, 0.15f); // 0.15 is the radius of the dot
     }
+
 }
+
+#region Ability Settings Classes
+[System.Serializable]
+public class TeleportSettings
+{
+    public float Force = 5f;
+    public float Duration = 0.3f;
+    public AnimationCurve Curve;
+    public ParticleSystem InEffect;
+    public ParticleSystem OutEffect;
+    [HideInInspector] public Vector2 PreviewSpot;
+}
+
+[System.Serializable]
+public class SuperSpeedSettings
+{
+    public ParticleSystem SpeedParticle;
+    public float DeaccelerateSpeed = 0.15f;
+}
+
+[System.Serializable]
+public class GrappleSettings
+{
+    public float Speed = 10f;
+    public Vector2 LaunchDirection = Vector2.up;
+    public float LaunchForce = 10f;
+}
+
+[System.Serializable]
+public class GlideSettings
+{
+    public float MaxTime = 2f;
+    [HideInInspector] public float Timer;
+}
+
+[System.Serializable]
+public class HoverSettings
+{
+    public float Duration = 2f;
+    public ParticleSystem HoverParticle;
+}
+#endregion

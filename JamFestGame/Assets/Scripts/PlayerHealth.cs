@@ -4,21 +4,19 @@ using UnityEngine.SceneManagement;
 
 public class PlayerHealth : MonoBehaviour
 {
-    public int maxHealth = 3;
-    private int currentHealth;
-
+    [Header("Components")]
     private Rigidbody2D rb;
     private Movement movement;
     private Abilities abilities;
     private Animator animator;
 
+    [Header("RespawnSettings")]
     public float respawnDelay = 1.5f;
     public Transform respawnPoint; // Assign in Inspector
 
     public bool isLavaLevel;
     void Start()
     {
-        currentHealth = maxHealth;
         rb = GetComponent<Rigidbody2D>();
         movement = GetComponent<Movement>();
         abilities = GetComponent<Abilities>();
@@ -27,44 +25,26 @@ public class PlayerHealth : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
-        if (currentHealth <= 0) return;
-
-        currentHealth -= damage;
-
-        if (currentHealth > 0)
-        {
-            animator.SetTrigger("Hurt");
-        }
-        else
-        {
-            StartCoroutine(DieAndRespawn());
-        }
+        DieAndRespawn();
     }
 
     private IEnumerator DieAndRespawn()
     {
-
         float savedGravity = rb.gravityScale;
 
         animator.SetTrigger("Die");
         SFXManager.Instance.Play(SFXManager.Instance.deathClip);
 
-
-        if (movement != null)
-            movement.canMove = false;
-        if (abilities != null)
-            abilities.canUseAbilities = false;
+        movement.canMove = false;
+        abilities.CanUseAbilities = false;
 
         // Freeze physics
-        rb.linearVelocity = Vector2.zero;
-        rb.gravityScale = 0;
-        rb.simulated = false;
-
+        UpdatePlayerPhysics(velocity: Vector2.zero, gravityScale: 0, rbSimulated: false);
 
         yield return new WaitForSeconds(respawnDelay);
         //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 
-        if(isLavaLevel)
+        if (isLavaLevel)
             FindAnyObjectByType<LavaScript>().ResetLava();
 
         animator.Rebind();
@@ -72,26 +52,25 @@ public class PlayerHealth : MonoBehaviour
 
         // Respawn player
         transform.position = respawnPoint.position;
-        currentHealth = maxHealth;
-
-        rb.simulated = true;
-        rb.linearVelocity = Vector2.zero;
 
 
-        rb.gravityScale = savedGravity;
+        UpdatePlayerPhysics(velocity: Vector2.zero, gravityScale: savedGravity, rbSimulated: true);
 
-
-        if (movement != null)
-            movement.canMove = true;
-        if (abilities != null)
-            abilities.canUseAbilities = true;
+        movement.canMove = true;
+        abilities.CanUseAbilities = true;
 
         animator.SetTrigger("Respawn");
-        
     }
 
     public void SetRespawnPoint(Transform newRepawnPoint)
     {
-       respawnPoint = newRepawnPoint;
+        respawnPoint = newRepawnPoint;
+    }
+
+    private void UpdatePlayerPhysics(Vector2 velocity, float gravityScale, bool rbSimulated)
+    {
+        rb.linearVelocity = velocity;
+        rb.gravityScale = gravityScale;
+        rb.simulated = rbSimulated;
     }
 }

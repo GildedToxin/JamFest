@@ -28,12 +28,8 @@ public class HUDController : MonoBehaviour
                 continue;
             }
 
-                print(child.name);
-            print(hudKey.ability);
-
             if (abilityLetters.ContainsKey(hudKey.ability))
             {
-                print(hudKey.ability);
                 var test = abilityLetters[hudKey.ability].ToUpper() + "_KEY";
                 HUDKEY1 abilityData = Resources.Load<HUDKEY1>(test);
                 if(abilityData == null)
