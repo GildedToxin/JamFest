@@ -4,8 +4,12 @@ using UnityEngine;
 
 public class Collision : MonoBehaviour
 {
+
+
+    private BoxCollider2D boxCollider;
+
     [Header("Layers")]
-    public LayerMask groundLayer;
+    [SerializeField] private LayerMask groundLayer;
 
     [Header("State")]
     public bool onGround;
@@ -13,8 +17,6 @@ public class Collision : MonoBehaviour
     public bool onRightWall;
     public bool onLeftWall;
     public int wallSide;
-    private bool wasOnWall = false;
-
 
 
     [Header("Ground Check")]
@@ -23,14 +25,19 @@ public class Collision : MonoBehaviour
     [Header("Ray Settings")]
     public float skinWidth = 0.02f;
 
-    public BoxCollider2D boxCollider;
-
+    
+    // This is bad and should be fixed later
     public Vector3 groundColliderBigPosition;
     public Vector3 groundColliderSmallPosition;
 
     public Vector2 groundColliderBigSize;
     public Vector2 groundColliderSmallSize;
+    //
 
+    private void Awake()
+    {
+        boxCollider = GetComponent<BoxCollider2D>();
+    }
     private void Start()
     {
         groundColliderBigPosition = groundCheck.transform.localPosition;
@@ -42,8 +49,6 @@ public class Collision : MonoBehaviour
         CheckGround();
 
         wallSide = onRightWall ? -1 : 1;
-
-        wasOnWall = onWall;
     }
 
     void CheckGround()
@@ -69,7 +74,7 @@ public class Collision : MonoBehaviour
 
         onWall = onRightWall || onLeftWall;
     }
-
+    /*
     void OnDrawGizmos()
     {
         if (!Application.isPlaying) return;
@@ -83,5 +88,5 @@ public class Collision : MonoBehaviour
         Gizmos.color = Color.yellow;
         Gizmos.DrawLine(rightOrigin, rightOrigin + Vector2.right * skinWidth * 2f);
         Gizmos.DrawLine(leftOrigin, leftOrigin + Vector2.left * skinWidth * 2f);
-    }
+    } */
 }

@@ -8,12 +8,14 @@ using System.Dynamic;
 
 public class Movement : MonoBehaviour
 {
-    private Collision coll;
+    
     [HideInInspector]
+    [Header("Components")]
     public Rigidbody2D rb;
     private AnimationScript anim;
     private Abilities abilities;
     private BetterJumping betterJumping;
+    private Collision coll;
 
     [Space]
     [Header("Stats")]
@@ -35,21 +37,18 @@ public class Movement : MonoBehaviour
     public bool pushedWall;
     public bool doubleJumped;
     public bool hasDoubleJump;
-
-    [Space]
-
     private bool groundTouch;
     private bool hasDashed;
 
-    public int side = 1;
-
     [Space]
-    [Header("Polish")]
+    [Header("Particles")]
     public ParticleSystem dashParticle;
     public ParticleSystem jumpParticle;
     public ParticleSystem wallJumpParticle;
     public ParticleSystem slideParticle;
 
+    [Space]
+    public int side = 1;
     private Vector2 inputDirection;
 
     void Start()
@@ -103,7 +102,7 @@ public class Movement : MonoBehaviour
         if (!coll.onWall || coll.onGround)
             wallSlide = false;
 
-        if (!coll.onGround && Input.GetKeyDown(abilities.doubleJumpKey) && doubleJumped && !coll.onWall && abilities.canUseAbilities && abilities.HasAbility(AbilityType.DoubleJump)){
+        if (!coll.onGround && Input.GetKeyDown(abilities.doubleJumpKey) && doubleJumped && !coll.onWall && abilities.CanUseAbilities && abilities.HasAbility(AbilityType.DoubleJump)){
             Jump(Vector2.up, false);
         }
 
@@ -142,7 +141,7 @@ public class Movement : MonoBehaviour
             doubleJumped = true;
         }
 
-        if (Input.GetKeyDown(abilities.dashkKey) && !hasDashed && abilities.canUseAbilities && abilities.HasAbility(AbilityType.Dash))
+        if (Input.GetKeyDown(abilities.dashkKey) && !hasDashed && abilities.CanUseAbilities && abilities.HasAbility(AbilityType.Dash))
         {
             float xRaw = Input.GetAxisRaw("Horizontal");
             float yRaw = Input.GetAxisRaw("Vertical");
@@ -180,7 +179,6 @@ public class Movement : MonoBehaviour
 
     void FixedUpdate()
     {
-        // Move physics logic here
         Walk(inputDirection);
 
         if (wallGrab && !isDashing)
@@ -193,12 +191,12 @@ public class Movement : MonoBehaviour
 
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, inputDirection.y * (speed * speedModifier));
         }
-        else if (abilities.isGliding && !coll.onGround)
+        else if (abilities.IsGliding && !coll.onGround)
         {
             rb.gravityScale = 0.5f;
             betterJumping.enabled = false;
         }
-        else if (!wallGrab && !abilities.isGliding && !isDashing)
+        else if (!wallGrab && !abilities.IsGliding && !isDashing)
         {
             rb.gravityScale = 3;
         }
@@ -218,7 +216,7 @@ public class Movement : MonoBehaviour
     {
         Camera.main.transform.DOComplete();
         Camera.main.transform.DOShakePosition(.2f, .5f, 14, 90, false, true);
-        FindObjectOfType<RippleEffect>().Emit(Camera.main.WorldToViewportPoint(transform.position));
+        FindAnyObjectByType<RippleEffect>().Emit(Camera.main.WorldToViewportPoint(transform.position));
 
         hasDashed = true;
         anim.SetTrigger("dash");
@@ -235,7 +233,7 @@ public class Movement : MonoBehaviour
 
     IEnumerator DashWait()
     {
-        FindObjectOfType<GhostTrail>().ShowGhost();
+        FindAnyObjectByType<GhostTrail>().ShowGhost();
         StartCoroutine(GroundDash());
         DOVirtual.Float(dashSpeedBetter, 0, dashDragTime, RigidbodyDrag);
 

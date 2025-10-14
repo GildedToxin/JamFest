@@ -30,7 +30,7 @@ public class AnimationScript : MonoBehaviour
         anim.SetBool("wallSlide", move.wallSlide);
         anim.SetBool("canMove", move.canMove);
         anim.SetBool("isDashing", move.isDashing);
-        anim.SetBool("isShrinked", abilities.isShrinking);
+        anim.SetBool("isShrinked", abilities.IsShrinking);
 
     }
 
