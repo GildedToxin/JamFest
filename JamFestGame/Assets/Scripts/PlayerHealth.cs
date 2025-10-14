@@ -66,8 +66,8 @@ public class PlayerHealth : MonoBehaviour
 
 
         yield return new WaitForSeconds(respawnDelay);
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-        /*
+        //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        
         animator.Rebind();
         animator.Update(0f);
 
@@ -85,9 +85,14 @@ public class PlayerHealth : MonoBehaviour
         if (movement != null)
             movement.canMove = true;
         if (abilities != null)
-            abilities.enabled = true;
+            abilities.canUseAbilities = true;
 
         animator.SetTrigger("Respawn");
-        */
+        
+    }
+
+    public void SetRespawnPoint(Transform newRepawnPoint)
+    {
+       respawnPoint = newRepawnPoint;
     }
 }
