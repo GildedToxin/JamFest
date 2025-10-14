@@ -5471,11 +5471,11 @@ MonoBehaviour:
   pushedWall: 0
   doubleJumped: 0
   hasDoubleJump: 0
-  side: 1
   dashParticle: {fileID: 3598900281984406665}
   jumpParticle: {fileID: 1354092271952660019}
   wallJumpParticle: {fileID: 2155693211809710644}
   slideParticle: {fileID: 4294808110933955823}
+  side: 1
 --- !u!114 &1973449748522052157
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5512,7 +5512,6 @@ MonoBehaviour:
   wallSide: 0
   groundCheck: {fileID: 6483660684778762390}
   skinWidth: 0.02
-  boxCollider: {fileID: 7009751715124183456}
   groundColliderBigPosition: {x: 0, y: 0, z: 0}
   groundColliderSmallPosition: {x: 0, y: -0.29, z: 0}
   groundColliderBigSize: {x: 0, y: 0}
@@ -5529,50 +5528,58 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 854e4f5db6a96344abb5acfff5007959, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Abilities
-  isGrappling: 0
-  isTeleporting: 0
-  isGliding: 0
-  isSuperSpeed: 1
-  isShrinking: 0
-  canUseAbilities: 1
-  canTeleport: 1
-  abilities: 
-  teleportForce: 5
-  teleportDuration: 0.3
-  teleportCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 1
-      outSlope: 1
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 1
-      outSlope: 1
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  teleportInEffect: {fileID: 2564347316225932662}
-  teleportOutEffect: {fileID: 7421731670179035536}
-  speedParticle: {fileID: 2928694878764718513}
-  deaccelerateSpeed: 0.15
-  grappleSpeed: 15
-  grappleLaunchDirection: {x: 0, y: 1}
-  grappleLaunchForce: 10
-  maxGlideTime: 2
-  hoverDuration: 2
-  hoverParticle: {fileID: 2177672282180348380}
+  abilities: 0000000001000000020000000300000004000000050000000600000007000000
+  <IsHovering>k__BackingField: 0
+  <IsGliding>k__BackingField: 0
+  <IsGrappling>k__BackingField: 0
+  <IsSuperSpeed>k__BackingField: 0
+  <IsShrinking>k__BackingField: 0
+  <IsTeleporting>k__BackingField: 0
+  <CanUseAbilities>k__BackingField: 1
+  <CanTeleport>k__BackingField: 1
+  teleport:
+    Force: 5
+    Duration: 0.3
+    Curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 1
+        outSlope: 1
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 1
+        inSlope: 1
+        outSlope: 1
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    InEffect: {fileID: 0}
+    OutEffect: {fileID: 0}
+    PreviewSpot: {x: 0, y: 0}
+  superSpeed:
+    SpeedParticle: {fileID: 0}
+    DeaccelerateSpeed: 0.15
+  grapple:
+    Speed: 10
+    LaunchDirection: {x: 0, y: 1}
+    LaunchForce: 10
+  glide:
+    MaxTime: 2
+    Timer: 0
+  hover:
+    Duration: 2
+    HoverParticle: {fileID: 0}
   teleportKey: 116
   grappleKey: 104
   superSpeedKey: 106
@@ -5581,7 +5588,6 @@ MonoBehaviour:
   dashkKey: 304
   doubleJumpKey: 111
   hoverKey: 107
-  launchDir: {x: 0, y: 0}
   test: {x: 0, y: 0}
 --- !u!114 &4028168548735385891
 MonoBehaviour:
@@ -5595,7 +5601,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1fc58c1380070174a8626ed70cb90bbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerHealth
-  maxHealth: 1
   respawnDelay: 1.5
   respawnPoint: {fileID: 0}
 --- !u!114 &1319762453100978696
