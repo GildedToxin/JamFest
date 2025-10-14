@@ -5463,6 +5463,7 @@ MonoBehaviour:
   dashSpeedBetter: 7
   dashDragTime: 1
   canMove: 1
+  canJump: 1
   wallGrab: 0
   wallJumped: 0
   wallSlide: 0
@@ -5531,11 +5532,11 @@ MonoBehaviour:
   isGrappling: 0
   isTeleporting: 0
   isGliding: 0
-  isSuperSpeed: 0
+  isSuperSpeed: 1
   isShrinking: 0
   canUseAbilities: 1
   canTeleport: 1
-  abilities: 0000000001000000020000000300000004000000050000000600000007000000
+  abilities: 
   teleportForce: 5
   teleportDuration: 0.3
   teleportCurve:
