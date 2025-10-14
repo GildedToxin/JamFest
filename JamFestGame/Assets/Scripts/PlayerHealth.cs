@@ -15,8 +15,7 @@ public class PlayerHealth : MonoBehaviour
     public float respawnDelay = 1.5f;
     public Transform respawnPoint; // Assign in Inspector
 
-    private float originalGravity;
-
+    public bool isLavaLevel;
     void Start()
     {
         currentHealth = maxHealth;
@@ -24,9 +23,6 @@ public class PlayerHealth : MonoBehaviour
         movement = GetComponent<Movement>();
         abilities = GetComponent<Abilities>();
         animator = GetComponentInChildren<Animator>();
-
-        if (rb != null)
-            originalGravity = rb.gravityScale;
     }
 
     public void TakeDamage(int damage)
@@ -67,7 +63,10 @@ public class PlayerHealth : MonoBehaviour
 
         yield return new WaitForSeconds(respawnDelay);
         //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-        
+
+        if(isLavaLevel)
+            FindAnyObjectByType<LavaScript>().ResetLava();
+
         animator.Rebind();
         animator.Update(0f);
 
