@@ -71,6 +71,7 @@ public class Movement : MonoBehaviour
         // Keep non-physics logic here (animation, state changes, etc.)
         anim.SetHorizontalMovement(x, y, rb.linearVelocity.y);
 
+    /* CAN BE REUSED FOR A WALL CLIMB?
         if (coll.onWall && Input.GetButton("Fire3") && canMove)
         {
             if (side != coll.wallSide)
@@ -84,7 +85,7 @@ public class Movement : MonoBehaviour
             wallGrab = false;
             wallSlide = false;
         }
-
+*/
         if (coll.onGround && !isDashing)
         {
             wallJumped = false;

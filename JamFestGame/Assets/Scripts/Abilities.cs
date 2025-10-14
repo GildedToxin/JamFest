@@ -60,7 +60,7 @@ public class Abilities : MonoBehaviour
     public KeyCode superSpeedKey = KeyCode.J;
     public KeyCode glideKey = KeyCode.G;
     public KeyCode shrinkKey = KeyCode.F;
-    public KeyCode dashkKey = KeyCode.LeftShift;
+    public KeyCode dashkKey = KeyCode.P;
     public KeyCode doubleJumpKey = KeyCode.O;
     public KeyCode hoverKey = KeyCode.K;
 
@@ -360,7 +360,7 @@ public class Abilities : MonoBehaviour
         betterJumping.enabled = false;
         SFXManager.Instance.Play(SFXManager.Instance.teleportOutClip, 1f);
 
-        yield return StartCoroutine(TeleportEffect(teleportStart: true, scale: Vector3.zero));
+        yield return StartCoroutine(TeleportEffect(teleportStart: true, scale: transform.localScale));
 
         if (teleport.InEffect)
         {
