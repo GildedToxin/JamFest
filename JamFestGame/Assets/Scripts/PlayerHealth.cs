@@ -14,7 +14,6 @@ public class PlayerHealth : MonoBehaviour
     public float respawnDelay = 1.5f;
     public Transform respawnPoint; // Assign in Inspector
 
-    public bool isLavaLevel;
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -42,11 +41,7 @@ public class PlayerHealth : MonoBehaviour
         UpdatePlayerPhysics(velocity: Vector2.zero, gravityScale: 0, rbSimulated: false);
 
         yield return new WaitForSeconds(respawnDelay);
-        //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-
-        if(isLavaLevel)
-            FindAnyObjectByType<LavaScript>().ResetLava();
-
+        
         animator.Rebind();
         animator.Update(0f);
 

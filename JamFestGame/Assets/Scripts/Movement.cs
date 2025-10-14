@@ -30,7 +30,6 @@ public class Movement : MonoBehaviour
     [Space]
     [Header("Booleans")]
     public bool canMove;
-    public bool canJump;
     public bool wallGrab;
     public bool wallJumped;
     public bool wallSlide;
@@ -103,11 +102,11 @@ public class Movement : MonoBehaviour
         if (!coll.onWall || coll.onGround)
             wallSlide = false;
 
-        if (canJump && !coll.onGround && Input.GetKeyDown(abilities.doubleJumpKey) && doubleJumped && !coll.onWall && abilities.canUseAbilities && abilities.HasAbility(AbilityType.DoubleJump)){
+        if (!coll.onGround && Input.GetKeyDown(abilities.doubleJumpKey) && doubleJumped && !coll.onWall && abilities.CanUseAbilities && abilities.HasAbility(AbilityType.DoubleJump)){
             Jump(Vector2.up, false);
         }
 
-        if (Input.GetButtonDown("Jump") && canJump)
+        if (Input.GetButtonDown("Jump"))
         {
             anim.SetTrigger("jump");
 
