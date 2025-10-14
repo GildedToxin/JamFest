@@ -1,14 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Collision : MonoBehaviour
 {
 
 
-    private BoxCollider2D boxCollider;
+    private BoxCollider2D playerCollider;
 
-    [Header("Layers")]
+    [Header("Ground Check Settings")]
+    public float groundCheckHeight = 0.1f;
+    public float groundCheckWidthMultiplier = 0.8f;
     [SerializeField] private LayerMask groundLayer;
 
     [Header("State")]
@@ -25,23 +28,19 @@ public class Collision : MonoBehaviour
     [Header("Ray Settings")]
     public float skinWidth = 0.02f;
 
-    
-    // This is bad and should be fixed later
-    public Vector3 groundColliderBigPosition;
-    public Vector3 groundColliderSmallPosition;
-
-    public Vector2 groundColliderBigSize;
-    public Vector2 groundColliderSmallSize;
-    //
+    public DefaultSize defaultSize;    
 
     private void Awake()
     {
-        boxCollider = GetComponent<BoxCollider2D>();
+        playerCollider = GetComponent<BoxCollider2D>();
     }
     private void Start()
     {
-        groundColliderBigPosition = groundCheck.transform.localPosition;
-        groundColliderBigSize = groundCheck.size;
+        defaultSize.GroundColliderPosition = groundCheck.transform.localPosition;
+        defaultSize.GroundColliderSize = groundCheck.size;
+
+        defaultSize.PlayerColliderOffest = playerCollider.offset;
+        defaultSize.PlayerColliderSize = playerCollider.size;
     }
     void Update()
     {
@@ -63,7 +62,7 @@ public class Collision : MonoBehaviour
 
     void CheckWalls()
     {
-        Bounds bounds = boxCollider.bounds;
+        Bounds bounds = playerCollider.bounds;
         Vector2 center = bounds.center;
 
         Vector2 rightOrigin = new Vector2(center.x + bounds.extents.x - skinWidth, center.y);
@@ -74,19 +73,44 @@ public class Collision : MonoBehaviour
 
         onWall = onRightWall || onLeftWall;
     }
-    /*
-    void OnDrawGizmos()
+
+    public void ChangeSize(bool isShrinking)
     {
-        if (!Application.isPlaying) return;
+        if (!isShrinking)
+        {
+            playerCollider.offset = defaultSize.PlayerColliderOffest;
+            playerCollider.size = defaultSize.PlayerColliderSize;
 
-        Bounds bounds = GetComponent<BoxCollider2D>().bounds;
-        Vector2 center = bounds.center;
+            groundCheck.transform.localPosition = defaultSize.GroundColliderPosition;
+            groundCheck.size = defaultSize.GroundColliderSize;
+        }
+        else if (isShrinking)
+        {
+            playerCollider.offset = new Vector2(playerCollider.offset.x, 0f);
+            playerCollider.size *= 0.5f;
 
-        Vector2 rightOrigin = new Vector2(center.x + bounds.extents.x - skinWidth, center.y);
-        Vector2 leftOrigin = new Vector2(center.x - bounds.extents.x + skinWidth, center.y);
+            groundCheck.transform.position = new Vector2(transform.position.x, ((Vector2)playerCollider.bounds.center - new Vector2(0, playerCollider.bounds.extents.y)).y);
+            groundCheck.size *= 0.95f;
+        }
+    }
 
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawLine(rightOrigin, rightOrigin + Vector2.right * skinWidth * 2f);
-        Gizmos.DrawLine(leftOrigin, leftOrigin + Vector2.left * skinWidth * 2f);
-    } */
+    [System.Serializable]
+    public struct DefaultSize
+    {
+        public Vector2 PlayerColliderOffest;
+        public Vector2 PlayerColliderSize;
+
+        public Vector3 GroundColliderPosition;
+        public Vector2 GroundColliderSize;
+    }
+    public struct SmallSize
+    {
+        public Vector2 PlayerColliderOffest;
+        public Vector2 PlayerColliderSize;
+
+        public Vector3 GroundColliderPosition;
+        public Vector2 GroundColliderSize;
+    }
 }
+
+

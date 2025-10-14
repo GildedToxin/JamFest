@@ -243,13 +243,14 @@ public class Abilities : MonoBehaviour
         {
             timer += Time.deltaTime;
             yield return null;
-        }
+        }        
 
-        rb.constraints = originalConstraints;
-        rb.gravityScale = originalGravity;
+        IsHovering = false;
         CanUseAbilities = true;
         movement.canMove = true;
-        IsHovering = false;
+
+        rb.gravityScale = originalGravity;
+        rb.constraints = originalConstraints;
 
         if (anim != null)
             anim.SetBool("isHovering", false);
@@ -259,7 +260,7 @@ public class Abilities : MonoBehaviour
     }
 
 
-    public void Glide()
+  public void Glide()
     {
         Debug.Log("Glide ability activated.");
         IsGliding = true;
@@ -327,47 +328,12 @@ public class Abilities : MonoBehaviour
 
     public void Shrink()
     {
-        Collision coll = GetComponent<Collision>();
-        BoxCollider2D capsule = GetComponent<BoxCollider2D>();
+        CanUseAbilities = IsShrinking ? false : true;
+        AudioSource sfxToPlay = IsShrinking ? SFXManager.Instance.shrinkClip : SFXManager.Instance.unshrinkClip;
+        SFXManager.Instance.Play(sfxToPlay, 1f);
 
-        if (IsShrinking)
-        {
-            transform.localScale = Vector3.one;
-            IsShrinking = false;
-            CanUseAbilities = true;
-            SFXManager.Instance.Play(SFXManager.Instance.unshrinkClip, 1f);
-
-            if (coll != null)
-            {
-                coll.groundCheck.transform.localPosition = coll.groundColliderBigPosition;
-                coll.groundCheck.size = coll.groundColliderBigSize;
-            }
-            if (capsule != null)
-            {
-                capsule.size = originalCapsulesSize;
-                capsule.offset = originalCapsuleOffset;
-            }
-        }
-        else
-        {
-            IsShrinking = true;
-            CanUseAbilities = false;
-            SFXManager.Instance.Play(SFXManager.Instance.shrinkClip, 1f);
-
-            if (coll != null)
-            {
-                coll.groundCheck.transform.localPosition = coll.groundColliderSmallPosition;
-                coll.groundCheck.size = coll.groundColliderSmallSize;
-            }
-
-            if (capsule != null)
-            {
-                capsule.size *= 0.5f;
-                capsule.offset = new Vector2(capsule.offset.x, 0f);
-            }
-        }
-
-
+        IsShrinking = !IsShrinking;
+        collision.ChangeSize(IsShrinking);
     }
 
     public void SuperSpeed()
