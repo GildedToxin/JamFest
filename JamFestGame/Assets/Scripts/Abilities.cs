@@ -1,9 +1,10 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using DG.Tweening;
+using UnityEngine.UIElements;
 
 
 public enum AbilityType { Dash, DoubleJump, Grapple, Glide, Teleport, Shrink, Hover, SuperSpeed, None }
@@ -131,15 +132,15 @@ public class Abilities : MonoBehaviour
         {
             Shrink();
         }
-        if (Input.GetKeyDown(teleportKey) && !IsTeleporting && IsHovering && HasAbility(AbilityType.Teleport) && CanTeleport)
+        if (Input.GetKeyDown(teleportKey) && !IsTeleporting && !IsHovering && HasAbility(AbilityType.Teleport) && CanTeleport)
         {
             StartCoroutine(TeleportSequence());
         }
-        if (Input.GetKeyDown(grappleKey) && IsHovering && HasAbility(AbilityType.Grapple))
+        if (Input.GetKeyDown(grappleKey) && !IsHovering && HasAbility(AbilityType.Grapple))
         {
             GrappleHook();
         }
-        if (Input.GetKey(superSpeedKey) && IsHovering && (collision.onGround || IsSuperSpeed) && HasAbility(AbilityType.SuperSpeed))
+        if (Input.GetKey(superSpeedKey) && !IsHovering && (collision.onGround || IsSuperSpeed) && HasAbility(AbilityType.SuperSpeed))
         {
             SuperSpeed();
 
@@ -359,7 +360,7 @@ public class Abilities : MonoBehaviour
         betterJumping.enabled = false;
         SFXManager.Instance.Play(SFXManager.Instance.teleportOutClip, 1f);
 
-        yield return StartCoroutine(ImplodeEffect());
+        yield return StartCoroutine(TeleportEffect(teleportStart: true, scale: Vector3.zero));
 
         if (teleport.InEffect)
         {
@@ -371,26 +372,24 @@ public class Abilities : MonoBehaviour
         float y = Input.GetAxis("Vertical");
         Vector2 dir = new Vector2(x, y).normalized;
 
-        float maxDistance = teleport.Force;
-        Collider2D myCollider = GetComponent<Collider2D>();
 
-        Vector2 intendedEnd = (Vector2)transform.position + dir * maxDistance;
-        float checkRadius = myCollider.bounds.extents.magnitude * 0.9f;
+        Vector2 intendedEnd = (Vector2)transform.position + dir * teleport.Force;
+        float checkRadius = playerBoxCollider.bounds.extents.magnitude * 0.9f;
         Collider2D hitAtEnd = Physics2D.OverlapCircle(intendedEnd, checkRadius);
 
-        if (hitAtEnd == null || hitAtEnd == myCollider)
+        if (hitAtEnd == null || hitAtEnd == collision)
         {
             transform.position = intendedEnd;
         }
         else
         {
-            RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, dir, maxDistance);
+            RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, dir, teleport.Force);
             Vector2 farthestHitPoint = Vector2.zero;
             float farthestDistance = -Mathf.Infinity;
 
             foreach (RaycastHit2D hit in hits)
             {
-                if (hit.collider != null && hit.collider != myCollider)
+                if (hit.collider != null && hit.collider != playerBoxCollider)
                 {
                     float distance = Vector2.Distance(transform.position, hit.point);
                     if (distance > farthestDistance)
@@ -402,61 +401,47 @@ public class Abilities : MonoBehaviour
             }
 
             if (farthestHitPoint != Vector2.zero)
-                transform.position = farthestHitPoint + (-dir * (myCollider.bounds.extents.magnitude + 0.1f));
+                transform.position = farthestHitPoint + (-dir * (playerBoxCollider.bounds.extents.magnitude + 0.1f));
         }
 
-        yield return StartCoroutine(ReformEffect());
+        yield return StartCoroutine(TeleportEffect(teleportStart: false, scale: Vector3.one));
 
         rb.gravityScale = originalGravity;
         betterJumping.enabled = true;
         movement.canMove = true;
         IsTeleporting = false;
     }
-
-    IEnumerator ImplodeEffect()
+    IEnumerator TeleportEffect(bool teleportStart, Vector3 scale)
     {
         float duration = teleport.Duration / 2f;
         float t = 0;
-        Vector3 startScale = transform.localScale;
-        SFXManager.Instance.Play(SFXManager.Instance.teleportInClip, 1f);
 
-        if (ghostTrail != null)
-            ghostTrail.ShowGhost();
+        if (teleportStart)
+        {
+            SFXManager.Instance.Play(SFXManager.Instance.teleportInClip, 1f);
 
-        if (teleport.InEffect)
-            teleport.InEffect.Play();
+            if (ghostTrail != null)
+                ghostTrail.ShowGhost();
+
+            if (teleport.InEffect)
+                teleport.InEffect.Play();
+        }
 
         while (t < duration)
         {
             t += Time.deltaTime;
-            float p = t / duration;
-            float scaleFactor = Mathf.Lerp(1f, 0f, teleport.Curve.Evaluate(p));
-            transform.localScale = startScale * scaleFactor;
-
-            if (sr) sr.color = new Color(1, 1, 1, Mathf.Lerp(1f, 0.2f, p));
-            yield return null;
-        }
-    }
-
-    IEnumerator ReformEffect()
-    {
-        float duration = teleport.Duration / 2f;
-        float t = 0;
-        Vector3 endScale = Vector3.one;
-
-        while (t < duration)
-        {
-            t += Time.deltaTime;
-            float p = t / duration;
-            float scaleFactor = Mathf.Lerp(0f, 1f, teleport.Curve.Evaluate(p));
-            transform.localScale = endScale * scaleFactor;
-            if (sr) sr.color = new Color(1, 1, 1, Mathf.Lerp(0.2f, 1f, p));
+            float p = t / duration;       // THESE 2
+            float scaleFactor = teleportStart ? Mathf.Lerp(1f, 0f, teleport.Curve.Evaluate(p)) : Mathf.Lerp(0f, 1f, teleport.Curve.Evaluate(p));
+            transform.localScale = scale * scaleFactor;       /// THESE
+            if (sr) 
+                sr.color = teleportStart ? new Color(1, 1, 1, Mathf.Lerp(1f, 0.2f, p)) : new Color(1, 1, 1, Mathf.Lerp(0.2f, 1f, p));
             yield return null;
         }
 
-        if (teleport.OutEffect)
+        if (!teleportStart && teleport.OutEffect)
             teleport.OutEffect.Play();
     }
+ 
 
     public void AddAbility(AbilityType ability) => abilities.Add(ability);
     public bool HasAbility(AbilityType ability) => abilities.Contains(ability);
