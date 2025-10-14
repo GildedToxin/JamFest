@@ -5463,6 +5463,7 @@ MonoBehaviour:
   dashSpeedBetter: 7
   dashDragTime: 1
   canMove: 1
+  canJump: 1
   wallGrab: 0
   wallJumped: 0
   wallSlide: 0

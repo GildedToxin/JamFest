@@ -1,5 +1,6 @@
 using UnityEngine;
 
+[ExecuteAlways]
 public class Parallax: MonoBehaviour
 {
     public Transform cam;
