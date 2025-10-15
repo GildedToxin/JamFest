@@ -5455,13 +5455,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Movement
   rb: {fileID: 0}
-  speed: 7
+  speed: 12
   jumpForce: 12
   slideSpeed: 1
   wallJumpLerp: 5
   dashSpeed: 100
   dashSpeedBetter: 7
   dashDragTime: 1
+  maxVelocity: 40
   canJump: 1
   canMove: 1
   wallGrab: 0
@@ -5569,14 +5570,12 @@ MonoBehaviour:
       m_RotationOrder: 4
     InEffect: {fileID: 2564347316225932662}
     OutEffect: {fileID: 7421731670179035536}
-    PreviewSpot: {x: 0, y: 0}
   superSpeed:
     SpeedParticle: {fileID: 0}
     DeaccelerateSpeed: 0.15
   grapple:
     Speed: 10
-    LaunchDirection: {x: 0, y: 1}
-    LaunchForce: 10
+    Boost: 50
   glide:
     MaxTime: 2
     Timer: 0
@@ -5591,7 +5590,6 @@ MonoBehaviour:
   dashkKey: 304
   doubleJumpKey: 111
   hoverKey: 107
-  test: {x: 0, y: 0}
 --- !u!114 &4028168548735385891
 MonoBehaviour:
   m_ObjectHideFlags: 0
