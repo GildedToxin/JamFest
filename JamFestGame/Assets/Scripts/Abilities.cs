@@ -39,7 +39,7 @@ public class Abilities : MonoBehaviour
     private float originalGravity;
 
     private Vector2 grappleTarget;
-    private bool shouldGrappleMove = false;
+    private Vector2 directionToGrappleTarget;
 
 
     private Vector2 originalCapsulesSize;
@@ -117,7 +117,10 @@ public class Abilities : MonoBehaviour
 
         // Reset glide timer when grounded
         if (collision.onGround)
+        {
             glide.Timer = glide.MaxTime;
+            CanTeleport = true;
+        }
 
         // --- ABILITY INPUTS ---
         if (Input.GetKeyDown(hoverKey))
@@ -154,33 +157,16 @@ public class Abilities : MonoBehaviour
                     superSpeed.SpeedParticle.Stop();
             }
         }
-        if (IsGliding && glide.Timer > 0)
-        {
-            rb.gravityScale = 0.5f;
-            betterJumping.enabled = false;
-            glide.Timer -= Time.deltaTime;
-
-            if (glide.Timer <= 0)
-                IsGliding = false;
-        }
 
         if (!(IsGliding || IsGrappling) || collision.onGround)
         {
-            rb.gravityScale = 3f;
             IsGliding = false;
-            betterJumping.enabled = true;
-        }
-
-        float x = Input.GetAxis("Horizontal");
-        float y = Input.GetAxis("Vertical");
-        Vector2 dir = new Vector2(x, y).normalized;
-        teleport.PreviewSpot = (Vector2)transform.position + dir * teleport.Force;
-        if (collision.onGround)
-            CanTeleport = true;
+            UpdatePlayerStats(movement.canMove, CanUseAbilities, gravityScale: 3f, betterJumping: true);
+        }            
     }
     void FixedUpdate()
     {
-        if (IsGrappling && shouldGrappleMove)
+        if (IsGrappling)
         {
             Vector2 toTarget = grappleTarget - rb.position;
             float distance = toTarget.magnitude;
@@ -188,26 +174,25 @@ public class Abilities : MonoBehaviour
 
             float moveStep = grapple.Speed * Time.fixedDeltaTime;
 
-            if (distance > 0.1f) // move straight toward target
+            if (distance > 0.1f)
             {
                 rb.MovePosition(rb.position + directionToTarget * Mathf.Min(moveStep, distance));
                 rb.gravityScale = 0f;
             }
-            else // reached target, launch
+            else 
             {
-                rb.linearVelocity = test * 50;
+                IsGrappling = false;
+                UpdatePlayerStats(canMove: true, CanUseAbilities, gravityScale: 3f, betterJumping: true);
+
+                rb.linearVelocity = directionToGrappleTarget * grapple.Boost;
 
                 anim.SetBool("isGrappling", false);
-                IsGrappling = false;
-                shouldGrappleMove = false;
-                movement.canMove = true;
-                rb.gravityScale = 3f;
-                betterJumping.enabled = true;
             }
         }
 
-        if (rb.linearVelocity.magnitude > 40f)
-            rb.linearVelocity = rb.linearVelocity.normalized * 40f;
+        // Maybe we move this to movement at somepoint?
+        if (rb.linearVelocity.magnitude > movement.maxVelocity)
+            rb.linearVelocity = rb.linearVelocity.normalized * movement.maxVelocity;
     }
 
     // ========== ABILITY METHODS ==========
@@ -217,17 +202,15 @@ public class Abilities : MonoBehaviour
         if (IsHovering || !CanUseAbilities || !HasAbility(AbilityType.Hover) || collision.onGround)
             yield break;
 
-        IsHovering = true;
-        CanUseAbilities = false;
-        movement.canMove = false;
-
         Camera.main.transform.DOComplete();
         Camera.main.transform.DOShakePosition(0.2f, 0.5f, 14, 90, false, true);
 
+        IsHovering = true;
         float originalGravity = rb.gravityScale;
-        RigidbodyConstraints2D originalConstraints = rb.constraints;
+        UpdatePlayerStats(canMove: false, canUseAbilities: false, gravityScale: 0, betterJumping.isActiveAndEnabled);
 
-        rb.gravityScale = 0f;
+
+        RigidbodyConstraints2D originalConstraints = rb.constraints;
         rb.linearVelocity = Vector2.zero;
         rb.constraints = RigidbodyConstraints2D.FreezePosition | RigidbodyConstraints2D.FreezeRotation;
 
@@ -244,11 +227,7 @@ public class Abilities : MonoBehaviour
             yield return null;
         }
 
-        IsHovering = false;
-        CanUseAbilities = true;
-        movement.canMove = true;
-
-        rb.gravityScale = originalGravity;
+        UpdatePlayerStats(canMove: true, canUseAbilities: true, gravityScale: originalGravity, betterJumping.isActiveAndEnabled);
         rb.constraints = originalConstraints;
 
         if (anim != null)
@@ -258,27 +237,41 @@ public class Abilities : MonoBehaviour
             hover.HoverParticle.Stop();
     }
 
-
     public void Glide()
     {
-        Debug.Log("Glide ability activated.");
         IsGliding = true;
+        StartCoroutine(GlideCoroutine(glide.MaxTime));
+    }
+
+    public IEnumerator GlideCoroutine(float duration)
+    {
+        IsGliding = true;
+        float timer = duration;
+
+        while (timer > 0)
+        {
+            UpdatePlayerStats(movement.canMove, CanUseAbilities, gravityScale: 0.5f, betterJumping: false);
+            timer -= Time.deltaTime;
+            yield return null;
+        }
+
+        IsGliding = false;
     }
 
 
-
-    public Vector2 test;
     public void GrappleHook()
     {
-        Debug.Log("Grapple Hook ability activated.");
-
         CircleCollider2D grappleRange = GetComponentInChildren<CircleCollider2D>();
         Collider2D[] found = Physics2D.OverlapCircleAll(transform.position, grappleRange.radius);
         List<Collider2D> grapplePoints = new List<Collider2D>();
 
+        if(found.Length == 0)
+            return;
+
         foreach (var col in found)
             if (col.CompareTag("GrapplePoint"))
                 grapplePoints.Add(col);
+
 
         Collider2D closest = null;
         float minDistance = Mathf.Infinity;
@@ -293,37 +286,26 @@ public class Abilities : MonoBehaviour
             }
         }
 
-        if (closest == null)
-        {
-            Debug.LogWarning("No grapple points found nearby!");
-            return;
-        }
-
-        grappleTarget = closest.transform.position;
-
         if (closest != null)
         {
+
+            IsGrappling = true;
+            UpdatePlayerStats(canMove: false, CanUseAbilities, gravityScale: 0, betterJumping: false);
+
             grappleTarget = closest.transform.position;
+            directionToGrappleTarget = grappleTarget - rb.position;
 
             anim.Flip(grappleTarget.x < transform.position.x ? -1 : 1);
-            movement.canMove = false;
-            rb.gravityScale = 0;
             anim.SetTrigger("grappleCast");
             anim.SetBool("isGrappling", true);
-            shouldGrappleMove = true;
-            IsGrappling = true;
-            betterJumping.enabled = false;
 
             SFXManager.Instance.Play(SFXManager.Instance.grappleClip, 1f, 0.95f, 1.05f);
-
             if (ghostTrail != null)
                 ghostTrail.ShowGhost();
         }
 
-        test = grappleTarget - rb.position;
+        
     }
-
-
 
     public void Shrink()
     {
@@ -494,12 +476,6 @@ public class Abilities : MonoBehaviour
 
         FindAnyObjectByType<HUDController>()?.UpdateKeyIcons(abilityLetters);
     }
-    void OnDrawGizmos()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawSphere(teleport.PreviewSpot, 0.15f); // 0.15 is the radius of the dot
-    }
-
 }
 
 
@@ -512,7 +488,6 @@ public class TeleportSettings
     public AnimationCurve Curve;
     public ParticleSystem InEffect;
     public ParticleSystem OutEffect;
-    [HideInInspector] public Vector2 PreviewSpot;
 }
 
 [System.Serializable]
@@ -526,8 +501,7 @@ public class SuperSpeedSettings
 public class GrappleSettings
 {
     public float Speed = 10f;
-    public Vector2 LaunchDirection = Vector2.up;
-    public float LaunchForce = 10f;
+    public float Boost = 50f;
 }
 
 [System.Serializable]

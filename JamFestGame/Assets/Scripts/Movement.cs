@@ -27,6 +27,8 @@ public class Movement : MonoBehaviour
     public float dashSpeedBetter = 7;
     public float dashDragTime = 1f;
 
+    public float maxVelocity = 40;
+
     [Space]
     [Header("Booleans")]
     public bool canJump;
