@@ -425,7 +425,10 @@ public class Abilities : MonoBehaviour
 
     public void UpdatePlayerStats(bool canMove, bool canUseAbilities, float gravityScale, bool betterJumping)
     {
-
+        movement.canMove = canMove;
+        CanUseAbilities = canUseAbilities;
+        rb.gravityScale = gravityScale;
+        this.betterJumping.enabled = betterJumping;
     }
 
     public void ResetAbilities()

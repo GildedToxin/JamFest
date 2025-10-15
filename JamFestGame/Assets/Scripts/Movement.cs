@@ -63,14 +63,11 @@ public class Movement : MonoBehaviour
         betterJumping = GetComponent<BetterJumping>();
     }
 
-    void Update()
+    void Update() // I won't lie, this whole thing needs a rewrite, but I CANNOT be bothered.
     {
-        // Read input in Update
         float x = Input.GetAxis("Horizontal");
         float y = Input.GetAxis("Vertical");
         inputDirection = new Vector2(x, y);
-
-        // Keep non-physics logic here (animation, state changes, etc.)
         anim.SetHorizontalMovement(x, y, rb.linearVelocity.y);
 
     /* CAN BE REUSED FOR A WALL CLIMB?
@@ -128,19 +125,6 @@ public class Movement : MonoBehaviour
             }
         }
 
-
-        void GroundTouch()
-
-        {
-            hasDashed = false;
-            isDashing = false;
-            side = anim.sr.flipX ? -1 : 1;
-
-            jumpParticle.Play();
-
-            // Play landing sound
-            SFXManager.Instance.Play(SFXManager.Instance.landClip, 1f, 0.95f, 1.05f);
-        }
         if ((coll.onGround || coll.onWall) && !hasDoubleJump)
         {
             doubleJumped = true;
@@ -181,7 +165,18 @@ public class Movement : MonoBehaviour
             anim.Flip(side);
         }
     }
+    void GroundTouch()
 
+    {
+        hasDashed = false;
+        isDashing = false;
+        side = anim.sr.flipX ? -1 : 1;
+
+        jumpParticle.Play();
+
+        // Play landing sound
+        SFXManager.Instance.Play(SFXManager.Instance.landClip, 1f, 0.95f, 1.05f);
+    }
     void FixedUpdate()
     {
         Walk(inputDirection);
@@ -205,16 +200,6 @@ public class Movement : MonoBehaviour
         {
             rb.gravityScale = 3;
         }
-    }
-
-    void GroundTouch()
-    {
-        hasDashed = false;
-        isDashing = false;
-
-        side = anim.sr.flipX ? -1 : 1;
-
-        jumpParticle.Play();
     }
 
     private void Dash(float x, float y)
