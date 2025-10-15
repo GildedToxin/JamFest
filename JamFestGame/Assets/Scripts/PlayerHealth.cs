@@ -25,7 +25,7 @@ public class PlayerHealth : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
-        DieAndRespawn();
+        StartCoroutine(DieAndRespawn());
     }
 
     private IEnumerator DieAndRespawn()
@@ -52,7 +52,6 @@ public class PlayerHealth : MonoBehaviour
 
         // Respawn player
         transform.position = respawnPoint.position;
-
 
         UpdatePlayerPhysics(velocity: Vector2.zero, gravityScale: savedGravity, rbSimulated: true);
 

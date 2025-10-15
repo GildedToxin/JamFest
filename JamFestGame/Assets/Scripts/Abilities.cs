@@ -352,27 +352,18 @@ public class Abilities : MonoBehaviour
 
     IEnumerator TeleportSequence()
     {
+        
         CanTeleport = false;
+        UpdatePlayerStats(canMove: false, canUseAbilities: CanUseAbilities, gravityScale: 0, betterJumping: false);
         IsTeleporting = true;
-        movement.canMove = false;
-        rb.linearVelocity = Vector2.zero;
-        rb.gravityScale = 0;
-        betterJumping.enabled = false;
-        SFXManager.Instance.Play(SFXManager.Instance.teleportOutClip, 1f);
+        
 
         yield return StartCoroutine(TeleportEffect(teleportStart: true, scale: transform.localScale));
 
-        if (teleport.InEffect)
-        {
-            ParticleSystem instance = Instantiate(teleport.InEffect, transform.position, Quaternion.identity);
-            Destroy(instance.gameObject, instance.main.duration + instance.main.startLifetime.constantMax);
-        }
-
+        // Check for colliders at the intended teleport location
         float x = Input.GetAxis("Horizontal");
         float y = Input.GetAxis("Vertical");
         Vector2 dir = new Vector2(x, y).normalized;
-
-
         Vector2 intendedEnd = (Vector2)transform.position + dir * teleport.Force;
         float checkRadius = playerBoxCollider.bounds.extents.magnitude * 0.9f;
         Collider2D hitAtEnd = Physics2D.OverlapCircle(intendedEnd, checkRadius);
@@ -406,9 +397,7 @@ public class Abilities : MonoBehaviour
 
         yield return StartCoroutine(TeleportEffect(teleportStart: false, scale: Vector3.one));
 
-        rb.gravityScale = originalGravity;
-        betterJumping.enabled = true;
-        movement.canMove = true;
+        UpdatePlayerStats(canMove: true, canUseAbilities: CanUseAbilities, gravityScale: originalGravity, betterJumping: true);
         IsTeleporting = false;
     }
     IEnumerator TeleportEffect(bool teleportStart, Vector3 scale)
@@ -418,6 +407,7 @@ public class Abilities : MonoBehaviour
 
         if (teleportStart)
         {
+            SFXManager.Instance.Play(SFXManager.Instance.teleportOutClip, 1f);
             SFXManager.Instance.Play(SFXManager.Instance.teleportInClip, 1f);
 
             if (ghostTrail != null)
@@ -438,7 +428,12 @@ public class Abilities : MonoBehaviour
             yield return null;
         }
 
-        if (!teleportStart && teleport.OutEffect)
+        if (teleportStart && teleport.InEffect)
+            {
+                ParticleSystem instance = Instantiate(teleport.InEffect, transform.position, Quaternion.identity);
+                Destroy(instance.gameObject, instance.main.duration + instance.main.startLifetime.constantMax);
+            }
+        else if (!teleportStart && teleport.OutEffect)
             teleport.OutEffect.Play();
     }
  
@@ -446,7 +441,10 @@ public class Abilities : MonoBehaviour
     public void AddAbility(AbilityType ability) => abilities.Add(ability);
     public bool HasAbility(AbilityType ability) => abilities.Contains(ability);
 
+    public void UpdatePlayerStats(bool canMove, bool canUseAbilities, float gravityScale, bool betterJumping)
+    {
 
+    }
 
     public void ResetAbilities()
     {
@@ -503,6 +501,7 @@ public class Abilities : MonoBehaviour
     }
 
 }
+
 
 #region Ability Settings Classes
 [System.Serializable]
