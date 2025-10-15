@@ -309,11 +309,10 @@ public class Abilities : MonoBehaviour
 
     public void Shrink()
     {
+        IsShrinking = !IsShrinking;
         CanUseAbilities = IsShrinking ? false : true;
         AudioSource sfxToPlay = IsShrinking ? SFXManager.Instance.shrinkClip : SFXManager.Instance.unshrinkClip;
         SFXManager.Instance.Play(sfxToPlay, 1f);
-
-        IsShrinking = !IsShrinking;
         collision.ChangeSize(IsShrinking);
     }
 
