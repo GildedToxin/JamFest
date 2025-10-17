@@ -5571,7 +5571,7 @@ MonoBehaviour:
     InEffect: {fileID: 2564347316225932662}
     OutEffect: {fileID: 7421731670179035536}
   superSpeed:
-    SpeedParticle: {fileID: 0}
+    SpeedParticle: {fileID: 2928694878764718513}
     DeaccelerateSpeed: 0.15
   grapple:
     Speed: 10
@@ -5581,7 +5581,7 @@ MonoBehaviour:
     Timer: 0
   hover:
     Duration: 2
-    HoverParticle: {fileID: 0}
+    HoverParticle: {fileID: 2177672282180348380}
   teleportKey: 116
   grappleKey: 104
   superSpeedKey: 106

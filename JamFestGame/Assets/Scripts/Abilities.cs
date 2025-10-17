@@ -123,11 +123,11 @@ public class Abilities : MonoBehaviour
         }
 
         // --- ABILITY INPUTS ---
-        if (Input.GetKeyDown(hoverKey))
+        if (Input.GetKeyDown(hoverKey) && CanUseAbilities)
         {
             StartCoroutine(HoverAbility());
         }
-        if (Input.GetKeyDown(glideKey) && glide.Timer > 0 && CanUseAbilities && HasAbility(AbilityType.Glide))
+        if (Input.GetKeyDown(glideKey) && glide.Timer > 0 && CanUseAbilities && !IsGliding && HasAbility(AbilityType.Glide))
         {
             Glide();
         }
@@ -135,15 +135,15 @@ public class Abilities : MonoBehaviour
         {
             Shrink();
         }
-        if (Input.GetKeyDown(teleportKey) && !IsTeleporting && !IsHovering && HasAbility(AbilityType.Teleport) && CanTeleport)
+        if (Input.GetKeyDown(teleportKey) && !IsTeleporting && !IsHovering && HasAbility(AbilityType.Teleport) && CanTeleport && CanUseAbilities)
         {
             StartCoroutine(TeleportSequence());
         }
-        if (Input.GetKeyDown(grappleKey) && !IsHovering && HasAbility(AbilityType.Grapple))
+        if (Input.GetKeyDown(grappleKey) && !IsHovering && HasAbility(AbilityType.Grapple) && CanUseAbilities)
         {
             GrappleHook();
         }
-        if (Input.GetKey(superSpeedKey) && !IsHovering && (collision.onGround || IsSuperSpeed) && HasAbility(AbilityType.SuperSpeed))
+        if (Input.GetKey(superSpeedKey) && !IsHovering && (collision.onGround || IsSuperSpeed) && HasAbility(AbilityType.SuperSpeed) && CanUseAbilities)
         {
             SuperSpeed();
 
@@ -156,6 +156,14 @@ public class Abilities : MonoBehaviour
                 if (superSpeed.SpeedParticle && superSpeed.SpeedParticle.isPlaying)
                     superSpeed.SpeedParticle.Stop();
             }
+        }
+
+        if (IsGliding && glide.Timer > 0) 
+        { 
+            UpdatePlayerStats(movement.canMove, CanUseAbilities, gravityScale: 0.5f, betterJumping: false); 
+            glide.Timer -= Time.deltaTime; 
+                if (glide.Timer <= 0) 
+                IsGliding = false; 
         }
 
         if (!(IsGliding || IsGrappling) || collision.onGround)
@@ -240,23 +248,10 @@ public class Abilities : MonoBehaviour
     public void Glide()
     {
         IsGliding = true;
-        StartCoroutine(GlideCoroutine(glide.MaxTime));
+       // StartCoroutine(GlideCoroutine(glide.MaxTime));
     }
 
-    public IEnumerator GlideCoroutine(float duration)
-    {
-        IsGliding = true;
-        float timer = duration;
 
-        while (timer > 0)
-        {
-            UpdatePlayerStats(movement.canMove, CanUseAbilities, gravityScale: 0.5f, betterJumping: false);
-            timer -= Time.deltaTime;
-            yield return null;
-        }
-
-        IsGliding = false;
-    }
 
 
     public void GrappleHook()
@@ -510,7 +505,7 @@ public class GrappleSettings
 public class GlideSettings
 {
     public float MaxTime = 2f;
-    [HideInInspector] public float Timer;
+    public float Timer;
 }
 
 [System.Serializable]
