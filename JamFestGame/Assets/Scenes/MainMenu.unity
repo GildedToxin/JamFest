@@ -271098,6 +271098,24 @@ AudioSource:
   m_CorrespondingSourceObject: {fileID: 6472886616069212340, guid: 0ff1572ec9d8f654c9ee208fcd6be0ea, type: 3}
   m_PrefabInstance: {fileID: 345166085}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1733947590 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5217039744449895842, guid: 94bdd663e14cf9c42971e40b6ea0ca96, type: 3}
+  m_PrefabInstance: {fileID: 8123002981791220659}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1733947596
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1733947590}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dbbb83a9e420da247a211000b1652dcd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ReturnToRicochetLauncher
+  launcherExeName: RicochetLauncher.exe
 --- !u!1 &1822070183
 GameObject:
   m_ObjectHideFlags: 0
@@ -272125,6 +272143,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1619474443678136475, guid: 94bdd663e14cf9c42971e40b6ea0ca96, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1733947596}
+    - target: {fileID: 1619474443678136475, guid: 94bdd663e14cf9c42971e40b6ea0ca96, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ReturnToLauncher
+      objectReference: {fileID: 0}
+    - target: {fileID: 1619474443678136475, guid: 94bdd663e14cf9c42971e40b6ea0ca96, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: ReturnToRicochetLauncher, Assembly-CSharp
+      objectReference: {fileID: 0}
     - target: {fileID: 5217039744449895842, guid: 94bdd663e14cf9c42971e40b6ea0ca96, type: 3}
       propertyPath: m_Name
       value: MainMenuCanvas
@@ -272140,7 +272170,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5217039744449895842, guid: 94bdd663e14cf9c42971e40b6ea0ca96, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1733947596}
   m_SourcePrefab: {fileID: 100100000, guid: 94bdd663e14cf9c42971e40b6ea0ca96, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
