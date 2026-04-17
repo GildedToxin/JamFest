@@ -65,6 +65,9 @@ public class Movement : MonoBehaviour
 
     void Update() // I won't lie, this whole thing needs a rewrite, but I CANNOT be bothered.
     {
+        if (FindAnyObjectByType<PauseUI>().paused)
+            return;
+
         float x = Input.GetAxis("Horizontal");
         float y = Input.GetAxis("Vertical");
         inputDirection = new Vector2(x, y);
@@ -179,6 +182,9 @@ public class Movement : MonoBehaviour
     }
     void FixedUpdate()
     {
+        if (FindAnyObjectByType<PauseUI>().paused)
+            return;
+
         Walk(inputDirection);
 
         if (wallGrab && !isDashing)

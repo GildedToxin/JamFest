@@ -272129,6 +272129,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: MainMenuCanvas
       objectReference: {fileID: 0}
+    - target: {fileID: 5802878847849478523, guid: 94bdd663e14cf9c42971e40b6ea0ca96, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
+      value: SadLevel
+      objectReference: {fileID: 0}
+    - target: {fileID: 8162496135037435853, guid: 94bdd663e14cf9c42971e40b6ea0ca96, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

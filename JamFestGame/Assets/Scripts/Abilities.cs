@@ -111,6 +111,8 @@ public class Abilities : MonoBehaviour
     }
     void Update()
     {
+        if (FindAnyObjectByType<PauseUI>().paused)
+            return;
         // --- GENERAL MOVEMENT ---
         if (!IsSuperSpeed)
             movement.speed = Mathf.Lerp(movement.speed, defaultSpeed, superSpeed.DeaccelerateSpeed);
@@ -174,6 +176,8 @@ public class Abilities : MonoBehaviour
     }
     void FixedUpdate()
     {
+        if (FindAnyObjectByType<PauseUI>().paused)
+            return;
         if (IsGrappling)
         {
             Vector2 toTarget = grappleTarget - rb.position;

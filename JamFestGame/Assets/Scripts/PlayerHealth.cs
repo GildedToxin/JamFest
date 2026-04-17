@@ -44,8 +44,16 @@ public class PlayerHealth : MonoBehaviour
         yield return new WaitForSeconds(respawnDelay);
         //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 
-        if (isLavaLevel)
+      //  if(SceneManager.GetActiveScene().name == "SadLevel")
+      ///  {
+          ///  SceneManager.LoadScene("SadLevel");
+          //  yield return null;
+       // }
+
+            if (isLavaLevel)
             FindAnyObjectByType<LavaScript>().ResetLava();
+
+
 
         animator.Rebind();
         animator.Update(0f);
@@ -54,6 +62,11 @@ public class PlayerHealth : MonoBehaviour
         transform.position = respawnPoint.position;
 
         UpdatePlayerPhysics(velocity: Vector2.zero, gravityScale: savedGravity, rbSimulated: true);
+
+        if (abilities.IsShrinking)
+        {
+            abilities.Shrink();
+        }
 
         movement.canMove = true;
         abilities.CanUseAbilities = true;
