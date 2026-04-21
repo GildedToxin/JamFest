@@ -1,5 +1,6 @@
 using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 public class PauseUI : MonoBehaviour
@@ -12,9 +13,7 @@ public class PauseUI : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            Time.timeScale = paused ? 1 : 0;
-            paused = !paused;
-            UI.SetActive(!UI.activeSelf);
+            pause();
         }
     }
 
@@ -22,11 +21,23 @@ public class PauseUI : MonoBehaviour
     {
         paused = false;
         SceneManager.LoadScene("MainMenu");
+        Time.timeScale = 1;
+        paused = false;
     }
     public void resume()
     {
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
         Time.timeScale = 1;
         UI.SetActive(false);
         paused = false;
+    }
+    public void pause()
+    {
+        Cursor.visible = !Cursor.visible;
+        Cursor.lockState = Cursor.lockState == CursorLockMode.Confined ? CursorLockMode.Locked : CursorLockMode.Confined;;
+        Time.timeScale = paused ? 1 : 0;
+        paused = !paused;
+        UI.SetActive(!UI.activeSelf);
     }
 }

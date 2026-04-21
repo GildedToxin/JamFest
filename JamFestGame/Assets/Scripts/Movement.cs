@@ -61,6 +61,9 @@ public class Movement : MonoBehaviour
         anim = GetComponentInChildren<AnimationScript>();
         abilities = GetComponent<Abilities>();
         betterJumping = GetComponent<BetterJumping>();
+
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
     void Update() // I won't lie, this whole thing needs a rewrite, but I CANNOT be bothered.
