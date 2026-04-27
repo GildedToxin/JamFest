@@ -2,10 +2,12 @@
 using System.Diagnostics;
 using System.IO;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ReturnToRicochetLauncher : MonoBehaviour
 {
     public string launcherExe = "RicochetLauncher.exe";
+    public Button quit;
 
     public void ReturnToLauncher()
     {
@@ -14,6 +16,8 @@ public class ReturnToRicochetLauncher : MonoBehaviour
 
     private IEnumerator LaunchLauncherOrExit()
     {
+        quit.interactable = false;
+
         string gameRoot = Directory.GetParent(Application.dataPath).FullName;
         string collectionRoot = Directory.GetParent(gameRoot).FullName;
         string launcherPath = Path.Combine(collectionRoot, launcherExe);

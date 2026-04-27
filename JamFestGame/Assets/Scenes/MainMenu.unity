@@ -8937,6 +8937,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5520605117869745961, guid: 4d484893fae264f4fac554213fbdb074, type: 3}
   m_PrefabInstance: {fileID: 478165843}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1558024439 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1619474443678136475, guid: 94bdd663e14cf9c42971e40b6ea0ca96, type: 3}
+  m_PrefabInstance: {fileID: 8123002981791220659}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
 --- !u!1001 &1614625826
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -270965,6 +270976,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ReturnToRicochetLauncher
   launcherExe: RicochetLauncher.exe
+  quit: {fileID: 1558024439}
 --- !u!1 &1822070183
 GameObject:
   m_ObjectHideFlags: 0
