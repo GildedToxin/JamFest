@@ -1,0 +1,481 @@
+fileFormatVersion: 2
+guid: 9c4de3e7240c8c34fbfac50793b5274a
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 8935937715519864038
+    second: RicoG - Copy_0
+  - first:
+      213: -1356477278786121093
+    second: RicoG - Copy_1
+  - first:
+      213: -3592776944889083347
+    second: RicoG - Copy_2
+  - first:
+      213: 3334908822190099082
+    second: RicoG - Copy_3
+  - first:
+      213: 4289187178454292983
+    second: RicoG - Copy_4
+  - first:
+      213: 8477729300584029064
+    second: RicoG - Copy_5
+  - first:
+      213: 3624430542074798538
+    second: RicoG - Copy_6
+  - first:
+      213: -8284029622156118170
+    second: RicoG - Copy_7
+  - first:
+      213: -5171195747207425516
+    second: RicoG - Copy_8
+  - first:
+      213: 1967913381489964222
+    second: RicoG - Copy_9
+  - first:
+      213: -4976121885478905894
+    second: RicoG - Copy_10
+  - first:
+      213: 3452180000442804031
+    second: RicoG - Copy_11
+  - first:
+      213: -5937980210346705391
+    second: RicoG - Copy_12
+  - first:
+      213: -1068897345423756489
+    second: RicoG - Copy_13
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 1
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: RicoG - Copy_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 642
+        height: 641
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6ecb394f104d20c70800000000000000
+      internalID: 8935937715519864038
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RicoG - Copy_1
+      rect:
+        serializedVersion: 2
+        x: 756
+        y: 351
+        width: 309
+        height: 231
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b7290141a13dc2de0800000000000000
+      internalID: -1356477278786121093
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RicoG - Copy_2
+      rect:
+        serializedVersion: 2
+        x: 1089
+        y: 352
+        width: 92
+        height: 230
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d2a4caa6764e32ec0800000000000000
+      internalID: -3592776944889083347
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RicoG - Copy_3
+      rect:
+        serializedVersion: 2
+        x: 1204
+        y: 346
+        width: 314
+        height: 242
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a8a05f897e9f74e20800000000000000
+      internalID: 3334908822190099082
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RicoG - Copy_4
+      rect:
+        serializedVersion: 2
+        x: 1537
+        y: 346
+        width: 314
+        height: 242
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7f99de28301468b30800000000000000
+      internalID: 4289187178454292983
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RicoG - Copy_5
+      rect:
+        serializedVersion: 2
+        x: 1871
+        y: 346
+        width: 314
+        height: 242
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 88b5b37c1e1f6a570800000000000000
+      internalID: 8477729300584029064
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RicoG - Copy_6
+      rect:
+        serializedVersion: 2
+        x: 2208
+        y: 352
+        width: 315
+        height: 230
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ac1e17dff509c4230800000000000000
+      internalID: 3624430542074798538
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RicoG - Copy_7
+      rect:
+        serializedVersion: 2
+        x: 2571
+        y: 351
+        width: 270
+        height: 231
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 667329603f6390d80800000000000000
+      internalID: -8284029622156118170
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RicoG - Copy_8
+      rect:
+        serializedVersion: 2
+        x: 2866
+        y: 351
+        width: 302
+        height: 231
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 412d0b7bdd83c38b0800000000000000
+      internalID: -5171195747207425516
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RicoG - Copy_9
+      rect:
+        serializedVersion: 2
+        x: 756
+        y: 54
+        width: 313
+        height: 242
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: eb472744bce6f4b10800000000000000
+      internalID: 1967913381489964222
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RicoG - Copy_10
+      rect:
+        serializedVersion: 2
+        x: 1073
+        y: 59
+        width: 353
+        height: 231
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ad79bf0828341fab0800000000000000
+      internalID: -4976121885478905894
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RicoG - Copy_11
+      rect:
+        serializedVersion: 2
+        x: 1429
+        y: 60
+        width: 403
+        height: 230
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f37e9138b6b98ef20800000000000000
+      internalID: 3452180000442804031
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RicoG - Copy_12
+      rect:
+        serializedVersion: 2
+        x: 1881
+        y: 59
+        width: 270
+        height: 231
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 11e3cfe957e089da0800000000000000
+      internalID: -5937980210346705391
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RicoG - Copy_13
+      rect:
+        serializedVersion: 2
+        x: 2172
+        y: 54
+        width: 312
+        height: 242
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 733b8a017838a21f0800000000000000
+      internalID: -1068897345423756489
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      RicoG - Copy_0: 8935937715519864038
+      RicoG - Copy_1: -1356477278786121093
+      RicoG - Copy_10: -4976121885478905894
+      RicoG - Copy_11: 3452180000442804031
+      RicoG - Copy_12: -5937980210346705391
+      RicoG - Copy_13: -1068897345423756489
+      RicoG - Copy_2: -3592776944889083347
+      RicoG - Copy_3: 3334908822190099082
+      RicoG - Copy_4: 4289187178454292983
+      RicoG - Copy_5: 8477729300584029064
+      RicoG - Copy_6: 3624430542074798538
+      RicoG - Copy_7: -8284029622156118170
+      RicoG - Copy_8: -5171195747207425516
+      RicoG - Copy_9: 1967913381489964222
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
